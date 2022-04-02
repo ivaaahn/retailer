@@ -4,17 +4,27 @@ from sqlalchemy import (
     Identity,
     Text,
 )
-
 from app.base.models import BaseModel
 
 
-class Addresses(BaseModel):
-    __tablename__ = "addresses"
+class ShopAddresses(BaseModel):
+    __tablename__ = "shop_addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
-    city = Column(Text, nullable=False)
-    street = Column(Text, nullable=False)
+    city = Column(Text, nullable=False, index=True)
+    street = Column(Text, nullable=False, index=True)
     house = Column(Text, nullable=False)
-    entrance = Column(Integer, nullable=True)
+    building = Column(Text, nullable=True)
     floor = Column(Integer, nullable=True)
-    flat = Column(Integer, nullable=True)
+
+
+class CustomerAddresses(BaseModel):
+    __tablename__ = "customer_addresses"
+
+    id = Column(Integer, Identity(), primary_key=True)
+    city = Column(Text, nullable=False, index=True)
+    street = Column(Text, nullable=False, index=True)
+    house = Column(Text, nullable=False)
+    entrance = Column(Integer, nullable=False)
+    floor = Column(Integer, nullable=True)
+    flat = Column(Text, nullable=True)
