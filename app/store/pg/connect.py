@@ -3,9 +3,9 @@ from typing import Optional, TYPE_CHECKING
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection, AsyncEngine
 
+from core.settings import PgSettings
 from store.base.connect import BaseConnect
 from store.pg import sa
-from .settings import PgSettings
 
 
 # TODO выделить базовый класс

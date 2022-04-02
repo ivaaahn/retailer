@@ -1,15 +1,14 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
 
 class EmailMixin(BaseModel):
-    email: EmailStr = Field(description="Email (логин)")
+    email: EmailStr = Field(title="Email (логин)")
 
 
 class PasswordMixin(BaseModel):
-    password: str = Field(description="Пароль")
+    password: str = Field(title="Пароль")
 
 
 class UserSchema(EmailMixin):
@@ -48,3 +47,17 @@ class TokenDataSchema(EmailMixin):
 
 
 ##########################################
+class VerifyCodeRequestSchema(EmailMixin):
+    code: str = Field(title="Код")
+
+
+class VerifyCodeRespSchema(EmailMixin):
+    pass
+
+
+class ResendCodeSchema(EmailMixin):
+    pass
+
+
+class ResendCodeRespSchema(EmailMixin):
+    pass

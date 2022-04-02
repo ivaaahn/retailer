@@ -17,5 +17,5 @@ router = APIRouter(
 
 
 def setup_routes(app: "Application"):
-    router.include_router(auth.user.router)
+    router.include_router(auth.router)
     app.include_router(router)

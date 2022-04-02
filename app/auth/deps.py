@@ -2,14 +2,14 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from starlette import status
 
-from auth.user.schemas import UserSchema
-from auth.user.services import AuthUserService
+from .schemas import UserSchema
+from .services import AuthService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 async def get_current_user(
-    token: str = Depends(oauth2_scheme), auth_service: AuthUserService = Depends()
+    token: str = Depends(oauth2_scheme), auth_service: AuthService = Depends()
 ):
     return await auth_service.get_current_user(token)
 

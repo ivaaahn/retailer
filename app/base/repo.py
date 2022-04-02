@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.engine import CursorResult
-from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncTransaction
 from sqlalchemy.testing.plugin.plugin_base import util
 
 from store.store import store
@@ -38,3 +38,7 @@ class BasePgRepo(BaseRepo):
             )
 
         return result
+
+    @property
+    def transaction(self) -> AsyncConnection:
+        return self._pg._engine.begin()
