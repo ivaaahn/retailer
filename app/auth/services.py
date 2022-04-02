@@ -1,11 +1,8 @@
 from datetime import timedelta, datetime
-from typing import Optional
 
-from fastapi import HTTPException
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
-from starlette import status
 
 from base.errors import check_err, DBErrEnum
 from base.services import BaseService
