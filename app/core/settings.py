@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import BaseSettings, PostgresDsn
+from pydantic import BaseSettings, PostgresDsn, AmqpDsn
 
 
 class PgSettings(BaseSettings):
@@ -10,6 +10,20 @@ class PgSettings(BaseSettings):
     class Config:
         env_prefix = "PG_"
         env_file = ".env"
+
+
+class RMQSettings(BaseSettings):
+    host: str
+    port: int
+    user: str
+    password: str
+    queue_name: str
+    # reconnect_timeout: int = 5
+    # capacity: int = 10
+
+    class Config:
+        env_file = ".env"
+        env_prefix = "RMQ_"
 
 
 # to get a string like this run:
@@ -26,6 +40,7 @@ class AuthSettings(BaseSettings):
 
 class Settings(BaseSettings):
     pg: PgSettings = PgSettings()
+    rmq: RMQSettings = RMQSettings()
     auth: AuthSettings = AuthSettings()
 
     class Config:

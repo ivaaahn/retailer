@@ -34,9 +34,9 @@ class UserAlreadyExistsError(AuthConflictError):
         )
 
 
-class SessionExpiredError(ForbiddenError):
+class SignupSessionExpiredError(ForbiddenError):
     def __init__(self):
-        super().__init__(description="Session not expired")
+        super().__init__(description="Session expired")
 
 
 class IncorrectCredsError(UnauthorizedError):

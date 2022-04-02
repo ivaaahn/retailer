@@ -5,7 +5,7 @@ from starlette import status
 from .schemas import UserSchema
 from .services import AuthService
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth.login")
 
 
 async def get_current_user(

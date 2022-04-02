@@ -27,7 +27,7 @@ class PgConnect(BaseConnect[PgSettings]):
     def meta(self) -> MetaData:
         return self._metadata
 
-    def _connect(self):
+    async def _connect(self):
         conf = self._config
 
         try:
