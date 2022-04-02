@@ -22,7 +22,3 @@ def read(filename: str) -> list[dict]:
         print(result)
 
     return result
-
-
-if __name__ == "__main__":
-    read("data/customer_addresses.csv")
