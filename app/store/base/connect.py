@@ -15,9 +15,16 @@ class BaseConnect(Generic[_Settings]):
     def conf(self) -> _Settings:
         return self._config
 
-    def _connect(self):
+    async def _connect(self):
         pass
 
-    def connect(self):
-        self._connect()
+    async def _disconnect(self):
+        pass
+
+    async def connect(self):
+        await self._connect()
         print(f"Connected to '{self._name}'")
+
+    async def disconnect(self):
+        await self._disconnect()
+        print(f"Disconnected from '{self._name}'")

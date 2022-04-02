@@ -4,6 +4,7 @@ from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncTransaction
 from sqlalchemy.testing.plugin.plugin_base import util
 
+from store.rmq import RMQConnect
 from store.store import store
 
 if TYPE_CHECKING:
@@ -12,6 +13,11 @@ if TYPE_CHECKING:
 
 class BaseRepo:
     pass
+
+
+class BaseRMQRepo(BaseRepo):
+    def __init__(self):
+        self._rmq: "RMQConnect" = store.rmq
 
 
 class BasePgRepo(BaseRepo):
