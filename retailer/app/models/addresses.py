@@ -12,7 +12,7 @@ class CustomerAddresses(BaseModel):
     __tablename__ = "customer_addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"))
+    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
     city = Column(Text, nullable=False, index=True)
     street = Column(Text, nullable=False, index=True)
     house = Column(Text, nullable=False)

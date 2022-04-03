@@ -12,7 +12,7 @@ from .schemas import (
     ResendCodeRespSchema,
     ResendCodeSchema,
 )
-from .services import AuthService
+from app.services import AuthService
 
 router = APIRouter(
     prefix="/auth.",

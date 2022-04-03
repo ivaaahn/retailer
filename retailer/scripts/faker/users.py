@@ -39,7 +39,7 @@ def _generate_users(count: int) -> list[User]:
 
         result.append(
             User(
-                email=f.email(),
+                email=email,
                 password=password_hashed,
             )
         )

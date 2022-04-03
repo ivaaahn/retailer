@@ -1,7 +1,7 @@
 from base.repo import BaseRMQRepo
 
 
-class CodeVerifierRepo(BaseRMQRepo):
+class RMQInteractRepo(BaseRMQRepo):
     async def send_code(self, email: str, code: str):
         await self._rmq.send(
             message={

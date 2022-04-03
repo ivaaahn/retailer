@@ -11,12 +11,10 @@ from alembic import context
 # access to the values within the .ini file in use.
 
 from app.core.settings import Settings
-from app.store.pg.sa import metadata
+from store.pg.sa import metadata
 
-####################################################
-from app.addresses.models import *
-from app.auth.models import *
-from app.customers.models import *
+###############DO NOT DELETE########################
+from app.models import *
 
 ####################################################
 

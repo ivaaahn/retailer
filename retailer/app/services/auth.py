@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from base.errors import check_err, DBErrEnum
 from base.services import BaseService
 from core.settings import get_settings, AuthSettings
-from .errors import (
+from app.api.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
     UserAlreadyExistsError,
@@ -18,9 +18,9 @@ from .errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from .models import WebUsers, SignupSession
-from .repos import WebUserRepo, SignupSessionRepo, CodeVerifierRepo
-from .schemas import TokenDataSchema, UserSchema
+from app.models import WebUsers, SignupSession
+from app.repos import UsersRepo, SignupSessionRepo, RMQInteractRepo
+from app.api.auth.schemas import TokenDataSchema, UserSchema
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -33,11 +33,11 @@ class AuthService(BaseService):
     async def signup_user(self, email: str, pwd: str) -> str:
         hashed_pwd = self._get_password_hash(pwd)
 
-        active_user = await WebUserRepo().get(email, only_active=True)
+        active_user = await UsersRepo().get(email, only_active=True)
         if active_user:
             raise UserAlreadyExistsError(email)
 
-        web_user = await WebUserRepo().upsert(email=email, password=hashed_pwd)
+        web_user = await UsersRepo().upsert(email=email, password=hashed_pwd)
         await self._send_code(web_user.email)
 
         return web_user.email
@@ -66,7 +66,7 @@ class AuthService(BaseService):
         except JWTError:
             raise IncorrectCredsError
 
-        user = await WebUserRepo().get(token_data.email, only_active=False)
+        user = await UsersRepo().get(token_data.email, only_active=False)
         if not user:
             raise IncorrectCredsError
 
@@ -79,13 +79,13 @@ class AuthService(BaseService):
         if session.code != code:
             raise IncorrectCodeError(session.attempts_left)
 
-        email = await WebUserRepo().activate_account(email)
+        email = await UsersRepo().activate_account(email)
         return email
 
     async def _check_session_and_send_code(self, email: str) -> str:
         await self.check_session_expiration(email)
         code = self._generate_code()
-        await CodeVerifierRepo().send_code(email, code)
+        await RMQInteractRepo().send_code(email, code)
         return code
 
     async def _send_code(self, email: str) -> SignupSession:
@@ -124,16 +124,19 @@ class AuthService(BaseService):
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
 
-    async def _authenticate_user(self, email: str, pwd: str) -> WebUsers:
-        web_user = await WebUserRepo().get(email, only_active=False)
+    async def _authenticate_user(self, email: str, pswd: str) -> WebUsers:
+        user = await UsersRepo().get(email, only_active=False)
 
-        if not web_user or not self._verify_password(
-            plain_password=pwd,
-            hashed_password=web_user.password,
+        print(user.password)
+        print(pwd_context.hash(pswd))
+
+        if not user or not self._verify_password(
+            plain_password=pswd,
+            hashed_password=user.password,
         ):
             raise IncorrectLoginCredsError
 
-        return web_user
+        return user
 
     def _create_access_token(
         self, data: dict, expires_delta: timedelta = timedelta(minutes=15)

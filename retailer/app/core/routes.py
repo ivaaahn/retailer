@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from fastapi import APIRouter
 
-import auth
+from app.api.auth.controllers import router as auth_router
 
 if TYPE_CHECKING:
     from core.app import Application
@@ -17,5 +17,5 @@ router = APIRouter(
 
 
 def setup_routes(app: "Application"):
-    router.include_router(auth.router)
+    router.include_router(auth_router)
     app.include_router(router)

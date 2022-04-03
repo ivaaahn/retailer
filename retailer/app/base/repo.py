@@ -1,8 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy.engine import CursorResult
-from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncTransaction
-from sqlalchemy.testing.plugin.plugin_base import util
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from store.rmq import RMQConnect
 from store.store import store

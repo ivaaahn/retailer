@@ -5,11 +5,11 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 
+from app.models import WebUsers
 from base.repo import BasePgRepo
-from ..models import WebUsers
 
 
-class WebUserRepo(BasePgRepo):
+class UsersRepo(BasePgRepo):
     async def add(self, email: str, password: str) -> Optional[str]:
         web_users = WebUsers.__table__
 

@@ -1,9 +1,8 @@
-from typing import Optional
-
 from sqlalchemy import inspect
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.orm import as_declarative
-from app.store.pg.sa import metadata
+
+from store.pg.sa import metadata
 
 
 class _Base:

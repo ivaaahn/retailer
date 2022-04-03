@@ -2,8 +2,8 @@ from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from starlette import status
 
+from app.services import AuthService
 from .schemas import UserSchema
-from .services import AuthService
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth.login")
 
