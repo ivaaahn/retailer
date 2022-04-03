@@ -7,7 +7,7 @@ from store.store import store
 from .settings import Settings
 
 if TYPE_CHECKING:
-    from store import Store
+    from store.store import Store
     from store.base.connect import BaseConnect
 
 
@@ -21,22 +21,18 @@ class Application(FastAPI):
     def conf(self) -> Settings:
         return self._config
 
-    # @property
-    # def store(self) -> Optional["Store"]:
-    #     return self._store
-
-    # @store.setter
-    # def store(self, value: "Store"):
-    #     self._store = value
-    #     print("Store is set")
-
     @staticmethod
     def _connections() -> Iterable["BaseConnect"]:
         yield store.pg
+        yield store.rmq
 
     async def make_connections(self):
         for conn in self._connections():
-            conn.connect()
+            await conn.connect()
+
+    async def disconnect(self):
+        for conn in self._connections():
+            await conn.disconnect()
 
 
 app = Application(
@@ -49,6 +45,10 @@ app = Application(
 @app.on_event("startup")
 async def init_app():
     setup_routes(app)
-
     await app.make_connections()
-    print(app)
+
+
+# TODO написать нормально
+@app.on_event("shutdown")
+async def init_app():
+    await app.disconnect()

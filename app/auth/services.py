@@ -1,3 +1,5 @@
+import random
+import string
 from datetime import timedelta, datetime
 
 from jose import JWTError, jwt
@@ -17,7 +19,7 @@ from .errors import (
     IncorrectCodeError,
 )
 from .models import WebUsers, SignupSession
-from .repos import WebUserRepo, SignupSessionRepo
+from .repos import WebUserRepo, SignupSessionRepo, CodeVerifierRepo
 from .schemas import TokenDataSchema, UserSchema
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -80,17 +82,18 @@ class AuthService(BaseService):
         email = await WebUserRepo().activate_account(email)
         return email
 
-    async def _send_code(self, email: str) -> SignupSession:
+    async def _check_session_and_send_code(self, email: str) -> str:
         await self.check_session_expiration(email)
         code = self._generate_code()
-        # send code here
-        signup_session = await SignupSessionRepo().upsert(email, code)
-        return signup_session
+        await CodeVerifierRepo().send_code(email, code)
+        return code
+
+    async def _send_code(self, email: str) -> SignupSession:
+        code = await self._check_session_and_send_code(email)
+        return await SignupSessionRepo().upsert(email, code)
 
     async def _resend_code(self, email: str) -> SignupSession:
-        await self.check_session_expiration(email)
-        code = self._generate_code()
-        # send code here
+        code = await self._check_session_and_send_code(email)
 
         try:
             signup_session = await SignupSessionRepo().update_code(email, code)
@@ -109,8 +112,9 @@ class AuthService(BaseService):
 
         return session
 
-    def _generate_code(self) -> str:
-        return "FAKECODE"
+    @staticmethod
+    def _generate_code(length: int = 8) -> str:
+        return "".join(random.choices(string.digits, k=length))
 
     @staticmethod
     def _get_password_hash(password: str) -> str:
