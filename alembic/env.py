@@ -11,10 +11,10 @@ from alembic import context
 # access to the values within the .ini file in use.
 
 from app.core.settings import Settings
-from app.store.pg.sa import metadata
+from store.pg.sa import metadata
 
-####################################################
-from app.auth.models import *
+###############DO NOT DELETE########################
+from app.models import *
 
 ####################################################
 
@@ -57,7 +57,7 @@ def run_migrations_offline():
     here as well.  By skipping the Engine creation
     we don't even need a DBAPI to be available.
 
-    Calls to context.execute() here emit the given string to the
+    Calls to context._execute() here emit the given string to the
     script output.
     """
 
