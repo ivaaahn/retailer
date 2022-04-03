@@ -3,21 +3,21 @@ from typing import Optional
 
 from sqlalchemy import update, and_
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 
 from app.models import WebUsers
 from base.repo import BasePgRepo
+from .interface import IUsersRepo
 
 
 @lru_cache
-class UsersRepo(BasePgRepo):
+class UsersRepo(IUsersRepo, BasePgRepo):
     async def update(self, email: str, **kwargs) -> Optional[WebUsers]:
         stmt = (
             update(WebUsers)
             .values(**kwargs)
-            .where(WebUsers.c.email == email)
-            .returning(*WebUsers.c)
+            .where(WebUsers.__table__.c.email == email)
+            .returning(*WebUsers.__table__.c)
         )
 
         cursor = await self._execute(stmt)
@@ -32,7 +32,7 @@ class UsersRepo(BasePgRepo):
             set_={
                 "password": password,
             },
-        ).returning(*WebUsers.c)
+        ).returning(*WebUsers.__table__.c)
 
         cursor = await self._execute(do_update_stmt)
         return WebUsers.from_cursor(cursor)
@@ -42,10 +42,13 @@ class UsersRepo(BasePgRepo):
 
         if only_active:
             stmt = select_stmt.where(
-                and_(WebUsers.c.email == email, WebUsers.c.is_active.is_(True))
+                and_(
+                    WebUsers.__table__.c.email == email,
+                    WebUsers.__table__.c.is_active.is_(True),
+                )
             )
         else:
-            stmt = select_stmt.where(WebUsers.c.email == email)
+            stmt = select_stmt.where(WebUsers.__table__.c.email == email)
 
         cursor = await self._execute(stmt, debug=True)
         return WebUsers.from_cursor(cursor)

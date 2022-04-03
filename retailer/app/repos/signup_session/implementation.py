@@ -10,12 +10,13 @@ from sqlalchemy.sql.functions import now as sa_now
 from app.api.auth.errors import SessionNotFoundError, SignupSessionExpiredError
 from app.base.repo import BasePgRepo
 from app.models import SignupSession
+from .interface import ISignupSessionRepo
 
 
 @lru_cache
-class SignupSessionRepo(BasePgRepo):
+class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
     async def get(self, email: str) -> Optional[SignupSession]:
-        stmt = select(SignupSession).where(SignupSession.c.email == email)
+        stmt = select(SignupSession).where(SignupSession.__table__.c.email == email)
 
         cursor = await self._execute(stmt, debug=True)
         return SignupSession.from_cursor(cursor)
@@ -28,7 +29,7 @@ class SignupSessionRepo(BasePgRepo):
                 "updated_at": sa_now(),
                 "attempts_left": SignupSession.ATTEMPTS,
             },
-        ).returning(*SignupSession.c)
+        ).returning(*SignupSession.__table__.c)
 
         cursor = await self._execute(do_update_stmt)
         return SignupSession.from_cursor(cursor)
@@ -36,12 +37,12 @@ class SignupSessionRepo(BasePgRepo):
     async def update_code(self, email: str, code: str) -> SignupSession:
         stmt = (
             update(SignupSession)
-            .where(SignupSession.c.email == email)
+            .where(SignupSession.__table__.c.email == email)
             .values(
                 code=code,
                 updated_at=sa_now(),
             )
-            .returning(*SignupSession.c)
+            .returning(*SignupSession.__table__.c)
         )
 
         cursor = await self._execute(stmt)
@@ -51,8 +52,8 @@ class SignupSessionRepo(BasePgRepo):
         stmt = (
             update(SignupSession)
             .values(**kwargs)
-            .where(SignupSession.c.email == email)
-            .returning(*SignupSession.c)
+            .where(SignupSession.__table__.c.email == email)
+            .returning(*SignupSession.__table__.c)
         )
 
         cursor = await self._execute(stmt)

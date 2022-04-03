@@ -2,9 +2,11 @@ from functools import lru_cache
 
 from base.repo import BaseRMQRepo
 
+from .interface import IRMQInteractRepo
+
 
 @lru_cache
-class RMQInteractRepo(BaseRMQRepo):
+class RMQInteractRepo(IRMQInteractRepo, BaseRMQRepo):
     async def send_code(self, email: str, code: str):
         await self._rmq.send(
             message={
