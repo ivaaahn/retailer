@@ -8,15 +8,11 @@ from scripts.faker.rw import write
 
 ABC = "АБВ"
 COUNT = 100
-FILENAME_CUSTOMERS = "data/customer_addresses.csv"
+FILENAME_SHOPS = "data/shops.csv"
 
 
 def get_random_floor() -> int:
-    return random.randint(1, 32)
-
-
-def get_random_entrance() -> int:
-    return random.randint(1, 10)
+    return random.randint(1, 6)
 
 
 def get_random_house() -> str:
@@ -43,51 +39,41 @@ def _init_faker(seed: int) -> Faker:
 
 
 @dataclass
-class CustomerAddress:
-    customer_id: int
+class Shop:
     city: str
     street: str
     house: str
-    entrance: int
     floor: Optional[int] = None
-    flat: Optional[str] = None
 
 
-def _generate_customer_addresses(count: int) -> list[CustomerAddress]:
-    f = _init_faker(4321)
+def _generate_shops(count: int) -> list[Shop]:
+    f = _init_faker(1234)
 
-    result: list[CustomerAddress] = []
+    result: list[Shop] = []
     for iteration in range(count):
-        entrance = get_random_entrance()
-
-        floor, flat = None, None
-        if iteration % 10:
+        floor = None
+        if iteration % 20 == 0:
             floor = get_random_floor()
-            from_ = entrance * floor * 5
-            to_ = (entrance + 1) * floor * 10
-            flat = str(random.randint(from_, to_))
+
         result.append(
-            CustomerAddress(
-                customer_id=iteration + 1,
+            Shop(
                 city=f.city(),
                 street=f.street_name(),
                 house=get_random_house(),
-                entrance=entrance,
                 floor=floor,
-                flat=flat,
             )
         )
 
     return result
 
 
-def generate(count: int, to_file: bool = False) -> list[CustomerAddress]:
-    customer_addresses = _generate_customer_addresses(count)
+def generate(count: int, to_file: bool = False) -> list[Shop]:
+    shops = _generate_shops(count)
 
     if to_file:
-        write(customer_addresses, FILENAME_CUSTOMERS)
+        write(shops, FILENAME_SHOPS)
 
-    return customer_addresses
+    return shops
 
 
 def main():

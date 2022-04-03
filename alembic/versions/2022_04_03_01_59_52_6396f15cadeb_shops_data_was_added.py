@@ -1,28 +1,27 @@
 """shops addresses data was added
 
 Revision ID: 6396f15cadeb
-Revises: 59ca10a9bd19
+Revises: 49f94d3d830d
 Create Date: 2022-04-03 01:59:52.646140
 
 """
 import logging
+from dataclasses import asdict
 
 from alembic import op
 from sqlalchemy import column, table, Integer, Text
 
-from scripts.faker.rw import read
+from scripts.faker.shops import Shop, generate as generate_shop
 
 revision = "6396f15cadeb"
-down_revision = "59ca10a9bd19"
+down_revision = "49f94d3d830d"
 branch_labels = None
 depends_on = None
-
-SHOPS_ADDRESSES_CSV = "scripts/faker/data/shop_addresses.csv"
 
 
 def upgrade():
     addresses_table = table(
-        "shop_addresses",
+        "shops",
         column("id", Integer),
         column("city", Text),
         column("street", Text),
@@ -31,22 +30,15 @@ def upgrade():
         column("floor", Integer),
     )
 
+    shops: list[Shop] = generate_shop(count=100)
+
     try:
         op.bulk_insert(
             addresses_table,
-            [
-                {
-                    "city": item["city"],
-                    "street": item["street"],
-                    "house": item["house"],
-                    "building": item["building"],
-                    "floor": int(item["floor"]) if item["floor"] else None,
-                }
-                for item in read(SHOPS_ADDRESSES_CSV)
-            ],
+            [asdict(address) for address in shops],
         )
     except Exception as err:
-        logging.warning(f"Error with shop addresses data insertion: {err}")
+        logging.warning(f"Error with shops' data insertion: {err}")
         raise
 
 

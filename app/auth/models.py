@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime, timezone
+from datetime import timedelta, datetime
 
 from sqlalchemy import (
     Column,
@@ -9,7 +9,6 @@ from sqlalchemy import (
     Boolean,
     String,
     CheckConstraint,
-    Index,
     ForeignKey,
 )
 from sqlalchemy.sql import expression
