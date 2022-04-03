@@ -1,1 +1,1 @@
-from .store import Store
+from .store import get_store, AppStore

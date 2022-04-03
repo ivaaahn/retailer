@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Optional
 
 from sqlalchemy import update
@@ -7,59 +8,54 @@ from sqlalchemy.future import select
 from sqlalchemy.sql.functions import now as sa_now
 
 from app.api.auth.errors import SessionNotFoundError, SignupSessionExpiredError
-from base.repo import BasePgRepo
-from ..models import SignupSession
+from app.base.repo import BasePgRepo
+from app.models import SignupSession
 
 
+@lru_cache
 class SignupSessionRepo(BasePgRepo):
-    @property
-    def signup_session_t(self):
-        return SignupSession.__table__
-
     async def get(self, email: str) -> Optional[SignupSession]:
-        stmt = select(self.signup_session_t).where(
-            self.signup_session_t.c.email == email
-        )
+        stmt = select(SignupSession).where(SignupSession.c.email == email)
 
-        cursor = await self.execute(stmt, debug=True)
+        cursor = await self._execute(stmt, debug=True)
         return SignupSession.from_cursor(cursor)
 
     async def upsert(self, email: str, code: str, **kwargs) -> SignupSession:
-        stmt = insert(self.signup_session_t).values(email=email, code=code, **kwargs)
+        stmt = insert(SignupSession).values(email=email, code=code, **kwargs)
         do_update_stmt = stmt.on_conflict_do_update(
             index_elements=["email"],
             set_={
                 "updated_at": sa_now(),
                 "attempts_left": SignupSession.ATTEMPTS,
             },
-        ).returning(*self.signup_session_t.c)
+        ).returning(*SignupSession.c)
 
-        cursor = await self.execute(do_update_stmt)
+        cursor = await self._execute(do_update_stmt)
         return SignupSession.from_cursor(cursor)
 
     async def update_code(self, email: str, code: str) -> SignupSession:
         stmt = (
-            update(self.signup_session_t)
-            .where(self.signup_session_t.c.email == email)
+            update(SignupSession)
+            .where(SignupSession.c.email == email)
             .values(
                 code=code,
                 updated_at=sa_now(),
             )
-            .returning(*self.signup_session_t.c)
+            .returning(*SignupSession.c)
         )
 
-        cursor = await self.execute(stmt)
+        cursor = await self._execute(stmt)
         return SignupSession.from_cursor(cursor)
 
     async def update(self, email: str, **kwargs) -> Optional[SignupSession]:
         stmt = (
-            update(self.signup_session_t)
+            update(SignupSession)
             .values(**kwargs)
-            .where(self.signup_session_t.c.email == email)
-            .returning(*self.signup_session_t.c)
+            .where(SignupSession.c.email == email)
+            .returning(*SignupSession.c)
         )
 
-        cursor = await self.execute(stmt)
+        cursor = await self._execute(stmt)
         return SignupSession.from_cursor(cursor)
 
     async def waste_attempt(self, email: str) -> SignupSession:

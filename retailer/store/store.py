@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Iterable, TYPE_CHECKING
 
 from app.core.settings import Settings, get_settings
@@ -27,4 +28,9 @@ class AppStore:
             await accessor.disconnect()
 
 
-Store = AppStore(get_settings())
+_store = AppStore(get_settings())
+
+
+@lru_cache
+def get_store():
+    return _store

@@ -1,7 +1,9 @@
 import random
 import string
 from datetime import timedelta, datetime
+from functools import lru_cache
 
+from fastapi import Depends
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
@@ -19,13 +21,32 @@ from app.api.auth.errors import (
     IncorrectCodeError,
 )
 from app.models import WebUsers, SignupSession
-from app.repos import UsersRepo, SignupSessionRepo, RMQInteractRepo
 from app.api.auth.schemas import TokenDataSchema, UserSchema
+
+from app.repos import (
+    IRMQInteractRepo,
+    ISignupSessionRepo,
+    IUsersRepo,
+    RMQInteractRepo,
+    SignupSessionRepo,
+    UsersRepo,
+)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+@lru_cache
 class AuthService(BaseService):
+    def __init__(
+        self,
+        users_repo: IUsersRepo = Depends(UsersRepo),
+        signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
+        rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
+    ):
+        self._users_repo = users_repo
+        self._signup_session_repo = signup_session_repo
+        self._rmq_interact_repo = rmq_interact_repo
+
     @property
     def cfg(self) -> AuthSettings:
         return get_settings().auth
@@ -33,11 +54,11 @@ class AuthService(BaseService):
     async def signup_user(self, email: str, pwd: str) -> str:
         hashed_pwd = self._get_password_hash(pwd)
 
-        active_user = await UsersRepo().get(email, only_active=True)
+        active_user = await self._users_repo.get(email, only_active=True)
         if active_user:
             raise UserAlreadyExistsError(email)
 
-        web_user = await UsersRepo().upsert(email=email, password=hashed_pwd)
+        web_user = await self._users_repo.upsert(email=email, password=hashed_pwd)
         await self._send_code(web_user.email)
 
         return web_user.email
@@ -66,37 +87,40 @@ class AuthService(BaseService):
         except JWTError:
             raise IncorrectCredsError
 
-        user = await UsersRepo().get(token_data.email, only_active=False)
+        user = await self._users_repo.get(token_data.email, only_active=False)
         if not user:
             raise IncorrectCredsError
 
         return UserSchema.parse_obj(user.as_dict())
 
-    @staticmethod
-    async def verify_code(email: str, code: str) -> str:
-        session = await SignupSessionRepo().waste_attempt(email)
+    async def verify_code(self, email: str, code: str) -> str:
+        session = await self._signup_session_repo.waste_attempt(email)
 
         if session.code != code:
             raise IncorrectCodeError(session.attempts_left)
 
-        email = await UsersRepo().activate_account(email)
-        return email
+        web_user = await self._users_repo.update(email=email, is_active=True)
+        return web_user.email
+
+    async def resend_code(self, email: str) -> str:
+        signup_session = await self._resend_code(email)
+        return signup_session.email
 
     async def _check_session_and_send_code(self, email: str) -> str:
-        await self.check_session_expiration(email)
+        await self._check_session_expiration(email)
         code = self._generate_code()
-        await RMQInteractRepo().send_code(email, code)
+        await self._rmq_interact_repo.send_code(email, code)
         return code
 
     async def _send_code(self, email: str) -> SignupSession:
         code = await self._check_session_and_send_code(email)
-        return await SignupSessionRepo().upsert(email, code)
+        return await self._signup_session_repo.upsert(email, code)
 
     async def _resend_code(self, email: str) -> SignupSession:
         code = await self._check_session_and_send_code(email)
 
         try:
-            signup_session = await SignupSessionRepo().update_code(email, code)
+            signup_session = await self._signup_session_repo.update_code(email, code)
         except IntegrityError as err:
             if check_err(err, DBErrEnum.foreign_key_violation):
                 raise UserNotFoundError(email)
@@ -104,9 +128,8 @@ class AuthService(BaseService):
 
         return signup_session
 
-    @staticmethod
-    async def check_session_expiration(email: str) -> SignupSession:
-        session = await SignupSessionRepo().get(email)
+    async def _check_session_expiration(self, email: str) -> SignupSession:
+        session = await self._signup_session_repo.get(email)
         if session and not session.send_code_timeout_expired:
             raise SignupSessionCreateTimeoutNotExpired(session.seconds_left)
 
@@ -125,7 +148,7 @@ class AuthService(BaseService):
         return pwd_context.verify(plain_password, hashed_password)
 
     async def _authenticate_user(self, email: str, pswd: str) -> WebUsers:
-        user = await UsersRepo().get(email, only_active=False)
+        user = await self._users_repo.get(email, only_active=False)
 
         print(user.password)
         print(pwd_context.hash(pswd))
@@ -147,7 +170,3 @@ class AuthService(BaseService):
         to_encode.update({"exp": expire})
 
         return jwt.encode(to_encode, self.cfg.secret, algorithm=self.cfg.alg)
-
-    async def resend_code(self, email: str) -> str:
-        signup_session = await self._resend_code(email)
-        return signup_session.email

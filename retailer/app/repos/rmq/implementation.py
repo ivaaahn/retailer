@@ -1,6 +1,9 @@
+from functools import lru_cache
+
 from base.repo import BaseRMQRepo
 
 
+@lru_cache
 class RMQInteractRepo(BaseRMQRepo):
     async def send_code(self, email: str, code: str):
         await self._rmq.send(

@@ -1,9 +1,10 @@
 from typing import Optional
 
+from fastapi import Depends
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection, AsyncEngine
 
-from app.core.settings import PgSettings
+from app.core.settings import PgSettings, get_settings
 from store.base.accessor import BaseAccessor
 from store.pg import sa
 
@@ -13,7 +14,7 @@ class PgAccessor(BaseAccessor[PgSettings]):
     class Meta:
         name = "Postgres"
 
-    def __init__(self, settings: PgSettings):
+    def __init__(self, settings: PgSettings = Depends(get_settings)):
         super().__init__(settings)
 
         self._engine: Optional[AsyncEngine] = None

@@ -1,13 +1,9 @@
-from typing import TYPE_CHECKING
-
+from fastapi import Depends
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from store.rmq import RMQAccessor
-from store.store import Store
-
-if TYPE_CHECKING:
-    from store.pg.accessor import PgAccessor
+from store import get_store, AppStore
 
 
 class BaseRepo:
@@ -15,15 +11,15 @@ class BaseRepo:
 
 
 class BaseRMQRepo(BaseRepo):
-    def __init__(self):
-        self._rmq: "RMQAccessor" = Store.rmq
+    def __init__(self, store: AppStore = Depends(get_store)):
+        self._rmq: "RMQAccessor" = store.rmq
 
 
 class BasePgRepo(BaseRepo):
-    def __init__(self):
-        self._pg: "PgAccessor" = Store.pg
+    def __init__(self, store: AppStore = Depends(get_store)):
+        self._pg = store.pg
 
-    async def execute(
+    async def _execute(
         self,
         statement,
         parameters=None,
