@@ -4,7 +4,7 @@ from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection
 
 from store.rmq import RMQAccessor
-from store.store import AppStore
+from store.store import Store
 
 if TYPE_CHECKING:
     from store.pg.accessor import PgAccessor
@@ -16,12 +16,12 @@ class BaseRepo:
 
 class BaseRMQRepo(BaseRepo):
     def __init__(self):
-        self._rmq: "RMQAccessor" = AppStore.rmq
+        self._rmq: "RMQAccessor" = Store.rmq
 
 
 class BasePgRepo(BaseRepo):
     def __init__(self):
-        self._pg: "PgAccessor" = AppStore.pg
+        self._pg: "PgAccessor" = Store.pg
 
     async def execute(
         self,
@@ -31,8 +31,9 @@ class BasePgRepo(BaseRepo):
         **kwargs,
     ) -> CursorResult:
         if debug:
-            print("stmt: ", str(statement))  # TODO logger
-
+            print(
+                f"{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
+            )  # TODO logger
         async with self._pg._engine.begin() as conn:
             conn: AsyncConnection
 
