@@ -3,13 +3,13 @@ from typing import Optional
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection, AsyncEngine
 
-from core.settings import PgSettings
-from store.base.connect import BaseConnect
+from app.core.settings import PgSettings
+from store.base.accessor import BaseAccessor
 from store.pg import sa
 
 
 # TODO выделить базовый класс
-class PgConnect(BaseConnect[PgSettings]):
+class PgAccessor(BaseAccessor[PgSettings]):
     class Meta:
         name = "Postgres"
 

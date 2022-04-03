@@ -3,11 +3,11 @@ from typing import TYPE_CHECKING
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection
 
-from store.rmq import RMQConnect
-from store.store import store
+from store.rmq import RMQAccessor
+from store.store import AppStore
 
 if TYPE_CHECKING:
-    from store.pg.connect import PgConnect
+    from store.pg.accessor import PgAccessor
 
 
 class BaseRepo:
@@ -16,12 +16,12 @@ class BaseRepo:
 
 class BaseRMQRepo(BaseRepo):
     def __init__(self):
-        self._rmq: "RMQConnect" = store.rmq
+        self._rmq: "RMQAccessor" = AppStore.rmq
 
 
 class BasePgRepo(BaseRepo):
     def __init__(self):
-        self._pg: "PgConnect" = store.pg
+        self._pg: "PgAccessor" = AppStore.pg
 
     async def execute(
         self,

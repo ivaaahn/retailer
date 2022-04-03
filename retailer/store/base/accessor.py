@@ -3,7 +3,7 @@ from typing import Generic, TypeVar
 _Settings = TypeVar("_Settings")
 
 
-class BaseConnect(Generic[_Settings]):
+class BaseAccessor(Generic[_Settings]):
     class Meta:
         name = "Base"
 

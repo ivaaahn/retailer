@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import BaseSettings, PostgresDsn, AmqpDsn
+from pydantic import BaseSettings, PostgresDsn
 
 
 class PgSettings(BaseSettings):

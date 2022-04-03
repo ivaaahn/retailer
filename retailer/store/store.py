@@ -1,12 +1,30 @@
-from core.settings import Settings, get_settings
-from store.pg.connect import PgConnect
-from store.rmq import RMQConnect
+from typing import Iterable, TYPE_CHECKING
+
+from app.core.settings import Settings, get_settings
+from .pg.accessor import PgAccessor
+from .rmq import RMQAccessor
+
+if TYPE_CHECKING:
+    from core.settings import Settings
+    from .base.accessor import BaseAccessor
 
 
-class Store:
+class AppStore:
     def __init__(self, settings: "Settings"):
-        self.pg = PgConnect(settings.pg)
-        self.rmq = RMQConnect(settings.rmq)
+        self.pg = PgAccessor(settings.pg)
+        self.rmq = RMQAccessor(settings.rmq)
+
+    def _accessors(self) -> Iterable["BaseAccessor"]:
+        yield self.pg
+        yield self.rmq
+
+    async def connect(self):
+        for accessor in self._accessors():
+            await accessor.connect()
+
+    async def disconnect(self):
+        for accessor in self._accessors():
+            await accessor.disconnect()
 
 
-store = Store(get_settings())
+Store = AppStore(get_settings())

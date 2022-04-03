@@ -3,13 +3,13 @@ from typing import Optional
 
 from aio_pika import connect, Connection, Channel, Message, Queue
 
-from core.settings import RMQSettings
-from store.base.connect import BaseConnect
+from app.core.settings import RMQSettings
+from store.base.accessor import BaseAccessor
 
-__all__ = ("RMQConnect",)
+__all__ = ("RMQAccessor",)
 
 
-class RMQConnect(BaseConnect[RMQSettings]):
+class RMQAccessor(BaseAccessor[RMQSettings]):
     class Meta:
         name = "RabbitMQ"
 
