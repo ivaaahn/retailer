@@ -43,8 +43,8 @@ def _init_faker(seed: int) -> Faker:
 
 
 @dataclass
-class CustomerAddress:
-    customer_id: int
+class Address:
+    user_id: int
     city: str
     street: str
     house: str
@@ -53,10 +53,10 @@ class CustomerAddress:
     flat: Optional[str] = None
 
 
-def _generate_customer_addresses(count: int) -> list[CustomerAddress]:
+def _generate_customer_addresses(count: int) -> list[Address]:
     f = _init_faker(4321)
 
-    result: list[CustomerAddress] = []
+    result: list[Address] = []
     for iteration in range(count):
         entrance = get_random_entrance()
 
@@ -67,8 +67,8 @@ def _generate_customer_addresses(count: int) -> list[CustomerAddress]:
             to_ = (entrance + 1) * floor * 10
             flat = str(random.randint(from_, to_))
         result.append(
-            CustomerAddress(
-                customer_id=iteration + 1,
+            Address(
+                user_id=iteration + 1,
                 city=f.city(),
                 street=f.street_name(),
                 house=get_random_house(),
@@ -81,7 +81,7 @@ def _generate_customer_addresses(count: int) -> list[CustomerAddress]:
     return result
 
 
-def generate(count: int, to_file: bool = False) -> list[CustomerAddress]:
+def generate(count: int, to_file: bool = False) -> list[Address]:
     customer_addresses = _generate_customer_addresses(count)
 
     if to_file:

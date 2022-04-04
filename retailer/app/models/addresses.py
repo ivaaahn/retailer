@@ -8,11 +8,11 @@ from sqlalchemy import (
 from app.base.models import BaseModel
 
 
-class CustomerAddresses(BaseModel):
-    __tablename__ = "customer_addresses"
+class Addresses(BaseModel):
+    __tablename__ = "addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     city = Column(Text, nullable=False, index=True)
     street = Column(Text, nullable=False, index=True)
     house = Column(Text, nullable=False)

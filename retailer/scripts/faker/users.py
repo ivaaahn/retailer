@@ -1,4 +1,6 @@
+import datetime
 from dataclasses import dataclass
+from typing import Optional
 
 from faker import Faker
 from passlib.context import CryptContext
@@ -24,6 +26,8 @@ f = init_faker(1234)
 class User:
     email: str
     password: str
+    name: Optional[str] = None
+    birthday: Optional[datetime.date] = None
     is_active: bool = True
 
 
@@ -41,6 +45,8 @@ def _generate_users(count: int) -> list[User]:
             User(
                 email=email,
                 password=password_hashed,
+                name=f.name(),
+                birthday=f.date_of_birth(),
             )
         )
 

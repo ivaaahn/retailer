@@ -9,7 +9,7 @@ import logging
 from dataclasses import asdict
 
 from alembic import op
-from sqlalchemy import column, table, Integer, Text, DateTime, Boolean
+from sqlalchemy import column, table, Integer, Text, DateTime, Boolean, Date
 from scripts.faker.users import User, generate
 
 
@@ -19,17 +19,17 @@ down_revision = "b6a744784764"
 branch_labels = None
 depends_on = None
 
-USERS_CSV = "scripts/faker/data/users.csv"
-
 
 def upgrade():
     users_table = table(
-        "web_users",
+        "users",
         column("id", Integer),
         column("email", Text),
         column("password", Text),
         column("created_at", DateTime),
         column("is_active", Boolean),
+        column("name", Text),
+        column("birthday", Date),
     )
 
     users: list[User] = generate(count=100)
@@ -40,7 +40,7 @@ def upgrade():
             [asdict(user) for user in users],
         )
     except Exception as err:
-        logging.warning(f"Error with web-users' data insertion: {err}")
+        logging.warning(f"Error with users' data insertion: {err}")
         raise
 
 
