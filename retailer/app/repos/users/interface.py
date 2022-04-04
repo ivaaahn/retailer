@@ -1,18 +1,18 @@
 import abc
 from typing import Optional
 
-from app.models import WebUsers
+from app.models import Users
 
 
 class IUsersRepo(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    async def update(self, email: str, **kwargs) -> Optional[WebUsers]:
+    async def update(self, email: str, **kwargs) -> Optional[Users]:
         pass
 
     @abc.abstractmethod
-    async def upsert(self, email: str, password: str, **kwargs) -> WebUsers:
+    async def upsert(self, email: str, password: str, **kwargs) -> Users:
         pass
 
     @abc.abstractmethod
-    async def get(self, email: str, only_active: bool = True) -> Optional[WebUsers]:
+    async def get(self, email: str, only_active: bool = True) -> Optional[Users]:
         pass

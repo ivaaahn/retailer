@@ -1,7 +1,7 @@
-"""customer addresses data was added
+"""addresses data was added
 
 Revision ID: 59ca10a9bd19
-Revises: ed5f34fdabb8
+Revises: 39f94d3d830d
 Create Date: 2022-04-03 01:38:46.429157
 
 """
@@ -11,19 +11,19 @@ from dataclasses import asdict
 from alembic import op
 from sqlalchemy import column, table, Integer, Text
 
-from scripts.faker.addresses import CustomerAddress, generate as generate_addresses
+from scripts.faker.addresses import Address, generate as generate_addresses
 
 revision = "59ca10a9bd19"
-down_revision = "ed5f34fdabb8"
+down_revision = "39f94d3d830d"
 branch_labels = None
 depends_on = None
 
 
 def upgrade():
     addresses_table = table(
-        "customer_addresses",
+        "addresses",
         column("id", Integer),
-        column("customer_id", Integer),
+        column("user_id", Integer),
         column("city", Text),
         column("street", Text),
         column("house", Text),
@@ -32,7 +32,7 @@ def upgrade():
         column("flat", Text),
     )
 
-    addresses: list[CustomerAddress] = generate_addresses(count=100)
+    addresses: list[Address] = generate_addresses(count=100)
 
     try:
         op.bulk_insert(
@@ -40,7 +40,7 @@ def upgrade():
             [asdict(address) for address in addresses],
         )
     except Exception as err:
-        logging.warning(f"Error with customer's addresses data insertion: {err}")
+        logging.warning(f"Error with addresses' data insertion: {err}")
         raise
 
 

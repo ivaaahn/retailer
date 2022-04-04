@@ -2,27 +2,27 @@ from fastapi import Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 
 from .deps import get_current_active_user
-from .schemas import (
+from app.dto.signup import (
     SignupSchema,
     SignupRespSchema,
     TokenSchema,
-    UserSchema,
     VerifyCodeRequestSchema,
     VerifyCodeRespSchema,
     ResendCodeRespSchema,
     ResendCodeSchema,
 )
+from app.dto.user import UserSchema
 from app.services import AuthService
 
 router = APIRouter(
-    prefix="/auth.",
+    prefix="/auth",
     tags=["auth", "user"],
     # dependencies=[Depends(get_token_header)],
     # responses={404: {"description": "Not found"}},
 )
 
 
-@router.post("signup", response_model=SignupRespSchema)
+@router.post("/signup", response_model=SignupRespSchema)
 async def signup_user(body: SignupSchema, auth_service: AuthService = Depends()):
     email = await auth_service.signup_user(
         email=body.email,
@@ -32,7 +32,7 @@ async def signup_user(body: SignupSchema, auth_service: AuthService = Depends())
     return {"email": email}
 
 
-@router.post("login", response_model=TokenSchema)
+@router.post("/login", response_model=TokenSchema)
 async def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(),
@@ -45,12 +45,12 @@ async def login_user(
     return {"access_token": access_token, "token_type": token_type}
 
 
-@router.get("me", response_model=UserSchema)
+@router.get("/me", response_model=UserSchema)
 async def current_user(curr_user: UserSchema = Depends(get_current_active_user)):
     return curr_user
 
 
-@router.post("verify_code", status_code=200, response_model=VerifyCodeRespSchema)
+@router.post("/verify_code", status_code=200, response_model=VerifyCodeRespSchema)
 async def verify_code(
     body: VerifyCodeRequestSchema,
     auth_service: AuthService = Depends(),
@@ -63,7 +63,7 @@ async def verify_code(
     return {"email": email}
 
 
-@router.post("resend_code", status_code=200, response_model=ResendCodeRespSchema)
+@router.post("/resend_code", status_code=200, response_model=ResendCodeRespSchema)
 async def resend_code(
     body: ResendCodeSchema,
     auth_service: AuthService = Depends(),

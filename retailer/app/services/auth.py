@@ -20,9 +20,9 @@ from app.api.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.models import WebUsers, SignupSession
-from app.api.auth.schemas import TokenDataSchema, UserSchema
-
+from app.dto.signup import TokenDataSchema
+from app.dto.user import UserSchema
+from app.models import Users, SignupSession
 from app.repos import (
     IRMQInteractRepo,
     ISignupSessionRepo,
@@ -99,8 +99,11 @@ class AuthService(BaseService):
         if session.code != code:
             raise IncorrectCodeError(session.attempts_left)
 
-        web_user = await self._users_repo.update(email=email, is_active=True)
-        return web_user.email
+        user = await self._activate_user(email)
+        return user.email
+
+    async def _activate_user(self, email: str) -> Users:
+        return await self._users_repo.update(email=email, is_active=True)
 
     async def resend_code(self, email: str) -> str:
         signup_session = await self._resend_code(email)
@@ -147,11 +150,8 @@ class AuthService(BaseService):
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
 
-    async def _authenticate_user(self, email: str, pswd: str) -> WebUsers:
+    async def _authenticate_user(self, email: str, pswd: str) -> Users:
         user = await self._users_repo.get(email, only_active=False)
-
-        print(user.password)
-        print(pwd_context.hash(pswd))
 
         if not user or not self._verify_password(
             plain_password=pswd,
