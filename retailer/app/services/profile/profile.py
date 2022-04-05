@@ -14,6 +14,7 @@ class ProfileService(BaseService):
         self,
         users_repo: IUsersRepo = Depends(UsersRepo),
     ):
+        super().__init__()
         self._users_repo = users_repo
 
     async def patch(self, email: str, new_data: ProfileUpdateSchema) -> UserSchema:

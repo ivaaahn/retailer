@@ -1,23 +1,41 @@
+import logging
+
 from fastapi import Depends
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection
 
-from store.rmq import RMQAccessor
-from store import get_store, AppStore
+from logger.logger import get_logger
+from store.pg import pg_accessor, PgAccessor
+from store.rmq import RMQAccessor, rmq_accessor
 
 
 class BaseRepo:
-    pass
+    class Meta:
+        name = None
+
+    def __init__(self):
+        self._name = self.Meta.name or self.__class__.__name__
+        self._logger = get_logger(self._name)
+
+    @property
+    def logger(self) -> logging.Logger:
+        return self._logger
+
+    @property
+    def name(self) -> str:
+        return self._name
 
 
 class BaseRMQRepo(BaseRepo):
-    def __init__(self, store: AppStore = Depends(get_store)):
-        self._rmq: "RMQAccessor" = store.rmq
+    def __init__(self, rmq: RMQAccessor = Depends(rmq_accessor)):
+        super().__init__()
+        self._rmq: "RMQAccessor" = rmq
 
 
 class BasePgRepo(BaseRepo):
-    def __init__(self, store: AppStore = Depends(get_store)):
-        self._pg = store.pg
+    def __init__(self, pg: PgAccessor = Depends(pg_accessor)):
+        super().__init__()
+        self._pg = pg
 
     async def _execute(
         self,

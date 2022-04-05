@@ -10,7 +10,6 @@ from sqlalchemy.exc import IntegrityError
 
 from base.errors import check_err, DBErrEnum
 from base.services import BaseService
-from core.settings import get_settings, AuthSettings
 from app.api.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
@@ -31,25 +30,29 @@ from app.repos import (
     SignupSessionRepo,
     UsersRepo,
 )
+from .settings import AuthSettings, get_settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-@lru_cache
+# TODO fix lru cache unhashble
 class AuthService(BaseService):
     def __init__(
         self,
+        settings: AuthSettings = Depends(get_settings),
         users_repo: IUsersRepo = Depends(UsersRepo),
         signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
         rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
+        super().__init__()
+        self._settings = settings
         self._users_repo = users_repo
         self._signup_session_repo = signup_session_repo
         self._rmq_interact_repo = rmq_interact_repo
 
     @property
     def cfg(self) -> AuthSettings:
-        return get_settings().auth
+        return self._settings
 
     async def signup_user(self, email: str, pwd: str) -> str:
         hashed_pwd = self._get_password_hash(pwd)

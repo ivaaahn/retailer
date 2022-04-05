@@ -3,10 +3,10 @@ from typing import Optional
 
 from aio_pika import connect, Connection, Channel, Message, Queue
 
-from app.core.settings import RMQSettings
-from store.base.accessor import BaseAccessor
+from ..base.accessor import BaseAccessor
+from .settings import get_settings, RMQSettings
 
-__all__ = ("RMQAccessor",)
+__all__ = ("RMQAccessor", "rmq_accessor")
 
 
 class RMQAccessor(BaseAccessor[RMQSettings]):
@@ -14,7 +14,7 @@ class RMQAccessor(BaseAccessor[RMQSettings]):
         name = "RabbitMQ"
 
     def __init__(self, settings: RMQSettings):
-        super().__init__(settings=settings)
+        super().__init__(settings)
         self._connection: Optional[Connection] = None
         self._channel: Optional[Channel] = None
         self._queue: Optional[Queue] = None
@@ -40,3 +40,6 @@ class RMQAccessor(BaseAccessor[RMQSettings]):
             message=Message(json.dumps(message).encode()),
             routing_key=self._queue.name,
         )
+
+
+rmq_accessor = RMQAccessor(get_settings())

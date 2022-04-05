@@ -10,16 +10,15 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 
-from app.core.settings import Settings
 from store.pg.sa import metadata
-
+from store.pg.settings import get_settings
 ###############DO NOT DELETE########################
 from app.models import *
 
 ####################################################
 
 # Parsing cfg .env with pg settings
-pg_settings = Settings().pg
+pg_settings = get_settings()
 
 
 alembic_config = context.config
