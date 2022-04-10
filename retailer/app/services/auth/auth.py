@@ -35,17 +35,16 @@ from .settings import AuthSettings, get_settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-# TODO fix lru cache unhashble
+@lru_cache
 class AuthService(BaseService):
     def __init__(
         self,
-        settings: AuthSettings = Depends(get_settings),
         users_repo: IUsersRepo = Depends(UsersRepo),
         signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
         rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
-        self._settings = settings
+        self._settings = get_settings()
         self._users_repo = users_repo
         self._signup_session_repo = signup_session_repo
         self._rmq_interact_repo = rmq_interact_repo
@@ -114,8 +113,11 @@ class AuthService(BaseService):
 
     async def _check_session_and_send_code(self, email: str) -> str:
         await self._check_session_expiration(email)
+
         code = self._generate_code()
+        self.logger.debug(f"Generated code: {code}")
         await self._rmq_interact_repo.send_code(email, code)
+
         return code
 
     async def _send_code(self, email: str) -> SignupSession:

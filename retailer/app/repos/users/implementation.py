@@ -20,7 +20,7 @@ class UsersRepo(IUsersRepo, BasePgRepo):
             .returning(*Users.__table__.c)
         )
 
-        cursor = await self._execute(stmt, debug=True)
+        cursor = await self._execute(stmt)
 
         return Users.from_cursor(cursor)
 
@@ -50,5 +50,5 @@ class UsersRepo(IUsersRepo, BasePgRepo):
         else:
             stmt = select_stmt.where(Users.__table__.c.email == email)
 
-        cursor = await self._execute(stmt, debug=True)
+        cursor = await self._execute(stmt)
         return Users.from_cursor(cursor)

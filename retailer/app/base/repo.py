@@ -41,13 +41,12 @@ class BasePgRepo(BaseRepo):
         self,
         statement,
         parameters=None,
-        debug: bool = False,
         **kwargs,
     ) -> CursorResult:
-        if debug:
-            print(
-                f"{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
-            )  # TODO logger
+        self.logger.info(
+            f"\n{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
+        )
+
         async with self._pg._engine.begin() as conn:
             conn: AsyncConnection
 

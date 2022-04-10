@@ -1,8 +1,7 @@
 import logging
 
-from fastapi import Depends
-
 from .settings import LoggerSettings, get_settings
+from .formatter import CustomFormatter
 
 
 class LoggerFactory:
@@ -40,7 +39,8 @@ class LoggerFactory:
     def _add_stderr_handler(self, logger: logging.Logger):
         stream_handler = logging.StreamHandler()
         stream_handler.setLevel(self.conf.stderr_logger_level)
-        stream_handler.setFormatter(logging.Formatter(self.conf.log_format))
+        # stream_handler.setFormatter(logging.Formatter())
+        stream_handler.setFormatter(CustomFormatter(self.conf.log_format))
 
         logger.addHandler(stream_handler)
 

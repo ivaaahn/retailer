@@ -18,5 +18,5 @@ class LoggerSettings(BaseSettings):
 _settings = LoggerSettings()
 
 
-def get_settings():
+def get_settings() -> LoggerSettings:
     return _settings
