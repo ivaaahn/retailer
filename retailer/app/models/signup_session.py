@@ -23,7 +23,7 @@ class SignupSession(BaseModel):
         CheckConstraint("attempts_left >= 0", name="attempts_left_check"),
     )
 
-    email = Column(Text, ForeignKey("web_users.email"), primary_key=True)
+    email = Column(Text, ForeignKey("users.email"), primary_key=True)
     code = Column(String(8), nullable=False)
     updated_at = Column(DateTime(timezone=True), nullable=False, server_default=now())
     attempts_left = Column(Integer, server_default=str(ATTEMPTS), nullable=False)
