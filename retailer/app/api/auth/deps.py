@@ -5,7 +5,7 @@ from app.dto.user import UserSchema
 from app.services import AuthService
 from .errors import InactiveAccountError
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth.login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
 
 
 async def get_current_user(

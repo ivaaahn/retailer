@@ -2,10 +2,10 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from base.services import BaseService
-from dto.profile import ProfileUpdateSchema
-from dto.user import UserSchema
-from repos import IUsersRepo, UsersRepo
+from app.base.services import BaseService
+from app.dto.profile import ProfileUpdateSchema
+from app.dto.user import UserSchema
+from app.repos import IUsersRepo, UsersRepo
 
 
 @lru_cache

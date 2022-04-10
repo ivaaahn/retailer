@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+  rabbit:
+    build:
+      context: ./docker/rabbitmq/
+      dockerfile: Dockerfile
+    container_name: retailer-rmq
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - rabbit_data_volume:/var/lib/rabbit/
+      - rabbit_logs_volume:/var/log/rabbit/
+    restart: unless-stopped
+
+  pg:
+    image: postgres:alpine
+    container_name: retailer-pg
+    ports:
+      - "8765:5432"
+    environment:
+      POSTGRES_DB: $PG_DB
+      POSTGRES_USER: $PG_USER
+      POSTGRES_PASSWORD: $PG_PSWD
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - pg_data_volume:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    container_name: api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pg
+      - rabbit
+    restart: unless-stopped
+
+  pymailer:
+    build:
+      context: ../pymailer
+      dockerfile: Dockerfile
+    container_name: pymailer
+    depends_on:
+      - rabbit
+    restart: unless-stopped
+#
+#  worker:
+#    image: ivaaahn/bjbot-worker:1.1
+#    container_name: worker
+#    depends_on:
+#      - redis
+#      - mongo
+#      - rabbit
+#    restart: unless-stopped
+#
+#
+volumes:
+#  redis_data_volume:
+  pg_data_volume:
+  rabbit_data_volume:
+  rabbit_logs_volume:
