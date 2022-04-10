@@ -1,7 +1,6 @@
 from functools import lru_cache
 
-from base.repo import BaseRMQRepo
-
+from app.base.repo import BaseRMQRepo
 from .interface import IRMQInteractRepo
 
 

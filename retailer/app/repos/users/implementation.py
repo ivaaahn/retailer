@@ -5,8 +5,8 @@ from sqlalchemy import update, and_
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
 
+from app.base.repo import BasePgRepo
 from app.models import Users
-from base.repo import BasePgRepo
 from .interface import IUsersRepo
 
 
