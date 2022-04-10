@@ -12,6 +12,7 @@ from alembic import context
 
 from store.pg.sa import metadata
 from store.pg.settings import get_settings
+
 ###############DO NOT DELETE########################
 from app.models import *
 
