@@ -17,8 +17,6 @@ from app.services import AuthService
 router = APIRouter(
     prefix="/auth",
     tags=["auth", "user"],
-    # dependencies=[Depends(get_token_header)],
-    # responses={404: {"description": "Not found"}},
 )
 
 

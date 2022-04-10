@@ -18,7 +18,7 @@ class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
     async def get(self, email: str) -> Optional[SignupSession]:
         stmt = select(SignupSession).where(SignupSession.__table__.c.email == email)
 
-        cursor = await self._execute(stmt, debug=True)
+        cursor = await self._execute(stmt)
         return SignupSession.from_cursor(cursor)
 
     async def upsert(self, email: str, code: str, **kwargs) -> SignupSession:

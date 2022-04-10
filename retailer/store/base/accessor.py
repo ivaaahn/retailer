@@ -1,5 +1,7 @@
 from typing import Generic, TypeVar
 
+from logger import get_logger
+
 _Settings = TypeVar("_Settings")
 
 
@@ -10,6 +12,8 @@ class BaseAccessor(Generic[_Settings]):
     def __init__(self, settings: _Settings):
         self._config = settings
         self._name = self.Meta.name or self.__class__.__name__
+        self._connected: bool = False
+        self._logger = get_logger(self._name)
 
     @property
     def conf(self) -> _Settings:
@@ -22,9 +26,18 @@ class BaseAccessor(Generic[_Settings]):
         pass
 
     async def connect(self):
-        await self._connect()
-        print(f"Connected to '{self._name}'")
+        if not self._connected:
+            await self._connect()
+            self._connected = True
+
+            self._logger.info(f"Connected to '{self._name}'")
 
     async def disconnect(self):
-        await self._disconnect()
-        print(f"Disconnected from '{self._name}'")
+        if self._connected:
+            await self._disconnect()
+            self._connected = False
+            self._logger.info(f"Disconnected from '{self._name}'")
+
+    async def __call__(self):
+        await self.connect()
+        return self

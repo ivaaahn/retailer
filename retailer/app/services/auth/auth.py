@@ -10,7 +10,6 @@ from sqlalchemy.exc import IntegrityError
 
 from base.errors import check_err, DBErrEnum
 from base.services import BaseService
-from core.settings import get_settings, AuthSettings
 from app.api.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
@@ -31,6 +30,7 @@ from app.repos import (
     SignupSessionRepo,
     UsersRepo,
 )
+from .settings import AuthSettings, get_settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -43,13 +43,15 @@ class AuthService(BaseService):
         signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
         rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
+        super().__init__()
+        self._settings = get_settings()
         self._users_repo = users_repo
         self._signup_session_repo = signup_session_repo
         self._rmq_interact_repo = rmq_interact_repo
 
     @property
     def cfg(self) -> AuthSettings:
-        return get_settings().auth
+        return self._settings
 
     async def signup_user(self, email: str, pwd: str) -> str:
         hashed_pwd = self._get_password_hash(pwd)
@@ -111,8 +113,11 @@ class AuthService(BaseService):
 
     async def _check_session_and_send_code(self, email: str) -> str:
         await self._check_session_expiration(email)
+
         code = self._generate_code()
+        self.logger.debug(f"Generated code: {code}")
         await self._rmq_interact_repo.send_code(email, code)
+
         return code
 
     async def _send_code(self, email: str) -> SignupSession:
