@@ -7,6 +7,8 @@ from app.dto.profile import ProfileUpdateSchema
 from app.dto.user import UserSchema
 from app.repos import IUsersRepo, UsersRepo
 
+__all__ = ("ProfileService",)
+
 
 @lru_cache
 class ProfileService(BaseService):

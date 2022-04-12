@@ -8,8 +8,6 @@ from app.services.profile import ProfileService
 router = APIRouter(
     prefix="/profile",
     tags=["profile"],
-    # dependencies=[Depends(get_token_header)],
-    # responses={404: {"description": "Not found"}},
 )
 
 
@@ -19,7 +17,6 @@ async def patch(
     current_user: UserSchema = Depends(get_current_active_user),
     profile_service: ProfileService = Depends(),
 ):
-    print(body)
     return await profile_service.patch(
         email=current_user.email,
         new_data=body,

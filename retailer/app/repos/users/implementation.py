@@ -6,7 +6,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
-from app.models import Users
+from app.models.users import Users
 from .interface import IUsersRepo
 
 

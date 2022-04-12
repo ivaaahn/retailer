@@ -5,7 +5,10 @@ from sqlalchemy import (
     Text,
     ForeignKey,
 )
+
 from app.base.models import BaseModel
+
+__all__ = ("Addresses",)
 
 
 class Addresses(BaseModel):
