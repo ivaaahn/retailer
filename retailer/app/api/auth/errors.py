@@ -2,7 +2,7 @@ from typing import Optional, Any
 
 from starlette import status
 
-from base.errors import NotFoundError, AuthError, ForbiddenError, UnauthorizedError
+from app.base.errors import NotFoundError, AuthError, ForbiddenError, UnauthorizedError
 
 
 class AuthConflictError(AuthError):

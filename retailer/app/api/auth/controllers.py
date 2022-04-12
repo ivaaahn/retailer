@@ -1,7 +1,6 @@
 from fastapi import Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 
-from .deps import get_current_active_user
 from app.dto.signup import (
     SignupSchema,
     SignupRespSchema,
@@ -13,6 +12,7 @@ from app.dto.signup import (
 )
 from app.dto.user import UserSchema
 from app.services import AuthService
+from .deps import get_current_active_user
 
 router = APIRouter(
     prefix="/auth",

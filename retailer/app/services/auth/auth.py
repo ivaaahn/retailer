@@ -8,8 +8,6 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 
-from base.errors import check_err, DBErrEnum
-from base.services import BaseService
 from app.api.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
@@ -19,9 +17,12 @@ from app.api.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
+from app.base.errors import check_err, DBErrEnum
+from app.base.services import BaseService
 from app.dto.signup import TokenDataSchema
 from app.dto.user import UserSchema
-from app.models import Users, SignupSession
+from app.models.signup_session import SignupSession
+from app.models.users import Users
 from app.repos import (
     IRMQInteractRepo,
     ISignupSessionRepo,
@@ -33,6 +34,8 @@ from app.repos import (
 from .settings import AuthSettings, get_settings
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+__all__ = ("AuthService",)
 
 
 @lru_cache

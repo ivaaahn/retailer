@@ -15,7 +15,7 @@ class CustomFormatter(logging.Formatter):
 
         split = fmt.split(":")
         self.lvl = split[0]
-        self.other = "".join(split[1:])
+        self.other = ":".join(split[1:])
 
         self._fmt = fmt
 
