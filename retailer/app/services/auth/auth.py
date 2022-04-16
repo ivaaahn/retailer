@@ -21,8 +21,8 @@ from app.delivery.auth.errors import (
 )
 from app.dto.signup import TokenDataDTO
 from app.dto.user import UserRespDTO
-from app.models.signup_session import SignupSession
-from app.models.users import Users
+from app.models.signup_session import SignupSessionModel
+from app.models.users import UserModel
 from app.repos import (
     IRMQInteractRepo,
     ISignupSessionRepo,
@@ -107,7 +107,7 @@ class AuthService(BaseService):
         user = await self._activate_user(email)
         return user.email
 
-    async def _activate_user(self, email: str) -> Users:
+    async def _activate_user(self, email: str) -> UserModel:
         return await self._users_repo.update(email=email, is_active=True)
 
     async def resend_code(self, email: str) -> str:
@@ -123,11 +123,11 @@ class AuthService(BaseService):
 
         return code
 
-    async def _send_code(self, email: str) -> SignupSession:
+    async def _send_code(self, email: str) -> SignupSessionModel:
         code = await self._check_session_and_send_code(email)
         return await self._signup_session_repo.upsert(email, code)
 
-    async def _resend_code(self, email: str) -> SignupSession:
+    async def _resend_code(self, email: str) -> SignupSessionModel:
         code = await self._check_session_and_send_code(email)
 
         try:
@@ -139,7 +139,7 @@ class AuthService(BaseService):
 
         return signup_session
 
-    async def _check_session_expiration(self, email: str) -> SignupSession:
+    async def _check_session_expiration(self, email: str) -> SignupSessionModel:
         session = await self._signup_session_repo.get(email)
         if session and not session.send_code_timeout_expired:
             raise SignupSessionCreateTimeoutNotExpired(session.seconds_left)
@@ -158,7 +158,7 @@ class AuthService(BaseService):
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
 
-    async def _authenticate_user(self, email: str, pswd: str) -> Users:
+    async def _authenticate_user(self, email: str, pswd: str) -> UserModel:
         user = await self._users_repo.get(email, only_active=False)
 
         if not user or not self._verify_password(

@@ -6,49 +6,49 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
-from app.models.users import Users
+from app.models.users import UserModel
 from .interface import IUsersRepo
 
 
 @lru_cache
 class UsersRepo(IUsersRepo, BasePgRepo):
-    async def update(self, email: str, **kwargs) -> Optional[Users]:
+    async def update(self, email: str, **kwargs) -> Optional[UserModel]:
         stmt = (
-            update(Users)
+            update(UserModel)
             .values(**kwargs)
-            .where(Users.__table__.c.email == email)
-            .returning(*Users.__table__.c)
+            .where(UserModel.__table__.c.email == email)
+            .returning(*UserModel.__table__.c)
         )
 
         cursor = await self._execute(stmt)
 
-        return Users.from_cursor(cursor)
+        return UserModel.from_cursor(cursor)
 
-    async def upsert(self, email: str, password: str, **kwargs) -> Users:
-        stmt = insert(Users).values(email=email, password=password, **kwargs)
+    async def upsert(self, email: str, password: str, **kwargs) -> UserModel:
+        stmt = insert(UserModel).values(email=email, password=password, **kwargs)
 
         do_update_stmt = stmt.on_conflict_do_update(
             index_elements=["email"],
             set_={
                 "password": password,
             },
-        ).returning(*Users.__table__.c)
+        ).returning(*UserModel.__table__.c)
 
         cursor = await self._execute(do_update_stmt)
-        return Users.from_cursor(cursor)
+        return UserModel.from_cursor(cursor)
 
-    async def get(self, email: str, only_active: bool = True) -> Optional[Users]:
-        select_stmt = select(Users)
+    async def get(self, email: str, only_active: bool = True) -> Optional[UserModel]:
+        select_stmt = select(UserModel)
 
         if only_active:
             stmt = select_stmt.where(
                 and_(
-                    Users.__table__.c.email == email,
-                    Users.__table__.c.is_active.is_(True),
+                    UserModel.__table__.c.email == email,
+                    UserModel.__table__.c.is_active.is_(True),
                 )
             )
         else:
-            stmt = select_stmt.where(Users.__table__.c.email == email)
+            stmt = select_stmt.where(UserModel.__table__.c.email == email)
 
         cursor = await self._execute(stmt)
-        return Users.from_cursor(cursor)
+        return UserModel.from_cursor(cursor)

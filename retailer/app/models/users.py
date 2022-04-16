@@ -12,8 +12,10 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
+__all__ = ("UserModel", )
 
-class Users(BaseModel):
+
+class UserModel(BaseModel):
     __tablename__ = "users"
 
     id = Column(Integer, Identity(), primary_key=True)
