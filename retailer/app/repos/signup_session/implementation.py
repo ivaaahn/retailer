@@ -7,8 +7,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.sql.functions import now as sa_now
 
-from app.api.auth.errors import SessionNotFoundError, SignupSessionExpiredError
 from app.base.repo import BasePgRepo
+from app.delivery.auth.errors import SessionNotFoundError, SignupSessionExpiredError
 from app.models.signup_session import SignupSession
 from .interface import ISignupSessionRepo
 

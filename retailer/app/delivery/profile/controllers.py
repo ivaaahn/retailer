@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 
-from app.api.auth.deps import get_current_active_user
+from app.delivery.auth.deps import get_current_active_user
 from app.dto.profile import ProfileUpdateSchema
 from app.dto.user import UserSchema
 from app.services.profile import ProfileService

@@ -8,7 +8,9 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 
-from app.api.auth.errors import (
+from app.base.errors import check_err, DBErrEnum
+from app.base.services import BaseService
+from app.delivery.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
     UserAlreadyExistsError,
@@ -17,8 +19,6 @@ from app.api.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.base.errors import check_err, DBErrEnum
-from app.base.services import BaseService
 from app.dto.signup import TokenDataSchema
 from app.dto.user import UserSchema
 from app.models.signup_session import SignupSession

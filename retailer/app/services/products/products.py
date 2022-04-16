@@ -2,8 +2,8 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from app.api.products.errors import ProductNotFoundError
 from app.base.services import BaseService
+from app.delivery.products.errors import ProductNotFoundError
 from app.dto.products import BaseProductDTO
 from app.repos.products import IProductsRepo, ProductsRepo
 
