@@ -3,8 +3,8 @@ from functools import lru_cache
 from fastapi import Depends
 
 from app.base.services import BaseService
-from app.dto.profile import ProfileUpdateSchema
-from app.dto.user import UserSchema
+from app.dto.profile import ProfileUpdateReqDTO
+from app.dto.user import UserRespDTO
 from app.repos import IUsersRepo, UsersRepo
 
 __all__ = ("ProfileService",)
@@ -19,10 +19,10 @@ class ProfileService(BaseService):
         super().__init__()
         self._users_repo = users_repo
 
-    async def patch(self, email: str, new_data: ProfileUpdateSchema) -> UserSchema:
+    async def patch(self, email: str, new_data: ProfileUpdateReqDTO) -> UserRespDTO:
         updated = await self._users_repo.update(
             email=email,
             **new_data.dict(exclude_unset=True),
         )
 
-        return UserSchema(**updated.as_dict())
+        return UserRespDTO(**updated.as_dict())

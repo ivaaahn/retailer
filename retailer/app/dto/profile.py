@@ -4,6 +4,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class ProfileUpdateSchema(BaseModel):
+class ProfileUpdateReqDTO(BaseModel):
     name: Optional[str]
     birthday: Optional[date]

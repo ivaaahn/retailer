@@ -2,15 +2,15 @@ from fastapi import Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.dto.signup import (
-    SignupSchema,
-    SignupRespSchema,
-    TokenSchema,
-    VerifyCodeRequestSchema,
+    SignupReqDTO,
+    SignupRespDTO,
+    TokenRespDTO,
+    VerifyCodeReqDTO,
     VerifyCodeRespSchema,
-    ResendCodeRespSchema,
-    ResendCodeSchema,
+    ResendCodeRespDTO,
+    ResendCodeReqDTO,
 )
-from app.dto.user import UserSchema
+from app.dto.user import UserRespDTO
 from app.services import AuthService
 from .deps import get_current_active_user
 
@@ -20,8 +20,8 @@ router = APIRouter(
 )
 
 
-@router.post("/signup", response_model=SignupRespSchema)
-async def signup_user(body: SignupSchema, auth_service: AuthService = Depends()):
+@router.post("/signup", response_model=SignupRespDTO)
+async def signup_user(body: SignupReqDTO, auth_service: AuthService = Depends()):
     email = await auth_service.signup_user(
         email=body.email,
         pwd=body.password,
@@ -30,7 +30,7 @@ async def signup_user(body: SignupSchema, auth_service: AuthService = Depends())
     return {"email": email}
 
 
-@router.post("/login", response_model=TokenSchema)
+@router.post("/login", response_model=TokenRespDTO)
 async def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(),
@@ -43,14 +43,14 @@ async def login_user(
     return {"access_token": access_token, "token_type": token_type}
 
 
-@router.get("/me", response_model=UserSchema)
-async def current_user(curr_user: UserSchema = Depends(get_current_active_user)):
+@router.get("/me", response_model=UserRespDTO)
+async def current_user(curr_user: UserRespDTO = Depends(get_current_active_user)):
     return curr_user
 
 
 @router.post("/verify_code", status_code=200, response_model=VerifyCodeRespSchema)
 async def verify_code(
-    body: VerifyCodeRequestSchema,
+    body: VerifyCodeReqDTO,
     auth_service: AuthService = Depends(),
 ):
     email = await auth_service.verify_code(
@@ -61,9 +61,9 @@ async def verify_code(
     return {"email": email}
 
 
-@router.post("/resend_code", status_code=200, response_model=ResendCodeRespSchema)
+@router.post("/resend_code", status_code=200, response_model=ResendCodeRespDTO)
 async def resend_code(
-    body: ResendCodeSchema,
+    body: ResendCodeReqDTO,
     auth_service: AuthService = Depends(),
 ):
     email = await auth_service.resend_code(body.email)

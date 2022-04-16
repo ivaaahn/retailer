@@ -19,8 +19,8 @@ from app.delivery.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.dto.signup import TokenDataSchema
-from app.dto.user import UserSchema
+from app.dto.signup import TokenDataDTO
+from app.dto.user import UserRespDTO
 from app.models.signup_session import SignupSession
 from app.models.users import Users
 from app.repos import (
@@ -80,7 +80,7 @@ class AuthService(BaseService):
         )
         return access_token, "bearer"
 
-    async def get_current_user(self, token: str) -> UserSchema:
+    async def get_current_user(self, token: str) -> UserRespDTO:
         try:
             payload = jwt.decode(token, self.cfg.secret, algorithms=[self.cfg.alg])
             email: str = payload.get("sub")
@@ -88,7 +88,7 @@ class AuthService(BaseService):
             if email is None:
                 raise IncorrectCredsError
 
-            token_data = TokenDataSchema(email=email)
+            token_data = TokenDataDTO(email=email)
         except JWTError:
             raise IncorrectCredsError
 
@@ -96,7 +96,7 @@ class AuthService(BaseService):
         if not user:
             raise IncorrectCredsError
 
-        return UserSchema.parse_obj(user.as_dict())
+        return UserRespDTO.parse_obj(user.as_dict())
 
     async def verify_code(self, email: str, code: str) -> str:
         session = await self._signup_session_repo.waste_attempt(email)
