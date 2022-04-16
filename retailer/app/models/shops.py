@@ -4,10 +4,12 @@ from sqlalchemy import (
     Identity,
     Text,
 )
+
 from app.base.models import BaseModel
 
+__all__ = ("ShopModel", )
 
-class Shops(BaseModel):
+class ShopModel(BaseModel):
     __tablename__ = "shops"
 
     id = Column(Integer, Identity(), primary_key=True)

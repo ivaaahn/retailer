@@ -8,7 +8,9 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 
-from app.api.auth.errors import (
+from app.base.errors import check_err, DBErrEnum
+from app.base.services import BaseService
+from app.delivery.auth.errors import (
     UserNotFoundError,
     SignupSessionCreateTimeoutNotExpired,
     UserAlreadyExistsError,
@@ -17,12 +19,10 @@ from app.api.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.base.errors import check_err, DBErrEnum
-from app.base.services import BaseService
-from app.dto.signup import TokenDataSchema
-from app.dto.user import UserSchema
-from app.models.signup_session import SignupSession
-from app.models.users import Users
+from app.dto.signup import TokenDataDTO
+from app.dto.user import UserRespDTO
+from app.models.signup_session import SignupSessionModel
+from app.models.users import UserModel
 from app.repos import (
     IRMQInteractRepo,
     ISignupSessionRepo,
@@ -80,7 +80,7 @@ class AuthService(BaseService):
         )
         return access_token, "bearer"
 
-    async def get_current_user(self, token: str) -> UserSchema:
+    async def get_current_user(self, token: str) -> UserRespDTO:
         try:
             payload = jwt.decode(token, self.cfg.secret, algorithms=[self.cfg.alg])
             email: str = payload.get("sub")
@@ -88,7 +88,7 @@ class AuthService(BaseService):
             if email is None:
                 raise IncorrectCredsError
 
-            token_data = TokenDataSchema(email=email)
+            token_data = TokenDataDTO(email=email)
         except JWTError:
             raise IncorrectCredsError
 
@@ -96,7 +96,7 @@ class AuthService(BaseService):
         if not user:
             raise IncorrectCredsError
 
-        return UserSchema.parse_obj(user.as_dict())
+        return UserRespDTO.parse_obj(user.as_dict())
 
     async def verify_code(self, email: str, code: str) -> str:
         session = await self._signup_session_repo.waste_attempt(email)
@@ -107,7 +107,7 @@ class AuthService(BaseService):
         user = await self._activate_user(email)
         return user.email
 
-    async def _activate_user(self, email: str) -> Users:
+    async def _activate_user(self, email: str) -> UserModel:
         return await self._users_repo.update(email=email, is_active=True)
 
     async def resend_code(self, email: str) -> str:
@@ -123,11 +123,11 @@ class AuthService(BaseService):
 
         return code
 
-    async def _send_code(self, email: str) -> SignupSession:
+    async def _send_code(self, email: str) -> SignupSessionModel:
         code = await self._check_session_and_send_code(email)
         return await self._signup_session_repo.upsert(email, code)
 
-    async def _resend_code(self, email: str) -> SignupSession:
+    async def _resend_code(self, email: str) -> SignupSessionModel:
         code = await self._check_session_and_send_code(email)
 
         try:
@@ -139,7 +139,7 @@ class AuthService(BaseService):
 
         return signup_session
 
-    async def _check_session_expiration(self, email: str) -> SignupSession:
+    async def _check_session_expiration(self, email: str) -> SignupSessionModel:
         session = await self._signup_session_repo.get(email)
         if session and not session.send_code_timeout_expired:
             raise SignupSessionCreateTimeoutNotExpired(session.seconds_left)
@@ -158,7 +158,7 @@ class AuthService(BaseService):
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
         return pwd_context.verify(plain_password, hashed_password)
 
-    async def _authenticate_user(self, email: str, pswd: str) -> Users:
+    async def _authenticate_user(self, email: str, pswd: str) -> UserModel:
         user = await self._users_repo.get(email, only_active=False)
 
         if not user or not self._verify_password(

@@ -3,28 +3,28 @@ from pydantic import BaseModel, Field
 from .user import EmailMixin, PasswordMixin
 
 
-class SignupSchema(EmailMixin, PasswordMixin):
+class SignupReqDTO(EmailMixin, PasswordMixin):
     pass
 
 
-class SignupRespSchema(EmailMixin):
+class SignupRespDTO(EmailMixin):
     pass
 
 
-class LoginSchema(EmailMixin, PasswordMixin):
+class LoginRequestDTO(EmailMixin, PasswordMixin):
     pass
 
 
-class TokenSchema(BaseModel):
+class TokenRespDTO(BaseModel):
     access_token: str
     token_type: str
 
 
-class TokenDataSchema(EmailMixin):
+class TokenDataDTO(EmailMixin):
     pass
 
 
-class VerifyCodeRequestSchema(EmailMixin):
+class VerifyCodeReqDTO(EmailMixin):
     code: str = Field(title="Код")
 
 
@@ -32,9 +32,9 @@ class VerifyCodeRespSchema(EmailMixin):
     pass
 
 
-class ResendCodeSchema(EmailMixin):
+class ResendCodeReqDTO(EmailMixin):
     pass
 
 
-class ResendCodeRespSchema(EmailMixin):
+class ResendCodeRespDTO(EmailMixin):
     pass

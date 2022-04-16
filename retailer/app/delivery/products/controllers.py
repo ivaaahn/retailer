@@ -1,6 +1,6 @@
 from fastapi import Depends, APIRouter
 
-from app.dto.products import BaseProductDTO
+from app.dto.products import BaseProductRespDTO
 from app.services import ProductsService
 
 router = APIRouter(
@@ -9,7 +9,7 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=BaseProductDTO)
+@router.get("", response_model=BaseProductRespDTO)
 async def get_by_name(
     name: str,
     products_service: ProductsService = Depends(),

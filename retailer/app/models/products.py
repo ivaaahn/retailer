@@ -12,8 +12,10 @@ from sqlalchemy import (
 
 from app.base.models import BaseModel
 
+__all__ = ("ProductModel", )
 
-class Products(BaseModel):
+
+class ProductModel(BaseModel):
     __tablename__ = "products"
     __table_args__ = (
         Index(
@@ -32,6 +34,15 @@ class Products(BaseModel):
     def __init__(self, category_name: Optional[str] = None, **kwargs):
         super().__init__(**kwargs)
         self._category_name = category_name
+
+    def _as_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "photo": self.photo,
+            "description": self.description,
+            "category_name": self.category_name,
+        }
 
     @property
     def category_name(self) -> str:

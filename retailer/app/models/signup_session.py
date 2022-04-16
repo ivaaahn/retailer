@@ -13,8 +13,10 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
+__all__ = ("SignupSessionModel", )
 
-class SignupSession(BaseModel):
+
+class SignupSessionModel(BaseModel):
     ATTEMPTS = 3
     TIMEOUT = timedelta(minutes=1)
 

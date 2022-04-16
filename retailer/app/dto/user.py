@@ -12,12 +12,12 @@ class PasswordMixin(BaseModel):
     password: str = Field(title="Пароль")
 
 
-class UserSchema(EmailMixin):
+class UserRespDTO(EmailMixin):
     created_at: datetime = Field(title="Дата и время создания аккаунта")
     is_active: bool = Field(title="Признак активного аккаунта")
     name: Optional[str] = Field(title="Имя")
     birthday: Optional[date] = Field(title="Дата рождения")
 
 
-class UserInDBSchema(UserSchema, PasswordMixin):
+class UserInDBSchema(UserRespDTO, PasswordMixin):
     pass

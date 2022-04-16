@@ -8,10 +8,10 @@ from sqlalchemy import (
 
 from app.base.models import BaseModel
 
-__all__ = ("Addresses",)
+__all__ = ("AddressModel",)
 
 
-class Addresses(BaseModel):
+class AddressModel(BaseModel):
     __tablename__ = "addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
