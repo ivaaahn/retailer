@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-from dotenv import dotenv_values
 from pathlib import Path
 
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_RETAILER_ADMIN_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "products",
     "product_categories",
+    "shops",
 ]
 
 MIDDLEWARE = [
