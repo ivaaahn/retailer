@@ -65,4 +65,3 @@ async def resend_code(
     auth_service: AuthService = Depends(),
 ):
     return await auth_service.resend_code(body.email)
-

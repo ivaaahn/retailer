@@ -66,11 +66,15 @@ class AuthService(BaseService):
         web_user = await self._users_repo.upsert(email=email, password=hashed_pwd)
         signup_session = await self._send_code(web_user.email)
 
-        return SignupRespDTO(email=web_user.email, seconds_left=signup_session.seconds_left)
+        return SignupRespDTO(
+            email=web_user.email, seconds_left=signup_session.seconds_left
+        )
 
     async def resend_code(self, email: str) -> ResendCodeRespDTO:
         signup_session = await self._resend_code(email)
-        return ResendCodeRespDTO(email=signup_session.email, seconds_left=signup_session.seconds_left)
+        return ResendCodeRespDTO(
+            email=signup_session.email, seconds_left=signup_session.seconds_left
+        )
 
     async def login_user(self, email: str, pwd: str) -> tuple[str, str]:
         user = await self._authenticate_user(email, pwd)
@@ -113,7 +117,6 @@ class AuthService(BaseService):
 
     async def _activate_user(self, email: str) -> UserModel:
         return await self._users_repo.update(email=email, is_active=True)
-
 
     async def _check_session_and_send_code(self, email: str) -> str:
         await self._check_session_expiration(email)
