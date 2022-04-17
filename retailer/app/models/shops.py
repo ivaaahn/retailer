@@ -7,7 +7,8 @@ from sqlalchemy import (
 
 from app.base.models import BaseModel
 
-__all__ = ("ShopModel", )
+__all__ = ("ShopModel",)
+
 
 class ShopModel(BaseModel):
     __tablename__ = "shops"

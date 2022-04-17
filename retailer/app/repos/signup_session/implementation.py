@@ -16,7 +16,9 @@ from .interface import ISignupSessionRepo
 @lru_cache
 class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
     async def get(self, email: str) -> Optional[SignupSessionModel]:
-        stmt = select(SignupSessionModel).where(SignupSessionModel.__table__.c.email == email)
+        stmt = select(SignupSessionModel).where(
+            SignupSessionModel.__table__.c.email == email
+        )
 
         cursor = await self._execute(stmt)
         return SignupSessionModel.from_cursor(cursor)
