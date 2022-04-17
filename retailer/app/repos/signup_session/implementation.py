@@ -30,6 +30,7 @@ class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
             set_={
                 "updated_at": sa_now(),
                 "attempts_left": SignupSessionModel.ATTEMPTS,
+                "code": code,
             },
         ).returning(*SignupSessionModel.__table__.c)
 
