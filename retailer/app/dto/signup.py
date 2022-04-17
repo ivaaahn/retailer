@@ -8,7 +8,7 @@ class SignupReqDTO(EmailMixin, PasswordMixin):
 
 
 class SignupRespDTO(EmailMixin):
-    pass
+    seconds_left: int = Field(title="Оставшееся кол-во секунд до возможности повторно отправить код")
 
 
 class LoginRequestDTO(EmailMixin, PasswordMixin):
@@ -37,4 +37,4 @@ class ResendCodeReqDTO(EmailMixin):
 
 
 class ResendCodeRespDTO(EmailMixin):
-    pass
+    seconds_left: int = Field(title="Оставшееся кол-во секунд до возможности повторно отправить код")

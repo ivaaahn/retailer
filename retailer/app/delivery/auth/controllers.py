@@ -22,12 +22,10 @@ router = APIRouter(
 
 @router.post("/signup", response_model=SignupRespDTO)
 async def signup_user(body: SignupReqDTO, auth_service: AuthService = Depends()):
-    email = await auth_service.signup_user(
+    return await auth_service.signup_user(
         email=body.email,
         pwd=body.password,
     )
-
-    return {"email": email}
 
 
 @router.post("/login", response_model=TokenRespDTO)
@@ -66,5 +64,5 @@ async def resend_code(
     body: ResendCodeReqDTO,
     auth_service: AuthService = Depends(),
 ):
-    email = await auth_service.resend_code(body.email)
-    return {"email": email}
+    return await auth_service.resend_code(body.email)
+
