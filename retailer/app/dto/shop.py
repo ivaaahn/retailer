@@ -18,3 +18,4 @@ class ShopRespDTO(BaseModel):
 
 class ShopListRespDTO(BaseModel):
     shops: list[ShopRespDTO] = Field(title="Список магазинов")
+    total: int = Field(title="Общее кол-во магазинов")
