@@ -12,7 +12,7 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
-__all__ = ("UserModel", )
+__all__ = ("UserModel",)
 
 
 class UserModel(BaseModel):

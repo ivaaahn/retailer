@@ -13,7 +13,7 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
-__all__ = ("SignupSessionModel", )
+__all__ = ("SignupSessionModel",)
 
 
 class SignupSessionModel(BaseModel):

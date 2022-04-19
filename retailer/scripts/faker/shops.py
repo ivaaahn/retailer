@@ -8,7 +8,7 @@ from scripts.faker.rw import write
 
 ABC = "АБВ"
 COUNT = 100
-FILENAME_SHOPS = "data/shops.csv"
+FILENAME_SHOPS = "data/shop.csv"
 
 
 def get_random_floor() -> int:

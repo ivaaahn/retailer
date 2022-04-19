@@ -10,7 +10,10 @@ class _Base:
         custom = self._as_dict()
 
         if not custom:
-            return {c.key: getattr(self, c.key) for c in sa_inspect(self).mapper.column_attrs}
+            return {
+                c.key: getattr(self, c.key)
+                for c in sa_inspect(self).mapper.column_attrs
+            }
 
         return custom
 

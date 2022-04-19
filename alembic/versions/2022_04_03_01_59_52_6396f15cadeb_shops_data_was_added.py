@@ -1,4 +1,4 @@
-"""shops addresses data was added
+"""shop addresses data was added
 
 Revision ID: 6396f15cadeb
 Revises: 49f94d3d830d
@@ -21,7 +21,7 @@ depends_on = None
 
 def upgrade():
     addresses_table = table(
-        "shops",
+        "shop",
         column("id", Integer),
         column("city", Text),
         column("street", Text),
@@ -38,7 +38,7 @@ def upgrade():
             [asdict(address) for address in shops],
         )
     except Exception as err:
-        logging.warning(f"Error with shops' data insertion: {err}")
+        logging.warning(f"Error with shop' data insertion: {err}")
         raise
 
 
