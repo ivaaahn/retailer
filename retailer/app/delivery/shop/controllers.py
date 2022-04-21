@@ -1,7 +1,11 @@
+from enum import Enum
+
 from fastapi import Depends, APIRouter
 
-from app.base.deps import PagingQueryDTO, get_offset
+from app.base.deps import BasePagingParams
+from app.delivery.shop.deps import ShopListPagingParams
 from app.dto.shop import ShopRespDTO, ShopListRespDTO, ShopAddressDTO
+from app.delivery.shop.deps import shop_paging_params
 
 router = APIRouter(
     prefix="/shop",
@@ -19,7 +23,7 @@ async def get_shop(
 
 
 @router.get(".list", response_model=ShopListRespDTO)
-async def get_list(paging_query: PagingQueryDTO = Depends(get_offset)):
+async def get_list(paging_params: ShopListPagingParams = Depends(shop_paging_params)):
     return ShopListRespDTO(
         shops=[
             ShopRespDTO(

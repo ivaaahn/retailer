@@ -1,13 +1,20 @@
-from fastapi import Depends
-from pydantic import BaseModel, Field
+from dataclasses import dataclass
+from enum import Enum
+
+from fastapi import Query
 
 
-class PagingQueryDTO(BaseModel):
-    count: int = Field(title="Кол-во отображений")
-    offset: int = Field(title="Смещение по записям")
+class SortOrderEnum(str, Enum):
+    desc = "desc"
+    asc = "asc"
 
 
-# TODO допилить ошибку если что-то не указали
-async def get_offset(q: PagingQueryDTO = Depends()):
-    if q.offset and q.count:
-        return PagingQueryDTO(count=q.count, offset=q.offset)
+@dataclass
+class BasePagingParams:
+    count: int = Query(None, le=50, description="description")
+    offset: int = Query(None, le=50)
+    order: SortOrderEnum = Query(SortOrderEnum.desc, max_length=50)
+
+
+def base_paging_params(count: int, offset: int, order: SortOrderEnum):
+    return BasePagingParams(count=count, offset=offset, order=order)

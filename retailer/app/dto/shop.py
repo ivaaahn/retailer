@@ -1,6 +1,12 @@
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, Field
+
+
+class ShopListSortByEnum(str, Enum):
+    id = "id"
+    address = "address"
 
 
 class ShopAddressDTO(BaseModel):

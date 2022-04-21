@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from app.base.services import BaseService
 from app.delivery.products.errors import ProductNotFoundError
-from app.dto.products import BaseProductRespDTO
+from app.dto.products import ProductRespDTO
 from app.repos.products import IProductsRepo, ProductsRepo
 
 __all__ = ("ProductsService",)
@@ -19,14 +19,14 @@ class ProductsService(BaseService):
         super().__init__()
         self._products_repo = products_repo
 
-    async def get(self, name: str) -> BaseProductRespDTO:
+    async def get(self, name: str) -> ProductRespDTO:
         received = await self._products_repo.get(name)
         if not received:
             raise ProductNotFoundError(name)
 
         self.logger.debug(received.as_dict())
 
-        return BaseProductRespDTO(
+        return ProductRespDTO(
             name=received.name,
             description=received.description,
             category=received.category_name,
