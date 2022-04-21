@@ -13,7 +13,7 @@ class ShopListPagingParams(BasePagingParams):
 
 
 def shop_paging_params(
-    base: Depends(base_paging_params),
+    base=Depends(base_paging_params),
     sort_by: ShopListSortByEnum = ShopListSortByEnum.id,
 ):
     return ShopListPagingParams(**asdict(base), sort_by=sort_by)
