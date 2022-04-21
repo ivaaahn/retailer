@@ -24,7 +24,9 @@ async def get_by_name(
 
 
 @router.get(".list", response_model=ProductListRespDTO)
-async def get_list(paging_params: ProductListPagingParams = Depends(product_paging_params)):
+async def get_list(
+    paging_params: ProductListPagingParams = Depends(product_paging_params),
+):
     return ProductListRespDTO(
         products=[
             ProductRespDTO(

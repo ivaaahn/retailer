@@ -11,10 +11,12 @@ class SortOrderEnum(str, Enum):
 
 @dataclass
 class BasePagingParams:
-    count: int = Query(None, le=50, description="description")
-    offset: int = Query(None, le=50)
-    order: SortOrderEnum = Query(SortOrderEnum.desc, max_length=50)
+    count: int
+    offset: int
+    order: SortOrderEnum
 
 
-def base_paging_params(count: int, offset: int, order: SortOrderEnum):
+def base_paging_params(
+    count: int, offset: int, order: SortOrderEnum = SortOrderEnum.desc
+):
     return BasePagingParams(count=count, offset=offset, order=order)
