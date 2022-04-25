@@ -1,12 +1,20 @@
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from app.base.deps import BasePagingParams
+
 
 class ShopListSortByEnum(str, Enum):
     id = "id"
     address = "address"
+
+
+@dataclass
+class ShopListPagingParams(BasePagingParams):
+    sort_by: ShopListSortByEnum
 
 
 class ShopAddressDTO(BaseModel):

@@ -19,7 +19,7 @@ from retailer.app.models.shop_address import *
 from retailer.app.models.products import *
 from retailer.app.models.user_address import *
 from retailer.app.models.product_categories import *
-from retailer.app.models.shop import *
+from retailer.app.models.shops import *
 
 ####################################################
 

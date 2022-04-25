@@ -11,7 +11,7 @@ __all__ = ("ShopModel",)
 
 
 class ShopModel(BaseModel):
-    __tablename__ = "shop"
+    __tablename__ = "shops"
 
     id = Column(Integer, Identity(), primary_key=True)
     address_id = Column(Integer, ForeignKey("shops_address.id"), nullable=False)
