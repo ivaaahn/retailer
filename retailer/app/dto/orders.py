@@ -1,17 +1,16 @@
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
 from app.base.deps import BasePagingParams
-from app.dto.products import ProductRespDTO
+from app.dto.products import ShopProductDTO
 
 
 class OrderListSortByEnum(str, Enum):
     id = "id"
-    date = "date"
+    created_at = "created_at"
 
 
 @dataclass
@@ -20,29 +19,34 @@ class OrderListPagingParams(BasePagingParams):
 
 
 class OrderStatusEnum(str, Enum):
-    new = "new"
     created = "created"
-    verified = "verified"
-    cancelled = "cancelled"
+    collecting = "collecting"
     ready = "ready"
-    shipped = "shipped"
+    delivering = "delivering"
     delivered = "delivered"
+    cancelled = "cancelled"
+    finished = "finished"
+    error = "error"
 
 
 class OrderReceiveKindEnum(str, Enum):
-    take_home = "take_home"
-    take_away = "take_away"
+    delivery = "delivery"
+    takeaway = "takeaway"
 
 
 class OrderRespDTO(BaseModel):
     id: int = Field(title="Идентификатор заказа")
-    products: list[ProductRespDTO] = Field(title="Список добавленных продуктов")
+    products: list[ShopProductDTO] = Field(title="Список добавленных продуктов")
     status: OrderStatusEnum = Field(title="Статус заказа")
     created_at: datetime = Field(title="Дата создания")
-    receive_kind: OrderReceiveKindEnum = Field(title="Способ доставки")
-    summ: float = Field(title="Общая сумма заказа")
+    receive_kind: OrderReceiveKindEnum = Field(title="Способ получения")
+    total_price: float = Field(title="Общая стоимость заказа")
 
 
-class OrderListRespDTO(BaseModel):
-    order: list[OrderRespDTO] = Field(title="Состав заказа")
+class OrdersListRespDTO(BaseModel):
+    orders: list[OrderRespDTO] = Field(title="Список заказов")
     total: int = Field(title="Общее кол-во заказов")
+
+
+class PlaceOrderRespDTO(BaseModel):
+    order_id: int

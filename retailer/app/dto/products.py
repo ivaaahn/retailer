@@ -17,14 +17,23 @@ class ProductListPagingParams(BasePagingParams):
     sort_by: ProductListSortByEnum
 
 
-class ProductRespDTO(BaseModel):
+class BaseProduct(BaseModel):
+    id: int = Field(title="Идентификатор продукта")
+    photo: Optional[str] = Field(title="Фото продукта")
     name: str = Field(title="Название продукта")
     description: Optional[str] = Field(title="Описание продукта")
     price: float = Field(title="Цена продукта")
     category: str = Field(title="Категория продукта")
-    qty: int = Field(title="Кол-во продукта")
 
 
-class ProductListRespDTO(BaseModel):
-    products: list[ProductRespDTO] = Field(title="Список продуктов")
+class ShopProductDTO(BaseProduct):
+    pass
+
+
+class CartProductDTO(BaseProduct):
+    qty: int = Field(title="Кол-во продуктов в наличии")
+
+
+class ShopProductsListDTO(BaseModel):
+    products: list[ShopProductDTO] = Field(title="Список продуктов")
     total: int = Field(title="Общее кол-во продуктов")

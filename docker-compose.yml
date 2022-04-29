@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
 
   api:
-    image: ivaaahn/retailer:0.1.8
+    image: ivaaahn/retailer:0.1.10
     container_name: api
     ports:
       - "8080:8080"

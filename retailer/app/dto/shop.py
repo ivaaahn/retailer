@@ -9,7 +9,6 @@ from app.base.deps import BasePagingParams
 
 class ShopListSortByEnum(str, Enum):
     id = "id"
-    address = "address"
 
 
 @dataclass
