@@ -12,7 +12,7 @@ from sqlalchemy import (
 
 from app.base.models import BaseModel
 
-__all__ = ("ProductModel", )
+__all__ = ("ProductModel",)
 
 
 class ProductModel(BaseModel):
