@@ -14,7 +14,7 @@ from retailer.app.models.addresses import *
 from retailer.app.models.product_categories import *
 from retailer.app.models.products import *
 from retailer.app.models.shops import *
-from retailer.app.models.shop_managers import *
+from retailer.app.models.staff import *
 from retailer.app.models.signup_session import *
 from retailer.app.models.users import *
 

@@ -1,7 +1,7 @@
 """users data was added
 
 Revision ID: 3dc8529d8689
-Revises: b6a744784764
+Revises: 547a17f639a0
 Create Date: 2022-04-03 17:40:36.446728
 
 """
@@ -9,13 +9,13 @@ import logging
 from dataclasses import asdict
 
 from alembic import op
-from sqlalchemy import column, table, Integer, Text, DateTime, Boolean, Date
+from sqlalchemy import column, table, Integer, Text, DateTime, Boolean, Date, String
 from scripts.faker.users import User, generate
 
 
 # revision identifiers, used by Alembic.
 revision = "3dc8529d8689"
-down_revision = "b6a744784764"
+down_revision = "547a17f639a0"
 branch_labels = None
 depends_on = None
 
@@ -32,7 +32,7 @@ def upgrade():
         column("birthday", Date),
     )
 
-    users: list[User] = generate(count=100)
+    users: list[User] = generate()
 
     try:
         op.bulk_insert(

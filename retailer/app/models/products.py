@@ -6,8 +6,6 @@ from sqlalchemy import (
     Identity,
     Text,
     ForeignKey,
-    func,
-    Index,
 )
 
 from app.base.models import BaseModel

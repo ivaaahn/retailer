@@ -19,7 +19,7 @@ from app.delivery.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.dto.signup import TokenDataDTO
+from app.dto.signup import TokenDataDTO, TokenRespDTO
 from app.dto.user import UserRespDTO
 from app.models.signup_session import SignupSessionModel
 from app.models.users import UserModel
@@ -68,7 +68,7 @@ class AuthService(BaseService):
 
         return web_user.email
 
-    async def login_user(self, email: str, pwd: str) -> tuple[str, str]:
+    async def login_user(self, email: str, pwd: str) -> TokenRespDTO:
         user = await self._authenticate_user(email, pwd)
         if not user.is_active:
             raise InactiveAccountError
@@ -78,7 +78,12 @@ class AuthService(BaseService):
             data={"sub": user.email},
             expires_delta=access_token_expires,
         )
-        return access_token, "bearer"
+        await self._users_repo.update(email, last_login=datetime.utcnow())
+
+        return TokenRespDTO(
+            access_token=access_token,
+            token_type="bearer",
+        )
 
     async def get_current_user(self, token: str) -> UserRespDTO:
         try:
@@ -156,6 +161,9 @@ class AuthService(BaseService):
 
     @staticmethod
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
+        if hashed_password.startswith("bcrypt$"):
+            hashed_password = hashed_password[7:]
+
         return pwd_context.verify(plain_password, hashed_password)
 
     async def _authenticate_user(self, email: str, pswd: str) -> UserModel:

@@ -1,7 +1,7 @@
 """addresses table was added
 
 Revision ID: 39f94d3d830d
-Revises: 3dc8529d8689
+Revises: b6a744784764
 Create Date: 2022-04-03 01:37:44.035674
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "39f94d3d830d"
-down_revision = "3dc8529d8689"
+down_revision = "b6a744784764"
 branch_labels = None
 depends_on = None
 

@@ -8,8 +8,10 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     Date,
-    Enum,
+    ForeignKey,
+    String,
 )
+from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.functions import now
 
@@ -19,8 +21,8 @@ __all__ = ("UserModel",)
 
 
 class UserRolesEnum(str, enum.Enum):
-    regular = "без привилегий"
-    staff = "штатный работник"
+    client = "клиент"
+    staff = "сотрудник"
     superuser = "администратор"
 
 
@@ -34,8 +36,9 @@ class UserModel(BaseModel):
     is_active = Column(Boolean, nullable=False, server_default=expression.false())
     name = Column(Text, nullable=True)
     birthday = Column(Date, nullable=True)
+    last_login = Column(DateTime(timezone=True), nullable=True)
     role = Column(
-        Enum(UserRolesEnum, name="user_roles_enum"),
-        server_default=UserRolesEnum.regular,
+        ENUM(UserRolesEnum, name="user_roles_enum"),
+        server_default=UserRolesEnum.client,
         nullable=False,
     )

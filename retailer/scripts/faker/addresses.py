@@ -7,7 +7,7 @@ from faker import Faker
 from scripts.faker.rw import write
 
 ABC = "АБВ"
-COUNT = 100
+COUNT = 10
 FILENAME_CUSTOMERS = "data/customer_addresses.csv"
 
 
@@ -81,8 +81,8 @@ def _generate_customer_addresses(count: int) -> list[Address]:
     return result
 
 
-def generate(count: int, to_file: bool = False) -> list[Address]:
-    customer_addresses = _generate_customer_addresses(count)
+def generate(to_file: bool = False) -> list[Address]:
+    customer_addresses = _generate_customer_addresses(COUNT)
 
     if to_file:
         write(customer_addresses, FILENAME_CUSTOMERS)

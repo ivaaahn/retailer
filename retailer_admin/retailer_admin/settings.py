@@ -47,8 +47,12 @@ INSTALLED_APPS = [
     "products",
     "product_categories",
     "shops",
+    "staff",
     "users",
 ]
+
+AUTH_USER_MODEL = "users.UserModel"
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -114,6 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.BCryptPasswordHasher",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/

@@ -1,7 +1,7 @@
 """customers and addresses tables was added
 
 Revision ID: 49f94d3d830d
-Revises: 59ca10a9bd19
+Revises: 39f94d3d830d
 Create Date: 2022-04-03 01:37:44.035674
 
 """
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = "49f94d3d830d"
-down_revision = "59ca10a9bd19"
+down_revision = "39f94d3d830d"
 branch_labels = None
 depends_on = None
 

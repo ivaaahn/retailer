@@ -1,16 +1,17 @@
 from sqlalchemy import (
     Column,
     Integer,
-    ForeignKey,
+    ForeignKey, Identity,
 )
 
 from app.base.models import BaseModel
 
-__all__ = ("ShopManagerModel",)
+__all__ = ("StaffModel",)
 
 
-class ShopManagerModel(BaseModel):
-    __tablename__ = "shop_managers"
+class StaffModel(BaseModel):
+    __tablename__ = "staff"
 
+    id = Column(Integer, Identity(), primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), primary_key=True)
     shop_id = Column(Integer, ForeignKey("shops.id"), primary_key=True)

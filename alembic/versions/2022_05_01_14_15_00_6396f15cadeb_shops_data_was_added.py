@@ -1,7 +1,7 @@
 """shops addresses data was added
 
 Revision ID: 6396f15cadeb
-Revises: 49f94d3d830d
+Revises: 59ca10a9bd19
 Create Date: 2022-04-03 01:59:52.646140
 
 """
@@ -14,7 +14,7 @@ from sqlalchemy import column, table, Integer, Text
 from scripts.faker.shops import Shop, generate as generate_shop
 
 revision = "6396f15cadeb"
-down_revision = "49f94d3d830d"
+down_revision = "59ca10a9bd19"
 branch_labels = None
 depends_on = None
 

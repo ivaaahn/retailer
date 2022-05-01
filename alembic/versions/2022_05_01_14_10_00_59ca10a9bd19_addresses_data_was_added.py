@@ -1,7 +1,7 @@
 """addresses data was added
 
 Revision ID: 59ca10a9bd19
-Revises: 39f94d3d830d
+Revises: 3dc8529d8689
 Create Date: 2022-04-03 01:38:46.429157
 
 """
@@ -14,7 +14,7 @@ from sqlalchemy import column, table, Integer, Text
 from scripts.faker.addresses import Address, generate as generate_addresses
 
 revision = "59ca10a9bd19"
-down_revision = "39f94d3d830d"
+down_revision = "3dc8529d8689"
 branch_labels = None
 depends_on = None
 
@@ -32,7 +32,7 @@ def upgrade():
         column("flat", Text),
     )
 
-    addresses: list[Address] = generate_addresses(count=100)
+    addresses: list[Address] = generate_addresses()
 
     try:
         op.bulk_insert(

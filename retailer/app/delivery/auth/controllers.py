@@ -35,12 +35,10 @@ async def login_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(),
 ):
-    access_token, token_type = await auth_service.login_user(
+    return await auth_service.login_user(
         email=form_data.username,
         pwd=form_data.password,
     )
-
-    return {"access_token": access_token, "token_type": token_type}
 
 
 @router.get("/me", response_model=UserRespDTO)
