@@ -1,35 +1,12 @@
-import random
 from dataclasses import dataclass
-from typing import Optional
 
 from faker import Faker
 
 from scripts.faker.rw import write
 
 ABC = "АБВ"
-COUNT = 100
-FILENAME_SHOPS = "data/shops.csv"
-
-
-def get_random_floor() -> int:
-    return random.randint(1, 6)
-
-
-def get_random_house() -> str:
-    a = str(random.randint(1, 100))
-    b = str(random.randint(1, 100))
-    c = random.choice(ABC)
-
-    population = (
-        f"{a}",
-        f"{a}{c}",
-        f"{a}/{b}",
-        f"{a}/{b}{c}",
-    )
-
-    weights = (4, 3, 2, 1)
-
-    return random.choices(population, weights, k=1)[0]
+COUNT = 10
+FILENAME_SHOPS = "data/shop.csv"
 
 
 def _init_faker(seed: int) -> Faker:
@@ -40,40 +17,26 @@ def _init_faker(seed: int) -> Faker:
 
 @dataclass
 class Shop:
-    city: str
-    street: str
-    house: str
-    floor: Optional[int] = None
+    address_id: int
 
 
-def _generate_shops(count: int) -> list[Shop]:
-    f = _init_faker(1234)
+def _generate_shop(count: int) -> list[Shop]:
+    f = _init_faker(4321)
 
     result: list[Shop] = []
     for iteration in range(count):
-        floor = None
-        if iteration % 20 == 0:
-            floor = get_random_floor()
-
-        result.append(
-            Shop(
-                city=f.city(),
-                street=f.street_name(),
-                house=get_random_house(),
-                floor=floor,
-            )
-        )
+        result.append(Shop(address_id=iteration + 1))
 
     return result
 
 
-def generate(count: int, to_file: bool = False) -> list[Shop]:
-    shops = _generate_shops(count)
+def generate(to_file: bool = False) -> list[Shop]:
+    shop = _generate_shop(COUNT)
 
     if to_file:
-        write(shops, FILENAME_SHOPS)
+        write(shop, FILENAME_SHOPS)
 
-    return shops
+    return shop
 
 
 def main():

@@ -32,7 +32,7 @@ def upgrade():
         column("birthday", Date),
     )
 
-    users: list[User] = generate(count=100)
+    users: list[User] = generate()
 
     try:
         op.bulk_insert(

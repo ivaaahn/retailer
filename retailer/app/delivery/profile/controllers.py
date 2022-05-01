@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.patch("/", response_model=UserRespDTO)
+@router.patch("", response_model=UserRespDTO)
 async def patch(
     body: ProfileUpdateReqDTO,
     current_user: UserRespDTO = Depends(get_current_active_user),

@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 
 from scripts.faker.rw import write
 
-COUNT = 100
+COUNT = 10
 FILENAME_USERS = "data/users.csv"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -53,8 +53,8 @@ def _generate_users(count: int) -> list[User]:
     return result
 
 
-def generate(count: int, to_file: bool = False) -> list[User]:
-    users = _generate_users(count)
+def generate(to_file: bool = False) -> list[User]:
+    users = _generate_users(COUNT)
 
     if to_file:
         write(users, FILENAME_USERS)

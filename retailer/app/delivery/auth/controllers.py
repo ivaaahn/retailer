@@ -16,7 +16,7 @@ from .deps import get_current_active_user
 
 router = APIRouter(
     prefix="/auth",
-    tags=["auth", "user"],
+    tags=["auth"],
 )
 
 
