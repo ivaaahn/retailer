@@ -19,7 +19,7 @@ from app.delivery.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.dto.signup import TokenDataDTO, TokenRespDTO
+from app.dto.signup import TokenDataDTO, TokenRespDTO, SignupRespDTO, ResendCodeRespDTO
 from app.dto.user import UserRespDTO
 from app.models.signup_session import SignupSessionModel
 from app.models.users import UserModel
@@ -56,7 +56,7 @@ class AuthService(BaseService):
     def cfg(self) -> AuthSettings:
         return self._settings
 
-    async def signup_user(self, email: str, pwd: str) -> str:
+    async def signup_user(self, email: str, pwd: str) -> SignupRespDTO:
         hashed_pwd = self._get_password_hash(pwd)
 
         active_user = await self._users_repo.get(email, only_active=True)
@@ -64,9 +64,17 @@ class AuthService(BaseService):
             raise UserAlreadyExistsError(email)
 
         web_user = await self._users_repo.upsert(email=email, password=hashed_pwd)
-        await self._send_code(web_user.email)
+        signup_session = await self._send_code(web_user.email)
 
-        return web_user.email
+        return SignupRespDTO(
+            email=web_user.email, seconds_left=signup_session.seconds_left
+        )
+
+    async def resend_code(self, email: str) -> ResendCodeRespDTO:
+        signup_session = await self._resend_code(email)
+        return ResendCodeRespDTO(
+            email=signup_session.email, seconds_left=signup_session.seconds_left
+        )
 
     async def login_user(self, email: str, pwd: str) -> TokenRespDTO:
         user = await self._authenticate_user(email, pwd)
@@ -115,10 +123,6 @@ class AuthService(BaseService):
     async def _activate_user(self, email: str) -> UserModel:
         return await self._users_repo.update(email=email, is_active=True)
 
-    async def resend_code(self, email: str) -> str:
-        signup_session = await self._resend_code(email)
-        return signup_session.email
-
     async def _check_session_and_send_code(self, email: str) -> str:
         await self._check_session_expiration(email)
 
@@ -161,9 +165,6 @@ class AuthService(BaseService):
 
     @staticmethod
     def _verify_password(plain_password: str, hashed_password: str) -> bool:
-        if hashed_password.startswith("bcrypt$"):
-            hashed_password = hashed_password[7:]
-
         return pwd_context.verify(plain_password, hashed_password)
 
     async def _authenticate_user(self, email: str, pswd: str) -> UserModel:

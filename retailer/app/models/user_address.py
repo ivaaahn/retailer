@@ -8,11 +8,11 @@ from sqlalchemy import (
 
 from app.base.models import BaseModel
 
-__all__ = ("AddressModel",)
+__all__ = ("UserAddressModel",)
 
 
-class AddressModel(BaseModel):
-    __tablename__ = "addresses"
+class UserAddressModel(BaseModel):
+    __tablename__ = "user_addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)

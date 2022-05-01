@@ -1,7 +1,8 @@
 from sqlalchemy import (
     Column,
     Integer,
-    ForeignKey, Identity,
+    ForeignKey,
+    Identity,
 )
 
 from app.base.models import BaseModel

@@ -1,7 +1,7 @@
 """product_categories data was added
 
 Revision ID: c2f80473fa1c
-Revises: 6396f15cadeb
+Revises: 59ca10a9bd19
 Create Date: 2022-04-10 18:09:35.170909
 
 """
@@ -13,7 +13,7 @@ from alembic import op
 from sqlalchemy import table, Integer, column, Text
 
 revision = "c2f80473fa1c"
-down_revision = "6396f15cadeb"
+down_revision = "59ca10a9bd19"
 branch_labels = None
 depends_on = None
 

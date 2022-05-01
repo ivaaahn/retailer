@@ -1,7 +1,7 @@
 """users data was added
 
 Revision ID: 3dc8529d8689
-Revises: 547a17f639a0
+Revises: 9b55a88e1cd5
 Create Date: 2022-04-03 17:40:36.446728
 
 """
@@ -15,7 +15,7 @@ from scripts.faker.users import User, generate
 
 # revision identifiers, used by Alembic.
 revision = "3dc8529d8689"
-down_revision = "547a17f639a0"
+down_revision = "9b55a88e1cd5"
 branch_labels = None
 depends_on = None
 
