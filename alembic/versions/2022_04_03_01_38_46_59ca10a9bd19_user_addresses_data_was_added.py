@@ -21,7 +21,7 @@ depends_on = None
 
 def upgrade():
     addresses_table = table(
-        "addresses",
+        "user_addresses",
         column("id", Integer),
         column("user_id", Integer),
         column("city", Text),
