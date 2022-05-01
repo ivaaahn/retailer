@@ -17,8 +17,8 @@ from sqlalchemy import column, table, Integer, Text
 from scripts.faker.shops import generate as generate_shops, Shop
 from scripts.faker.shops_addresses import ShopAddress, generate as generate_addresses
 
-revision = '2dc1991f1701'
-down_revision = '9b55a88e1cd5'
+revision = "2dc1991f1701"
+down_revision = "9b55a88e1cd5"
 branch_labels = None
 depends_on = None
 
@@ -31,7 +31,6 @@ def upgrade():
         column("street", Text),
         column("house", Text),
         column("floor", Integer),
-
     )
 
     shops_addresses: list[ShopAddress] = generate_addresses()
@@ -40,7 +39,6 @@ def upgrade():
         "shops",
         column("id", Integer),
         column("address_id", Integer),
-
     )
 
     shops: list[Shop] = generate_shops()
