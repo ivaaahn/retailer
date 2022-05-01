@@ -3,25 +3,35 @@ from django.contrib import admin
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 
-from users.models import UserModel
+from shops.models import ShopModel
+
+UserModel = get_user_model()
+
+
+class ShopInlineAdmin(admin.TabularInline):
+    model = ShopModel.staff.through
+    verbose_name = "Магазин"
+    verbose_name_plural = "Магазины"
 
 
 class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
-
-    password1 = forms.CharField(label="Пароль", widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput({"autocomplete": "Новый пароль"}),
+        strip=False,
+    )
     password2 = forms.CharField(
-        label="Подтверждение пароля", widget=forms.PasswordInput
+        label="Подтверждение пароля",
+        widget=forms.PasswordInput({"autocomplete": "Новый пароль"}),
+        strip=False,
     )
 
     class Meta:
         model = UserModel
-        fields = ("email", "name", "is_active", "birthday", "role")
+        fields = ("email", "name", "is_active", "role")
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -41,13 +51,6 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    disabled password hash display field.
-    """
-
-    # password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = UserModel
         fields = (
@@ -66,7 +69,6 @@ class GroupInlineAdmin(admin.TabularInline):
     verbose_name_plural = "Группы пользователя"
 
 
-@admin.register(UserModel)
 class UserAdmin(BaseUserAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
@@ -103,24 +105,49 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
-    inlines = (GroupInlineAdmin,)
+    inlines = (
+        ShopInlineAdmin,
+        GroupInlineAdmin,
+    )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
+
     add_fieldsets = (
         (
-            None,
+            "Почта и пароль",
             {
                 "classes": ("wide",),
-                "fields": ("email", "name", "birthday", "password1", "password2"),
+                "fields": (
+                    "email",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
+        (
+            "Личная информация",
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "name",
+                    "birthday",
+                ),
+            },
+        ),
+        (
+            "Настройки аккаунта",
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "role",
+                    "is_active",
+                ),
             },
         ),
     )
     search_fields = ("email",)
     ordering = ("email",)
     filter_horizontal = ()
-
-
-User = get_user_model()
 
 
 # Create ModelForm based on the Group model.
@@ -131,7 +158,7 @@ class GroupAdminForm(forms.ModelForm):
 
     # Add the users field.
     users = forms.ModelMultipleChoiceField(
-        queryset=User.objects.all().filter(role="staff"),
+        queryset=UserModel.objects.all().filter(role="staff"),
         required=False,
         # Use the pretty 'filter_horizontal widget'.
         widget=FilteredSelectMultiple("users", False),
@@ -157,10 +184,6 @@ class GroupAdminForm(forms.ModelForm):
         return instance
 
 
-# Unregister the original Group admin.
-admin.site.unregister(Group)
-
-
 # Create a new Group admin.
 class GroupAdmin(admin.ModelAdmin):
     # Use our custom form.
@@ -170,4 +193,7 @@ class GroupAdmin(admin.ModelAdmin):
 
 
 # Register the new Group ModelAdmin.
+admin.site.unregister(Group)
 admin.site.register(Group, GroupAdmin)
+
+admin.site.register(UserModel, UserAdmin)

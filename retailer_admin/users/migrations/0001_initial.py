@@ -5,21 +5,6 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
-def apply_migration(apps, schema_editor):
-    db_alias = schema_editor.connection.alias
-
-    Group = apps.get_model("auth", "Group")
-    Group.objects.using(db_alias).bulk_create([Group(name="Staff")])
-
-
-#     TODO: добавить permissions
-
-
-def revert_migration(apps, schema_editor):
-    Group = apps.get_model("auth", "Group")
-    Group.objects.filter(name__in=["Staff"]).delete()
-
-
 class Migration(migrations.Migration):
 
     initial = True
@@ -125,5 +110,4 @@ class Migration(migrations.Migration):
                 "db_table": "users_groups",
             },
         ),
-        migrations.RunPython(apply_migration, revert_migration),
     ]

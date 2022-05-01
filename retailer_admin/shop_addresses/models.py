@@ -12,7 +12,7 @@ class ShopAddressModel(models.Model):
     floor = models.IntegerField(verbose_name="Этаж", null=True, blank=True)
 
     def __str__(self):
-        return f"Адрес: {self.city}, {self.street}, {self.house}"
+        return f"{self.city}, {self.street}, {self.house}"
 
     class Meta:
         managed = False
