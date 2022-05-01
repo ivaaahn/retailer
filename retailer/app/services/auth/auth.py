@@ -21,7 +21,7 @@ from app.delivery.auth.errors import (
 )
 from app.dto.signup import TokenDataDTO, TokenRespDTO, SignupRespDTO, ResendCodeRespDTO
 from app.dto.user import UserRespDTO
-from app.models.signup_session import SignupSessionModel
+from app.models.signup_sessions import SignupSessionModel
 from app.models.users import UserModel
 from app.repos import (
     IRMQInteractRepo,

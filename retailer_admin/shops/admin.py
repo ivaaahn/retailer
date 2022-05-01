@@ -3,6 +3,13 @@ from django.contrib import admin
 from shops.models import ShopModel
 
 
+def shop_address(obj):
+    return obj.address
+
+
+shop_address.short_description = "Адрес магазина"
+
+
 class StaffInlineAdmin(admin.TabularInline):
     model = ShopModel.staff.through
     verbose_name = "Сотрудник магазина"
@@ -11,7 +18,8 @@ class StaffInlineAdmin(admin.TabularInline):
 
 @admin.register(ShopModel)
 class ShopAdmin(admin.ModelAdmin):
-    list_display = ("id", "city", "street", "house", "floor")
+    list_display = ("id", shop_address)
+    sortable_by = ("id",)
     inlines = (StaffInlineAdmin,)
 
     def get_queryset(self, request):

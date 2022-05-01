@@ -8,7 +8,7 @@ class PgSettings(BaseSettings):
     echo: bool
 
     class Config:
-        env_file = ".env"
+        env_file = "app.env"
         env_prefix = "PG_"
 
 

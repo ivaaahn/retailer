@@ -19,5 +19,5 @@ class ShopProductsModel(BaseModel):
     id = Column(Integer, Identity(), primary_key=True)
     shop_id = Column(Integer, ForeignKey("shops.id"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
-    price = Column(Float, nullable=False)
+    # price = Column(Float, nullable=False)
     qty = Column(Integer, nullable=True)

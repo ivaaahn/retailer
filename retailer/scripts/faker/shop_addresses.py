@@ -8,7 +8,7 @@ from scripts.faker.rw import write
 
 ABC = "АБВ"
 COUNT = 10
-FILENAME_SHOPS_ADDRESSES = "data/shop_address.csv"
+FILENAME_SHOP_ADDRESSES = "data/shop_addresses.csv"
 
 
 def get_random_floor() -> int:
@@ -46,7 +46,7 @@ class ShopAddress:
     floor: Optional[int] = None
 
 
-def _generate_shops_addresses(count: int) -> list[ShopAddress]:
+def _generate_shop_addresses(count: int) -> list[ShopAddress]:
     f = _init_faker(1234)
 
     result: list[ShopAddress] = []
@@ -68,12 +68,12 @@ def _generate_shops_addresses(count: int) -> list[ShopAddress]:
 
 
 def generate(to_file: bool = False) -> list[ShopAddress]:
-    shops_addresses = _generate_shops_addresses(COUNT)
+    shop_addresses = _generate_shop_addresses(COUNT)
 
     if to_file:
-        write(shops_addresses, FILENAME_SHOPS_ADDRESSES)
+        write(shop_addresses, FILENAME_SHOP_ADDRESSES)
 
-    return shops_addresses
+    return shop_addresses
 
 
 def main():

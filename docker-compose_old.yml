@@ -3,22 +3,22 @@ version: "3"
 services:
   rabbit:
     build:
-      context: ./docker/rabbitmq/
+      context: docker/rabbitmq/
       dockerfile: Dockerfile
-    container_name: retailer-rmq
+    container_name: rabbitmq
     expose:
       - 5672
       - 15672
     volumes:
-      - rabbit_data_volume:/var/lib/rabbit/
-      - rabbit_logs_volume:/var/log/rabbit/
+      - rabbit_data_volume:/var/lib/rabbitmq/
+      - rabbit_logs_volume:/var/log/rabbitmq/
     restart: unless-stopped
 
   pg:
     image: postgres:alpine
-    container_name: retailer-pg
-    ports:
-      - "8765:5432"
+    container_name: pg
+    expose:
+      - 5432
     environment:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
@@ -28,16 +28,31 @@ services:
       - pg_data_volume:/var/lib/postgresql/data
     restart: unless-stopped
 
-  api:
+  app:
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
-    container_name: api
+    container_name: app
     ports:
       - "8080:8080"
     depends_on:
       - pg
       - rabbit
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: .
+      dockerfile: ./docker/admin/Dockerfile
+    container_name: admin
+    environment:
+      DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
+      DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pg
+      - app
     restart: unless-stopped
 
   pymailer:
@@ -48,19 +63,7 @@ services:
     depends_on:
       - rabbit
     restart: unless-stopped
-#
-#  worker:
-#    image: ivaaahn/bjbot-worker:1.1
-#    container_name: worker
-#    depends_on:
-#      - redis
-#      - mongo
-#      - rabbit
-#    restart: unless-stopped
-#
-#
 volumes:
-#  redis_data_volume:
   pg_data_volume:
   rabbit_data_volume:
   rabbit_logs_volume:

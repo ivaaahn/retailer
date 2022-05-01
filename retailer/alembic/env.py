@@ -5,24 +5,25 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from retailer.store.pg.sa import metadata
-from retailer.store.pg.settings import get_settings
+from store.pg.sa import metadata
+from store.pg.settings import get_settings
 
 
 ###############DO NOT DELETE########################
-from retailer.app.models.signup_session import *
-from retailer.app.models.users import *
-from retailer.app.models.shop_address import *
-from retailer.app.models.products import *
-from retailer.app.models.user_address import *
-from retailer.app.models.product_categories import *
-from retailer.app.models.shops import *
-from retailer.app.models.shop_products import *
+from app.models.products import *
+from app.models.product_categories import *
+from app.models.shop_addresses import *
+from app.models.shop_products import *
+from app.models.shops import *
+from app.models.signup_sessions import *
+from app.models.staff import *
+from app.models.user_addresses import *
+from app.models.users import *
 
 ####################################################
 
 
-# Parsing cfg .env with pg settings
+# Parsing cfg django.env with pg settings
 pg_settings = get_settings()
 
 

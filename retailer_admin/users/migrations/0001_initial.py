@@ -12,6 +12,9 @@ def apply_migration(apps, schema_editor):
     Group.objects.using(db_alias).bulk_create([Group(name="Staff")])
 
 
+#     TODO: добавить permissions
+
+
 def revert_migration(apps, schema_editor):
     Group = apps.get_model("auth", "Group")
     Group.objects.filter(name__in=["Staff"]).delete()

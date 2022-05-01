@@ -9,7 +9,7 @@ class AuthSettings(BaseSettings):
     access_token_exp_minutes: int
 
     class Config:
-        env_file = ".env"
+        env_file = "app.env"
         env_prefix = "AUTH_"
 
 

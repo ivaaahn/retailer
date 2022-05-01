@@ -1,7 +1,7 @@
 import abc
 from typing import Optional
 
-from app.models.signup_session import SignupSessionModel
+from app.models.signup_sessions import SignupSessionModel
 
 
 class ISignupSessionRepo(metaclass=abc.ABCMeta):

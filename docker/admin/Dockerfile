@@ -2,14 +2,14 @@ FROM python:3.10-slim
 
 WORKDIR /project
 
-COPY requirements_app.txt requirements.txt
+COPY requirements_admin.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY ./retailer .
+COPY ./retailer_admin .
 COPY ./docker/wait-for-it.sh wait.sh
 
 RUN chmod +x wait.sh
 
 ENTRYPOINT ["bash"]
-CMD ["./wait.sh", "pg:5432", "-t", "30", "--", "bash", "./run.sh"]
+CMD ["./wait.sh", "app:8080", "-t", "45", "--", "bash", "./run.sh"]
 

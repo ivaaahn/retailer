@@ -15,7 +15,7 @@ import sqlalchemy as sa
 from sqlalchemy import column, table, Integer, Text
 
 from scripts.faker.shops import generate as generate_shops, Shop
-from scripts.faker.shops_addresses import ShopAddress, generate as generate_addresses
+from scripts.faker.shop_addresses import ShopAddress, generate as generate_addresses
 
 revision = "2dc1991f1701"
 down_revision = "3dc8529d8689"
@@ -24,8 +24,8 @@ depends_on = None
 
 
 def upgrade():
-    shops_addresses_table = table(
-        "shops_addresses",
+    shop_addresses_table = table(
+        "shop_addresses",
         column("id", Integer),
         column("city", Text),
         column("street", Text),
@@ -33,7 +33,7 @@ def upgrade():
         column("floor", Integer),
     )
 
-    shops_addresses: list[ShopAddress] = generate_addresses()
+    shop_addresses: list[ShopAddress] = generate_addresses()
 
     shops_table = table(
         "shops",
@@ -45,8 +45,8 @@ def upgrade():
 
     try:
         op.bulk_insert(
-            shops_addresses_table,
-            [asdict(address) for address in shops_addresses],
+            shop_addresses_table,
+            [asdict(address) for address in shop_addresses],
         )
         op.bulk_insert(
             shops_table,

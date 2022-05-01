@@ -11,7 +11,7 @@ class LoggerSettings(BaseSettings):
     file_logger_filename: str
 
     class Config:
-        env_file = ".env"
+        env_file = "app.env"
         env_prefix = "LOG_"
 
 

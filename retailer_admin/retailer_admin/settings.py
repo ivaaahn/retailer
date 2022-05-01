@@ -16,11 +16,10 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_RETAILER_ADMIN_DIR = Path(__file__).resolve().parent.parent
-BASE_PROJECT_DIR = BASE_RETAILER_ADMIN_DIR.parent
 
 config = dotenv_values(
-    f"{BASE_PROJECT_DIR}/.env"
-)  # take environment variables from .env.
+    f"{BASE_RETAILER_ADMIN_DIR}/django.env"
+)  # take environment variables from django.env.
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,7 +31,7 @@ SECRET_KEY = config["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 
 # Application definition
@@ -47,6 +46,7 @@ INSTALLED_APPS = [
     "products",
     "product_categories",
     "shops",
+    "shop_addresses",
     "staff",
     "users",
 ]

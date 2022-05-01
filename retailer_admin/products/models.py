@@ -4,12 +4,16 @@ from product_categories.models import ProductCategoryModel
 
 
 class ProductModel(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.TextField(null=False, blank=False)
-    photo = models.TextField(null=False, blank=False)
-    description = models.TextField(null=True, blank=True)
+    id = models.BigAutoField(verbose_name="Идентификатор", primary_key=True)
+    name = models.TextField(verbose_name="Название", null=False, blank=False)
+    photo = models.TextField(verbose_name="Фото", null=False, blank=False)
+    description = models.TextField(verbose_name="Описание", null=True, blank=True)
     category = models.ForeignKey(
-        ProductCategoryModel, models.CASCADE, blank=False, null=False
+        ProductCategoryModel,
+        models.CASCADE,
+        verbose_name="Категория",
+        blank=False,
+        null=False,
     )
 
     def __str__(self):

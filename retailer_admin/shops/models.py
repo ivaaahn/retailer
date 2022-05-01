@@ -1,15 +1,15 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from shop_addresses.models import ShopAddressModel
 from users.models import UserModel
 
 
 class ShopModel(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    city = models.TextField(null=False, blank=False)
-    street = models.TextField(null=False, blank=False)
-    house = models.TextField(null=False, blank=False)
-    floor = models.IntegerField(null=True, blank=True)
+    id = models.BigAutoField(primary_key=True, verbose_name="Идентификатор магазина")
+    address = models.ForeignKey(
+        ShopAddressModel, models.CASCADE, blank=False, null=False
+    )
     staff = models.ManyToManyField(
         UserModel,
         verbose_name=_("Сотрудники магазина"),
@@ -21,7 +21,7 @@ class ShopModel(models.Model):
     )
 
     def __str__(self):
-        return f"Address: {self.city}, {self.street}, {self.house})"
+        return f"Магазин #{self.id}"
 
     class Meta:
         managed = False
