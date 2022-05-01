@@ -1,4 +1,4 @@
-"""addresses data was added
+"""user addresses data was added
 
 Revision ID: 59ca10a9bd19
 Revises: 39f94d3d830d
@@ -11,7 +11,7 @@ from dataclasses import asdict
 from alembic import op
 from sqlalchemy import column, table, Integer, Text
 
-from scripts.faker.addresses import Address, generate as generate_addresses
+from scripts.faker.user_addresses import UserAddress, generate as generate_addresses
 
 revision = "59ca10a9bd19"
 down_revision = "39f94d3d830d"
@@ -32,7 +32,7 @@ def upgrade():
         column("flat", Text),
     )
 
-    addresses: list[Address] = generate_addresses(count=100)
+    addresses: list[UserAddress] = generate_addresses()
 
     try:
         op.bulk_insert(

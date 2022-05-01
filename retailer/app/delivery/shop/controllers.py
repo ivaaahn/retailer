@@ -31,11 +31,15 @@ async def get_list(paging_params: ShopListPagingParams = Depends(shop_paging_par
         shops=[
             ShopRespDTO(
                 id=1,
-                address=ShopAddressDTO(id=1, city="Москва", street="Набережная", house="25А"),
+                address=ShopAddressDTO(
+                    id=1, city="Москва", street="Набережная", house="25А"
+                ),
             ),
             ShopRespDTO(
                 id=2,
-                address=ShopAddressDTO(id=2, city="Москва", street="Советская", house=48),
+                address=ShopAddressDTO(
+                    id=2, city="Москва", street="Советская", house=48
+                ),
             ),
             ShopRespDTO(
                 id=3,
@@ -43,7 +47,9 @@ async def get_list(paging_params: ShopListPagingParams = Depends(shop_paging_par
             ),
             ShopRespDTO(
                 id=4,
-                address=ShopAddressDTO(id=2, city="Москва", street="Карла-Маркса", house=121),
+                address=ShopAddressDTO(
+                    id=2, city="Москва", street="Карла-Маркса", house=121
+                ),
             ),
             ShopRespDTO(
                 id=5,
@@ -51,7 +57,9 @@ async def get_list(paging_params: ShopListPagingParams = Depends(shop_paging_par
             ),
             ShopRespDTO(
                 id=6,
-                address=ShopAddressDTO(id=2, city="Москва", street="3-я Парковая", house=7),
+                address=ShopAddressDTO(
+                    id=2, city="Москва", street="3-я Парковая", house=7
+                ),
             ),
         ],
         total=6,

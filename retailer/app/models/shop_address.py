@@ -11,7 +11,7 @@ __all__ = ("ShopAddressModel",)
 
 
 class ShopAddressModel(BaseModel):
-    __tablename__ = "shops_address"
+    __tablename__ = "shops_addresses"
 
     id = Column(Integer, Identity(), primary_key=True)
     city = Column(Text, nullable=False, index=True)

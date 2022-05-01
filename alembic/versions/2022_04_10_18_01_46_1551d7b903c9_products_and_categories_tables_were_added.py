@@ -1,7 +1,7 @@
 """products and categories tables were added
 
 Revision ID: 1551d7b903c9
-Revises: 6396f15cadeb
+Revises: 49f94d3d830d
 Create Date: 2022-04-10 18:01:46.932822
 
 """
@@ -10,7 +10,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "1551d7b903c9"
-down_revision = "6396f15cadeb"
+down_revision = "49f94d3d830d"
 branch_labels = None
 depends_on = None
 

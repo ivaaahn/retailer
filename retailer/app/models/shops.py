@@ -14,4 +14,4 @@ class ShopModel(BaseModel):
     __tablename__ = "shops"
 
     id = Column(Integer, Identity(), primary_key=True)
-    address_id = Column(Integer, ForeignKey("shops_address.id"), nullable=False)
+    address_id = Column(Integer, ForeignKey("shops_addresses.id"), nullable=False)
