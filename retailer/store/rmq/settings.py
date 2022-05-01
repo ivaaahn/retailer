@@ -11,7 +11,7 @@ class RMQSettings(BaseSettings):
     queue_name: str
 
     class Config:
-        env_file = ".env"
+        env_file = "app.env"
         env_prefix = "RMQ_"
 
 

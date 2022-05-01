@@ -3,3 +3,5 @@ venv/
 .git/
 .gitignore/
 __pycache__/
+example*
+.idea/

@@ -8,15 +8,15 @@ services:
       - 5672
       - 15672
     volumes:
-      - rabbit_data_volume:/var/lib/rabbit/
-      - rabbit_logs_volume:/var/log/rabbit/
+      - rabbit_data_volume:/var/lib/rabbitmq/
+      - rabbit_logs_volume:/var/log/rabbitmq/
     restart: unless-stopped
 
   pg:
     image: postgres:alpine
-    container_name: retailer-pg
-    ports:
-      - "8765:5432"
+    container_name: pg
+#    ports:
+#      - "8765:5432"
     environment:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER

@@ -9,7 +9,7 @@ from sqlalchemy.sql.functions import now as sa_now
 
 from app.base.repo import BasePgRepo
 from app.delivery.auth.errors import SessionNotFoundError, SignupSessionExpiredError
-from app.models.signup_session import SignupSessionModel
+from app.models.signup_sessions import SignupSessionModel
 from .interface import ISignupSessionRepo
 
 

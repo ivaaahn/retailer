@@ -6,8 +6,6 @@ from sqlalchemy import (
     Identity,
     Text,
     ForeignKey,
-    func,
-    Index,
 )
 
 from app.base.models import BaseModel
@@ -17,13 +15,6 @@ __all__ = ("ProductModel",)
 
 class ProductModel(BaseModel):
     __tablename__ = "products"
-    __table_args__ = (
-        Index(
-            "idx_products_name_lower",
-            func.lower("products.name"),
-            unique=True,
-        ),
-    )
 
     id = Column(Integer, Identity(), primary_key=True)
     name = Column(Text, nullable=False)

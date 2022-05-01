@@ -19,9 +19,9 @@ from app.delivery.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.dto.signup import TokenDataDTO, SignupRespDTO, ResendCodeRespDTO
+from app.dto.signup import TokenDataDTO, TokenRespDTO, SignupRespDTO, ResendCodeRespDTO
 from app.dto.user import UserRespDTO
-from app.models.signup_session import SignupSessionModel
+from app.models.signup_sessions import SignupSessionModel
 from app.models.users import UserModel
 from app.repos import (
     IRMQInteractRepo,
@@ -76,7 +76,7 @@ class AuthService(BaseService):
             email=signup_session.email, seconds_left=signup_session.seconds_left
         )
 
-    async def login_user(self, email: str, pwd: str) -> tuple[str, str]:
+    async def login_user(self, email: str, pwd: str) -> TokenRespDTO:
         user = await self._authenticate_user(email, pwd)
         if not user.is_active:
             raise InactiveAccountError
@@ -86,7 +86,12 @@ class AuthService(BaseService):
             data={"sub": user.email},
             expires_delta=access_token_expires,
         )
-        return access_token, "bearer"
+        await self._users_repo.update(email, last_login=datetime.utcnow())
+
+        return TokenRespDTO(
+            access_token=access_token,
+            token_type="bearer",
+        )
 
     async def get_current_user(self, token: str) -> UserRespDTO:
         try:

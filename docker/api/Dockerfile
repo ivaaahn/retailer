@@ -1,16 +1,15 @@
-FROM python:3.10
+FROM python:3.10-slim
 
-COPY requirements.txt /
-RUN pip install -r /requirements.txt
-ENV PYTHONPATH=./retailer
-
-COPY . /project
 WORKDIR /project
 
-EXPOSE 8080
+COPY requirements_app.txt requirements.txt
+RUN pip install -r requirements.txt
 
-RUN chmod +x ./docker/wait-for-it.sh
+COPY ./retailer .
+COPY ./docker/wait-for-it.sh wait.sh
+
+RUN chmod +x wait.sh
 
 ENTRYPOINT ["bash"]
-CMD ["./docker/wait-for-it.sh", "retailer_pg:5432", "-t", "30", "--", "bash", "run_api.sh"]
+CMD ["./wait.sh", "pg:5432", "-t", "30", "--", "bash", "./run.sh"]
 
