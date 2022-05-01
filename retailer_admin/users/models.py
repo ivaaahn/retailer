@@ -50,7 +50,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     id = models.BigAutoField(primary_key=True)
     email = models.EmailField(null=False, unique=True)
     name = models.CharField(max_length=30, null=True)
-    is_active = models.BooleanField(null=False, default=False)
+    is_active = models.BooleanField(null=True, default=True)
     created_at = models.DateTimeField(null=False, auto_now_add=True)
     birthday = models.DateField(null=True)
     role = models.TextField(

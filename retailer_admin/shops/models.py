@@ -8,7 +8,7 @@ from users.models import UserModel
 class ShopModel(models.Model):
     id = models.BigAutoField(primary_key=True, verbose_name="Идентификатор магазина")
     address = models.ForeignKey(
-        ShopAddressModel, models.CASCADE, blank=False, null=False
+        ShopAddressModel, models.CASCADE, verbose_name="Адрес", blank=False, null=False
     )
     staff = models.ManyToManyField(
         UserModel,
@@ -21,7 +21,7 @@ class ShopModel(models.Model):
     )
 
     def __str__(self):
-        return f"Магазин #{self.id}"
+        return f"М-{self.id} ({self.address})"
 
     class Meta:
         managed = False
