@@ -8,8 +8,5 @@
    + `CREATE DATABASE dbname;`
 3. Определить права
    + `grant all privileges on database sample_db to user_name;`
-4. Загрузить все изменения из ветки *dev*
-5. Создать переменную окружения, находясь в корне проекта
-   + `export PYTHONPATH=$PYTHONPATH:${PWD}/retailer`
-6. Накатить миграции
+4. Накатить миграции
    + `alembic upgrade head`
