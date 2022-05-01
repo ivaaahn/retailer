@@ -14,8 +14,8 @@ from app.dto.orders import (
 from app.dto.products import ShopProductDTO
 
 router = APIRouter(
-    prefix="/orders",
-    tags=["orders"],
+    prefix="/order",
+    tags=["order"],
 )
 
 

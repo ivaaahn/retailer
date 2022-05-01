@@ -4,8 +4,8 @@ from app.delivery.products.deps import ProductListPagingParams, product_paging_p
 from app.dto.products import ShopProductsListDTO, ShopProductDTO
 
 router = APIRouter(
-    prefix="/products",
-    tags=["products"],
+    prefix="/product",
+    tags=["product"],
 )
 
 
