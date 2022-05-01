@@ -12,5 +12,5 @@ EXPOSE 8080
 RUN chmod +x ./docker/wait-for-it.sh
 
 ENTRYPOINT ["bash"]
-CMD ["./docker/wait-for-it.sh", "retailer_pg:5432", "-t", "60", "--", "bash", "run_api.sh"]
+CMD ["./docker/wait-for-it.sh", "retailer_pg:5432", "-t", "30", "--", "bash", "run_api.sh"]
 
