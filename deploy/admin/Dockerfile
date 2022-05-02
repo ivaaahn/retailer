@@ -6,7 +6,7 @@ COPY requirements_admin.txt requirements.txt
 RUN pip install -r requirements.txt
 
 COPY ./retailer_admin .
-COPY ./docker/wait-for-it.sh wait.sh
+COPY ./deploy/wait-for-it.sh wait.sh
 
 RUN chmod +x wait.sh
 

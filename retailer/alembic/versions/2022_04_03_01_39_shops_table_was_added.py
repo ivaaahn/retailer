@@ -23,7 +23,9 @@ def upgrade():
         sa.Column("address_id", sa.Integer(), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_shops")),
         sa.ForeignKeyConstraint(
-            ["address_id"], ["shop_addresses.id"], name=op.f("fk_shops_address_id_shop_addresses")
+            ["address_id"],
+            ["shop_addresses.id"],
+            name=op.f("fk_shops_address_id_shop_addresses"),
         ),
     )
 

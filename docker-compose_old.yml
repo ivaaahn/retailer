@@ -1,17 +1,68 @@
 version: "3"
 
+# Host OS : Container
+
 services:
-  rabbit:
-    build:
-      context: docker/rabbitmq/
-      dockerfile: Dockerfile
-    container_name: rabbitmq
-    expose:
-      - 5672
-      - 15672
+  web:
+    container_name: web
+    image: nginx:alpine
+    depends_on:
+      - app
+      - admin
+    ports:
+      - "80:80"
     volumes:
-      - rabbit_data_volume:/var/lib/rabbitmq/
-      - rabbit_logs_volume:/var/log/rabbitmq/
+      - ./deploy/web/conf.d:/etc/nginx/conf.d
+      - ./data/static:/var/www/static
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: deploy/api/Dockerfile
+    container_name: app
+    environment:
+      DEPLOY_MODE: "true"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pg
+#      - rabbit
+    #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
+    # volumes:
+    #   - ./app/app:/app/app
+    #of the app container`CMD`To overwrite`command`use
+    # command: "uvicorn app.main:app --reload --host 0.0.0.0"
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: .
+      dockerfile: deploy/admin/Dockerfile
+    container_name: admin
+    environment:
+      DEPLOY_MODE: "true"
+      DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
+      DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pg
+      - app
+    #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
+    # volumes:
+    #   - ./app/app:/app/app
+    #of the app container`CMD`To overwrite`command`use
+    # command: "uvicorn app.main:app --reload --host 0.0.0.0"
+    restart: unless-stopped
+
+  pymailer:
+    build:
+      context: ../pymailer
+      dockerfile: Dockerfile
+    container_name: pymailer
+    depends_on:
+      - rabbit
     restart: unless-stopped
 
   pg:
@@ -23,46 +74,25 @@ services:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
       POSTGRES_PASSWORD: $PG_PSWD
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      PGDATA: "/data/lib/postgresql/data/pgdata"
     volumes:
-      - pg_data_volume:/var/lib/postgresql/data
+      - pg_data_volume:/data/lib/postgresql/data
     restart: unless-stopped
 
-  app:
+  rabbit:
     build:
-      context: .
-      dockerfile: ./docker/api/Dockerfile
-    container_name: app
-    ports:
-      - "8080:8080"
-    depends_on:
-      - pg
-      - rabbit
-    restart: unless-stopped
-
-  admin:
-    build:
-      context: .
-      dockerfile: ./docker/admin/Dockerfile
-    container_name: admin
-    environment:
-      DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
-      DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
-    ports:
-      - "8000:8000"
-    depends_on:
-      - pg
-      - app
-    restart: unless-stopped
-
-  pymailer:
-    build:
-      context: ../pymailer
+      context: deploy/rabbitmq/
       dockerfile: Dockerfile
-    container_name: pymailer
-    depends_on:
-      - rabbit
+    container_name: rabbitmq
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - rabbit_data_volume:/data/lib/rabbitmq/
+      - rabbit_logs_volume:/data/log/rabbitmq/
     restart: unless-stopped
+
+
 volumes:
   pg_data_volume:
   rabbit_data_volume:

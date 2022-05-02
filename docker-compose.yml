@@ -8,8 +8,8 @@ services:
       - 5672
       - 15672
     volumes:
-      - rabbit_data_volume:/var/lib/rabbitmq/
-      - rabbit_logs_volume:/var/log/rabbitmq/
+      - rabbit_data_volume:/data/lib/rabbitmq/
+      - rabbit_logs_volume:/data/log/rabbitmq/
     restart: unless-stopped
 
   pg:
@@ -21,9 +21,9 @@ services:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
       POSTGRES_PASSWORD: $PG_PSWD
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      PGDATA: "/data/lib/postgresql/data/pgdata"
     volumes:
-      - pg_data_volume:/var/lib/postgresql/data
+      - pg_data_volume:/data/lib/postgresql/data
     restart: unless-stopped
 
   api:

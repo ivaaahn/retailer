@@ -1,14 +1,15 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn, BaseSettings
+from pydantic import PostgresDsn
+
+from config import RetailerSettings
 
 
-class PgSettings(BaseSettings):
+class PgSettings(RetailerSettings):
     dsn: PostgresDsn
     echo: bool
 
     class Config:
-        env_file = "app.env"
         env_prefix = "PG_"
 
 
