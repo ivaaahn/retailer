@@ -50,9 +50,6 @@ class AttachmentsRepo(IAttachmentsRepo, BaseS3Repo):
         except Exception:
             raise AttachmentNotFound(key)
 
-        # resp.content_type = object_info["content-type"]
-        # resp.content_length = object_info["content-length"]
-
         object_info = s3_object["ResponseMetadata"]["HTTPHeaders"]
 
         return StreamingResponse(
