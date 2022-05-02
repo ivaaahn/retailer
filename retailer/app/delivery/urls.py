@@ -11,7 +11,6 @@ from .attachments.controllers import router as attachments_router
 
 _router = APIRouter(
     prefix="/api",
-    tags=["root"],
 )
 
 
