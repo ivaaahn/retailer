@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from logger.logger import get_logger
 from store.pg import pg_accessor, PgAccessor
 from store.rmq import RMQAccessor, rmq_accessor
+from store.s3 import S3Accessor, s3_accessor
 
 
 class BaseRepo:
@@ -30,6 +31,12 @@ class BaseRMQRepo(BaseRepo):
     def __init__(self, rmq: RMQAccessor = Depends(rmq_accessor)):
         super().__init__()
         self._rmq: "RMQAccessor" = rmq
+
+
+class BaseS3Repo(BaseRepo):
+    def __init__(self, s3: S3Accessor = Depends(s3_accessor)):
+        super().__init__()
+        self._s3 = s3
 
 
 class BasePgRepo(BaseRepo):
