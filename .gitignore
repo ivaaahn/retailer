@@ -18,7 +18,7 @@ lib/
 lib64/
 parts/
 sdist/
-var/
+data/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
@@ -102,8 +102,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-django.env
-app.env
+test.env
+deploy.env
 .venv
 env/
 venv/

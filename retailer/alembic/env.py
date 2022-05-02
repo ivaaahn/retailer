@@ -23,7 +23,6 @@ from app.models.users import *
 ####################################################
 
 
-# Parsing cfg django.env with pg settings
 pg_settings = get_settings()
 
 
