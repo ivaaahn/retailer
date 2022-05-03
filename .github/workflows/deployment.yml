@@ -15,7 +15,7 @@ jobs:
 
       - name: ls-test
         run: |
-          ls
+          ls -a
 
       - name: Setuping .env files
         run: |
@@ -24,7 +24,7 @@ jobs:
 
       - name: ls-test2
         run: |
-          ls
+          ls -a
 #
 #      - name: Login to DockerHub
 #        uses: docker/login-action@v1
