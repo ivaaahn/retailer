@@ -27,19 +27,20 @@ jobs:
            push: true
            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:$(git rev-parse --short "$GITHUB_SHA")
 
-       - name: Build the Retailer Admin
-         uses: docker/build-push-action@v2
+       - name: Deploying
+         uses: appleboy/ssh-action@master
          with:
-           file: ./deploy/admin/Dockerfile
-           context: .
-           push: true
-           tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:$(git rev-parse --short "$GITHUB_SHA")
-
-        - name: executing remote ssh commands using password
-          uses: appleboy/ssh-action@master
-          with:
             host: ${{ secrets.DOCKER_SSH_HOST }}
             username: ${{ secrets.DOCKER_SSH_USER }}
             key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
             port: ${{ secrets.PORT }}
             script: whoami
+            
+#        - name: Build the Retailer Admin
+#          uses: docker/build-push-action@v2
+#          with:
+#            file: ./deploy/admin/Dockerfile
+#            context: .
+#            push: true
+#            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:$(git rev-parse --short "$GITHUB_SHA")
+        
