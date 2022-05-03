@@ -1,15 +1,15 @@
 from functools import lru_cache
 
-from pydantic import BaseSettings
+
+from config import RetailerSettings
 
 
-class AuthSettings(BaseSettings):
+class AuthSettings(RetailerSettings):
     secret: str
     alg: str
     access_token_exp_minutes: int
 
     class Config:
-        env_file = ".env"
         env_prefix = "AUTH_"
 
 

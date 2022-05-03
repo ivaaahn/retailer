@@ -1,38 +1,31 @@
 version: "3"
 
+
 services:
-  rabbit:
-    build:
-      context: ./docker/rabbitmq/
-      dockerfile: Dockerfile
-    container_name: retailer-rmq
-    expose:
-      - 5672
-      - 15672
-    volumes:
-      - rabbit_data_volume:/var/lib/rabbit/
-      - rabbit_logs_volume:/var/log/rabbit/
-    restart: unless-stopped
-
-  pg:
-    image: postgres:alpine
-    container_name: retailer-pg
+  web:
+    container_name: web
+    image: nginx:alpine
+    depends_on:
+      - app
+      - admin
     ports:
-      - "8765:5432"
+      - "80:80"
     environment:
-      POSTGRES_DB: $PG_DB
-      POSTGRES_USER: $PG_USER
-      POSTGRES_PASSWORD: $PG_PSWD
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      S3_STORAGE_URL: $S3_STORAGE_URL
+      S3_BUCKET_NAME: $S3_BUCKET_NAME
+      S3_SECRET_USER_AGENT_HEADER: $S3_SECRET_USER_AGENT_HEADER
     volumes:
-      - pg_data_volume:/var/lib/postgresql/data
+#      - ./deploy/web/conf.d:/etc/nginx/conf.d
+      - ./deploy/web/templates:/etc/nginx/templates
+#      - ./data/static:/var/www/static
+      - ./deploy/web/data/log:/data/log/
     restart: unless-stopped
 
-  api:
-    build:
-      context: .
-      dockerfile: ./docker/api/Dockerfile
-    container_name: api
+  app:
+    image: ivaaahn/retailer:0.1.12
+    container_name: app
+    environment:
+      DEPLOY_MODE: "true"
     ports:
       - "8080:8080"
     depends_on:
@@ -40,27 +33,56 @@ services:
       - rabbit
     restart: unless-stopped
 
+  admin:
+    image: ivaaahn/retailer-admin:0.1.0
+    container_name: admin
+    environment:
+      DEPLOY_MODE: "true"
+      DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
+      DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pg
+      - app
+    #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
+    # volumes:
+    #   - ./app/app:/app/app
+    #of the app container`CMD`To overwrite`command`use
+    # command: "uvicorn app.main:app --reload --host 0.0.0.0"
+    restart: unless-stopped
+
   pymailer:
-    build:
-      context: ../pymailer
-      dockerfile: Dockerfile
+    image: ivaaahn/pymailer:0.1
     container_name: pymailer
     depends_on:
       - rabbit
     restart: unless-stopped
-#
-#  worker:
-#    image: ivaaahn/bjbot-worker:1.1
-#    container_name: worker
-#    depends_on:
-#      - redis
-#      - mongo
-#      - rabbit
-#    restart: unless-stopped
-#
-#
+
+  pg:
+    image: postgres:alpine
+    container_name: pg
+    environment:
+      POSTGRES_DB: $PG_DB
+      POSTGRES_USER: $PG_USER
+      POSTGRES_PASSWORD: $PG_PSWD
+      PGDATA: "/data/lib/postgresql/data/pgdata"
+    volumes:
+      - pg_data_volume:/data/lib/postgresql/data
+    restart: unless-stopped
+
+  rabbit:
+    image: ivaaahn/rabbitmq:0.1
+    container_name: retailer-rmq
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - rabbit_data_volume:/data/lib/rabbitmq/
+      - rabbit_logs_volume:/data/log/rabbitmq/
+    restart: unless-stopped
+
 volumes:
-#  redis_data_volume:
   pg_data_volume:
   rabbit_data_volume:
   rabbit_logs_volume:

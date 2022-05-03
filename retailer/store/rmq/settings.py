@@ -1,9 +1,9 @@
 from functools import lru_cache
 
-from pydantic import BaseSettings
+from config import RetailerSettings
 
 
-class RMQSettings(BaseSettings):
+class RMQSettings(RetailerSettings):
     host: str
     port: int
     user: str
@@ -11,7 +11,6 @@ class RMQSettings(BaseSettings):
     queue_name: str
 
     class Config:
-        env_file = ".env"
         env_prefix = "RMQ_"
 
 

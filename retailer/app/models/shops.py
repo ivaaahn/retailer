@@ -2,16 +2,16 @@ from sqlalchemy import (
     Column,
     Integer,
     Identity,
-    Text,
+    ForeignKey,
 )
+
 from app.base.models import BaseModel
 
+__all__ = ("ShopModel",)
 
-class Shops(BaseModel):
+
+class ShopModel(BaseModel):
     __tablename__ = "shops"
 
     id = Column(Integer, Identity(), primary_key=True)
-    city = Column(Text, nullable=False, index=True)
-    street = Column(Text, nullable=False, index=True)
-    house = Column(Text, nullable=False)
-    floor = Column(Integer, nullable=True)
+    address_id = Column(Integer, ForeignKey("shop_addresses.id"), nullable=False)

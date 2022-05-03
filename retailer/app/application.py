@@ -4,7 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.urls import setup_routes
 from store import shutdown_store
 
-app = FastAPI()
+app = FastAPI(
+    title="RetailerAPI",
+    version="0.1.11",
+)
 
 origins = [
     "*",
@@ -22,6 +25,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def init_app():
     setup_routes(app)
+    # ping_store() # TODO
 
 
 @app.on_event("shutdown")
