@@ -11,9 +11,15 @@ services:
       - admin
     ports:
       - "80:80"
+    environment:
+      S3_STORAGE_URL: $S3_STORAGE_URL
+      S3_BUCKET_NAME: $S3_BUCKET_NAME
+      S3_SECRET_USER_AGENT_HEADER: $S3_SECRET_USER_AGENT_HEADER
     volumes:
-      - ./deploy/web/conf.d:/etc/nginx/conf.d
-      - ./data/static:/var/www/static
+#      - ./deploy/web/conf.d:/etc/nginx/conf.d
+      - ./deploy/web/templates:/etc/nginx/templates
+#      - ./data/static:/var/www/static
+      - ./deploy/web/data/log:/data/log/
     restart: unless-stopped
 
   app:
@@ -27,7 +33,7 @@ services:
       - "8080:8080"
     depends_on:
       - pg
-#      - rabbit
+      - rabbit
     #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
     # volumes:
     #   - ./app/app:/app/app

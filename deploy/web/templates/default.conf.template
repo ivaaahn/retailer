@@ -6,10 +6,12 @@ upstream admin {
     server admin:8000;
 }
 
+# client_max_body_size 8M;
+# client_body_buffer_size 1M;
 
 server {
     listen 80;
-    server_name localhost;
+    server_name 51.250.86.153;
 
     location /admin {
         proxy_set_header Host $http_host;
@@ -19,12 +21,12 @@ server {
         proxy_pass http://admin/admin;
     }
 
-    location /static/admin {
-        alias /var/www/static/admin/;
-    }
 
-    location /img {
-        root /var/www/static/app;
+    location /img/ {
+        proxy_set_header User-Agent ${S3_SECRET_USER_AGENT_HEADER};
+        proxy_hide_header x-amz-request-id;
+        proxy_hide_header x-amz-version-id;
+        proxy_pass http://${S3_STORAGE_URL}/${S3_BUCKET_NAME}/;
     }
 
     location / {
@@ -35,6 +37,5 @@ server {
         proxy_pass http://api;
     }
     # log
-    # access_log /data/log/nginx/access.log;
-    # error_log /data/log/nginx/error.log;
+#     error_log /data/log/nginx/error.log;
 }

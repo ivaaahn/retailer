@@ -8,7 +8,7 @@ class ProductModel(models.Model):
     id = models.BigAutoField(verbose_name="Идентификатор", primary_key=True)
     name = models.TextField(verbose_name="Название", null=False, blank=False)
     photo = models.ImageField(
-        verbose_name="Фото", null=True, blank=True, upload_to="static/photos/"
+        verbose_name="Фото", null=True, blank=True, upload_to="products/"
     )
     description = models.TextField(verbose_name="Описание", null=True, blank=True)
     category = models.ForeignKey(
