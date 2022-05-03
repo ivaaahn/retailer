@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+from pprint import pprint
 
 from dotenv import dotenv_values
 from pathlib import Path
@@ -33,7 +34,7 @@ else:
 
 
 config = dotenv_values(f"{BASE_RETAILER_ADMIN_DIR}/{dotenv_file}")
-
+pprint(config)  # TODO delete it
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
