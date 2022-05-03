@@ -23,6 +23,6 @@ echo "  [+]  Retailer-Admin Version: $retailer_admin_tag"
 
 
 echo "  [+] Start (or Restart) containers: docker-compose up -d"
-docker-compose --env-file /home/www/retailer/deploy/.env.docker-compose -f /home/www/retailer/deploy/docker-compose_deploy.yml up -d
+docker-compose --env-file /home/www/retailer/deploy/.env.docker-compose -f /home/www/retailer/deploy/docker-compose.yml up -d
 
 echo "[>] Deployment done."

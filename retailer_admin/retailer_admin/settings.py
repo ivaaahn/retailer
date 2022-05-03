@@ -22,8 +22,8 @@ BASE_PROJECT_DIR = BASE_RETAILER_ADMIN_DIR.parent
 DEPLOY_MODE = os.environ.get("DEPLOY_MODE", False)
 
 dotenv_files = {
-    "deploy": "deploy.env",
-    "test": "test.env",
+    "deploy": ".env.deploy",
+    "test": ".env.test",
 }
 
 if DEPLOY_MODE:
@@ -164,10 +164,6 @@ STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
 
 (
     AWS_S3_ENDPOINT_URL,

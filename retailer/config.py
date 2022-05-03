@@ -6,8 +6,8 @@ from pydantic import BaseSettings
 DEPLOY_MODE = os.environ.get("DEPLOY_MODE", False)
 
 dotenv_files = {
-    "deploy": "deploy.env",
-    "test": "test.env",
+    "deploy": ".env.deploy",
+    "test": ".env.test",
 }
 
 

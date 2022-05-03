@@ -13,6 +13,11 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Setuping .env files
+        run: |
+          echo ${{ secrets.RETAILER_ENV_DEPLOY }} > retailer/.env.deploy
+          echo ${{ secrets.RETAILER_ADMIN_ENV_DEPLOY }} > retailer_admin/.env.deploy
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
