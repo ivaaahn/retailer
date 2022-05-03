@@ -6,45 +6,40 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-20.04
 
     steps:
-        - name: Check out the repo
-        - uses: actions/checkout@v3
-        
-        - name: Login to DockerHub
-          uses: docker/login-action@v1 
-          with:
-            username: ${{ secrets.DOCKERHUB_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
-        - name: Build the Retailer App
-          uses: docker/build-push-action@v2
-          with:
-            file: ./deploy/api/Dockerfile
-            context: .
-            push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:$(git rev-parse --short "$GITHUB_SHA")
-            
-        - name: Build the Retailer Admin
-          uses: docker/build-push-action@v2
-          with:
-            file: ./deploy/admin/Dockerfile
-            context: .
-            push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:$(git rev-parse --short "$GITHUB_SHA")
+#        - name: Check out the repo
+#        - uses: actions/checkout@v3
+#
+#        - name: Login to DockerHub
+#          uses: docker/login-action@v1
+#          with:
+#            username: ${{ secrets.DOCKERHUB_USERNAME }}
+#            password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#        - name: Build the Retailer App
+#          uses: docker/build-push-action@v2
+#          with:
+#            file: ./deploy/api/Dockerfile
+#            context: .
+#            push: true
+#            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:$(git rev-parse --short "$GITHUB_SHA")
+#
+#        - name: Build the Retailer Admin
+#          uses: docker/build-push-action@v2
+#          with:
+#            file: ./deploy/admin/Dockerfile
+#            context: .
+#            push: true
+#            tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:$(git rev-parse --short "$GITHUB_SHA")
 
-        - name: Deploy to Docker Host
-          uses: wshihadeh/docker-deployment-action@v1
+        - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@master
           with:
-            remote_docker_host: ${{ secrets.DOCKER_SSH_HOST }}
-            ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-            ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
-            deployment_mode: docker-compose
-            copy_stack_file: true
-            deploy_path: /home/www/retailer/deploy
-            stack_file_name: docker-compose-deploy.yml
-            keep_files: 3
-            args: up -d
-            docker_prune: 'false'
-            pull_images_first: 'false'
+            host: ${{ secrets.DOCKER_SSH_HOST}
+            username: ${{ secrets.DOCKER_SSH_USER }}
+            key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
+            port: ${{ secrets.PORT }}
+            script: whoami
