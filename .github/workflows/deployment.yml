@@ -71,7 +71,6 @@ jobs:
           target: ${{ secrets.PATH_TO_DEPLOY }}/nginx/templates
           overwrite: true
           tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
-          rm: true
 
       - name: Copy docker-compose.yml
         uses: appleboy/scp-action@master
@@ -84,7 +83,6 @@ jobs:
           target: ${{ secrets.PATH_TO_DEPLOY }}
           overwrite: true
           tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
-          rm: true
 
 
       - name: Deploying
