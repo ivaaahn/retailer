@@ -55,6 +55,11 @@ jobs:
           port: ${{ secrets.PORT }}
           script: bash ${{ secrets.PATH_TO_DOWN_SCRIPT }}
 
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+
       - name: Copy nginx.conf template
         uses: appleboy/scp-action@master
         with:
