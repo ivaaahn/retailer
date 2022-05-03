@@ -17,6 +17,8 @@ jobs:
         run: |
           echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
           echo "${{ secrets.RETAILER_ADMIN_ENV_DEPLOY }}" > retailer_admin/.env.deploy
+          echo "${{ secrets.DOCKER_COMPOSE_ENV }}" > deploy/.env.docker-compose
+          
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -44,11 +46,33 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:${{ steps.commit.outputs.short }}
 
+      - name: Copy nginx.conf template
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DOCKER_SSH_HOST }}
+          username: ${{ secrets.DOCKER_SSH_USER }}
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "./deploy/web/templates"
+          target: ${{ secrets.PATH_TO_DEPLOY }}/deploy/web/templates"
+          overwrite: true
+
+      - name: Copy docker-compose.yml
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DOCKER_SSH_HOST }}
+          username: ${{ secrets.DOCKER_SSH_USER }}
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "deploy/docker-compose.yml,.env.docker-compose"
+          target:  ${{ secrets.PATH_TO_DEPLOY }}
+          overwrite: true
+
       - name: Deploying
         uses: appleboy/ssh-action@master
         with:
-           host: ${{ secrets.DOCKER_SSH_HOST }}
-           username: ${{ secrets.DOCKER_SSH_USER }}
-           key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-           port: ${{ secrets.PORT }}
-           script: bash ${{ secrets.PATH_TO_DEPLOY_SCRIPT }} ${{ steps.commit.outputs.short }} ${{ steps.commit.outputs.short }}
+          host: ${{ secrets.DOCKER_SSH_HOST }}
+          username: ${{ secrets.DOCKER_SSH_USER }}
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          script: bash ${{ secrets.PATH_TO_DEPLOY_SCRIPT }} ${{ steps.commit.outputs.short }} ${{ steps.commit.outputs.short }}

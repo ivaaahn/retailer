@@ -14,9 +14,7 @@ services:
       S3_BUCKET_NAME: $S3_BUCKET_NAME
       S3_SECRET_USER_AGENT_HEADER: $S3_SECRET_USER_AGENT_HEADER
     volumes:
-#      - ./deploy/web/conf.d:/etc/nginx/conf.d
       - ./deploy/web/templates:/etc/nginx/templates
-#      - ./data/static:/var/www/static
       - ./deploy/web/data/log:/data/log/
     restart: unless-stopped
 
