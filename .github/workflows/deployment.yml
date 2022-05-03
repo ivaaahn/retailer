@@ -56,6 +56,7 @@ jobs:
           source: "deploy/web/templates/default.conf.template"
           target: ${{ secrets.PATH_TO_DEPLOY }}/deploy/web/templates
           overwrite: true
+          tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
 
       - name: Copy docker-compose.yml
         uses: appleboy/scp-action@master
@@ -67,6 +68,7 @@ jobs:
           source: "deploy/docker-compose.yml,.env.docker-compose"
           target:  ${{ secrets.PATH_TO_DEPLOY }}
           overwrite: true
+          tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
 
       - name: Deploying
         uses: appleboy/ssh-action@master
