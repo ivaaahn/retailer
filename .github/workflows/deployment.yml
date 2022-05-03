@@ -37,7 +37,7 @@ jobs:
           file: ./deploy/admin/Dockerfile
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:$(git rev-parse --short "$GITHUB_SHA")
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:${{ steps.commit.outputs.short }}
 
       - name: Deploying
         uses: appleboy/ssh-action@master
