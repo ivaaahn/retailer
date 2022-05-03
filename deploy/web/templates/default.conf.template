@@ -34,6 +34,4 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_pass http://api;
     }
-    # log
-#     error_log /data/log/nginx/error.log;
 }
