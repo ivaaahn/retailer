@@ -45,7 +45,9 @@ SECRET_KEY = config["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config["DEBUG"]
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost", "51.250.86.153"]
+
+CSRF_TRUSTED_ORIGINS = ['http://51.250.86.153', 'localhost']
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
