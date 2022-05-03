@@ -1,9 +1,12 @@
 import logging
 
 from fastapi import Depends
+from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection
+from sqlalchemy.orm import Query
 
+from app.base.deps import SortOrderEnum
 from logger.logger import get_logger
 from store.pg import pg_accessor, PgAccessor
 from store.rmq import RMQAccessor, rmq_accessor
@@ -43,6 +46,19 @@ class BasePgRepo(BaseRepo):
     def __init__(self, pg: PgAccessor = Depends(pg_accessor)):
         super().__init__()
         self._pg = pg
+
+    @staticmethod
+    def with_pagination(
+        query: Query, count: int, offset: int, order: SortOrderEnum, sort: any
+    ) -> Query:
+        query = query.limit(count)
+        query = query.offset(offset)
+
+        order_func = asc if order is SortOrderEnum.asc else desc
+
+        query = query.order_by(order_func(sort))
+
+        return query
 
     async def _execute(
         self,
