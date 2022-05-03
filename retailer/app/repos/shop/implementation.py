@@ -55,13 +55,16 @@ class ShopsRepo(IShopsRepo, BasePgRepo):
         cursor_count = await self._execute(stmt_total)
         total = cursor_count.scalar()
         cursor = await self._execute(query)
-        return ([
-            ShopModel(
-                id=shop.id,
-                address_city=shop.shop_addresses_city,
-                address_street=shop.shop_addresses_street,
-                address_house=shop.shop_addresses_house,
-                address_floor=shop.shop_addresses_floor,
-            )
-            for shop in cursor
-        ], total)
+        return (
+            [
+                ShopModel(
+                    id=shop.id,
+                    address_city=shop.shop_addresses_city,
+                    address_street=shop.shop_addresses_street,
+                    address_house=shop.shop_addresses_house,
+                    address_floor=shop.shop_addresses_floor,
+                )
+                for shop in cursor
+            ],
+            total,
+        )

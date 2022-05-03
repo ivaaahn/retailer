@@ -20,8 +20,8 @@ __all__ = ("ShopsService",)
 @lru_cache
 class ShopsService(BaseService):
     def __init__(
-            self,
-            shops_repo: IShopsRepo = Depends(ShopsRepo),
+        self,
+        shops_repo: IShopsRepo = Depends(ShopsRepo),
     ):
         super().__init__()
         self._shops_repo = shops_repo
@@ -42,7 +42,7 @@ class ShopsService(BaseService):
         )
 
     async def get_list(
-            self, paging_params: ShopListPagingParams = Depends(shop_paging_params)
+        self, paging_params: ShopListPagingParams = Depends(shop_paging_params)
     ) -> ShopListRespDTO:
         shops, total = await self._shops_repo.get_list(paging_params)
 
@@ -57,6 +57,7 @@ class ShopsService(BaseService):
                         floor=shop.adr_floor,
                     ),
                 )
-                for shop in shops],
-            total=total
+                for shop in shops
+            ],
+            total=total,
         )

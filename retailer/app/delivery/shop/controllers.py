@@ -18,7 +18,7 @@ async def get_shop(id: int, shop_service: ShopsService = Depends()) -> ShopRespD
 
 @router.get(".list", response_model=ShopListRespDTO)
 async def get_list(
-        shop_service: ShopsService = Depends(),
-        paging_params: ShopListPagingParams = Depends(shop_paging_params),
+    shop_service: ShopsService = Depends(),
+    paging_params: ShopListPagingParams = Depends(shop_paging_params),
 ) -> ShopListRespDTO:
     return await shop_service.get_list(paging_params)
