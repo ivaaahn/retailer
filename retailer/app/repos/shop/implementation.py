@@ -10,10 +10,9 @@ from app.delivery.shop.deps import shop_paging_params
 from app.dto.shop import ShopListPagingParams
 from app.models.shop_addresses import ShopAddressModel
 from app.models.shops import ShopModel
+from app.repos.shop.interface import IShopsRepo
 
 __all__ = ("ShopsRepo",)
-
-from app.repos.shop.interface import IShopsRepo
 
 
 @lru_cache
@@ -54,7 +53,7 @@ class ShopsRepo(IShopsRepo, BasePgRepo):
 
         cursor_count = await self._execute(stmt_total)
         total = cursor_count.scalar()
-        cursor = await self._execute(query)
+        cursor_shops = await self._execute(query)
         return (
             [
                 ShopModel(
@@ -64,7 +63,7 @@ class ShopsRepo(IShopsRepo, BasePgRepo):
                     address_house=shop.shop_addresses_house,
                     address_floor=shop.shop_addresses_floor,
                 )
-                for shop in cursor
+                for shop in cursor_shops
             ],
             total,
         )
