@@ -54,7 +54,7 @@ jobs:
           key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           source: "./deploy/web/templates"
-          target: ${{ secrets.PATH_TO_DEPLOY }}/deploy/web/templates"
+          target: ${{ secrets.PATH_TO_DEPLOY }}/deploy/web/templates
           overwrite: true
 
       - name: Copy docker-compose.yml
