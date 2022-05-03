@@ -3,7 +3,7 @@ version: "3"
 services:
   rabbit:
     image: ivaaahn/rabbitmq:0.1
-    container_name: retailer-rmq
+    container_name: rabbitmq
     expose:
       - 5672
       - 15672
@@ -15,8 +15,8 @@ services:
   pg:
     image: postgres:alpine
     container_name: pg
-#    ports:
-#      - "8765:5432"
+    expose:
+      - 5432
     environment:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
@@ -26,9 +26,9 @@ services:
       - pg_data_volume:/var/lib/postgresql/data
     restart: unless-stopped
 
-  api:
-    image: ivaaahn/retailer:0.1.10
-    container_name: api
+  app:
+    image: ivaaahn/retailer:0.1.11
+    container_name: app
     ports:
       - "8080:8080"
     depends_on:
