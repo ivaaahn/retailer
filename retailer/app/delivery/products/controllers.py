@@ -2,6 +2,7 @@ from fastapi import Depends, APIRouter
 
 from app.delivery.products.deps import ProductListPagingParams, product_paging_params
 from app.dto.products import ShopProductsListDTO, ShopProductDTO
+from app.services import ProductsService
 
 router = APIRouter(
     prefix="/product",
@@ -10,10 +11,8 @@ router = APIRouter(
 
 
 @router.get("", response_model=ShopProductDTO)
-async def get(product_id: int, shop_id: int) -> ShopProductDTO:
-    return ShopProductDTO(
-        id=product_id, name="кока-кола", category="напитки", price=99, qty=10
-    )
+async def get(product_id: int, shop_id: int, product_service: ProductsService = Depends()) -> ShopProductDTO:
+    return await product_service.get(product_id, shop_id)
 
 
 @router.get(".list", response_model=ShopProductsListDTO)
