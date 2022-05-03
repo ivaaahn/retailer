@@ -1,4 +1,5 @@
 aio-pika==7.1.2
+aioboto3==9.5.0
 aiormq==6.2.3
 alembic==1.7.7
 anyio==3.5.0

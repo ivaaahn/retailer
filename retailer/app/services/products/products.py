@@ -6,6 +6,7 @@ from app.base.services import BaseService
 from app.delivery.products.errors import ProductNotFoundError
 from app.dto.products import ShopProductDTO
 from app.repos.products import IProductsRepo, ProductsRepo
+from app.services.attachments.service import AttachmentsService
 
 __all__ = ("ProductsService",)
 
@@ -15,9 +16,11 @@ class ProductsService(BaseService):
     def __init__(
         self,
         products_repo: IProductsRepo = Depends(ProductsRepo),
+        attachments_service: AttachmentsService = Depends(AttachmentsService),
     ):
         super().__init__()
         self._products_repo = products_repo
+        self._attachments_service = attachments_service
 
     async def get(self, name: str) -> ShopProductDTO:
         received = await self._products_repo.get(name)
@@ -31,4 +34,5 @@ class ProductsService(BaseService):
             name=received.name,
             description=received.description,
             category=received.category_name,
+            photo=self._attachments_service.make_s3_url(received.photo),
         )
