@@ -18,11 +18,6 @@ jobs:
           echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
           echo "${{ secrets.RETAILER_ADMIN_ENV_DEPLOY }}" > retailer_admin/.env.deploy
 
-      - name: ls-test2
-        run: |
-          ls -a retailer
-          ls -a retailer-admin
-
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
