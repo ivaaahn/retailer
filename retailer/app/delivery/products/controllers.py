@@ -10,7 +10,7 @@ router = APIRouter(
 
 
 @router.get("", response_model=ShopProductDTO)
-async def get_by_shop(product_id: int, shop_id: int) -> ShopProductDTO:
+async def get(product_id: int, shop_id: int) -> ShopProductDTO:
     return ShopProductDTO(
         id=product_id, name="кока-кола", category="напитки", price=99, qty=10
     )

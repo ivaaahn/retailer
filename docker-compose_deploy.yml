@@ -1,6 +1,5 @@
 version: "3"
 
-
 services:
   web:
     container_name: web
@@ -22,7 +21,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: ivaaahn/retailer:0.1.12
+    image: ivaaahn/retailer:${RETAILER_VERSION}
     container_name: app
     environment:
       DEPLOY_MODE: "true"
@@ -34,7 +33,7 @@ services:
     restart: unless-stopped
 
   admin:
-    image: ivaaahn/retailer-admin:0.1.0
+    image: ivaaahn/retailer-admin:${RETAILER_ADMIN_VERSION}
     container_name: admin
     environment:
       DEPLOY_MODE: "true"
@@ -53,7 +52,7 @@ services:
     restart: unless-stopped
 
   pymailer:
-    image: ivaaahn/pymailer:0.1
+    image: ivaaahn/pymailer:${PYMAILER_VERSION}
     container_name: pymailer
     depends_on:
       - rabbit
@@ -72,7 +71,7 @@ services:
     restart: unless-stopped
 
   rabbit:
-    image: ivaaahn/rabbitmq:0.1
+    image: ivaaahn/rabbitmq:${RABBITMQ_VERSION}
     container_name: retailer-rmq
     expose:
       - 5672

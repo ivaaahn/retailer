@@ -32,4 +32,5 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
             name=c.name,
             category_name=c.product_categories_name,
             description=c.description,
+            photo=c.photo,
         )
