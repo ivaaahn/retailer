@@ -17,7 +17,6 @@ class ShopListPagingParams(BasePagingParams):
 
 
 class ShopAddressDTO(BaseModel):
-    id: int = Field(title="Идентификатор адреса")
     city: str = Field(title="Город")
     street: str = Field(title="Улица")
     house: str = Field(title="Дом")

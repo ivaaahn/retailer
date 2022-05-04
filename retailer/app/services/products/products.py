@@ -22,17 +22,18 @@ class ProductsService(BaseService):
         self._products_repo = products_repo
         self._attachments_service = attachments_service
 
-    async def get(self, name: str) -> ShopProductDTO:
-        received = await self._products_repo.get(name)
+    async def get(self, product_id: int, shop_id: int) -> ShopProductDTO:
+        received = await self._products_repo.get(product_id, shop_id)
         if not received:
-            raise ProductNotFoundError(name)
+            raise ProductNotFoundError(product_id, shop_id)
 
         self.logger.debug(received.as_dict())
 
         return ShopProductDTO(
             id=received.id,
+            photo=self._attachments_service.make_s3_url(received.photo),
             name=received.name,
             description=received.description,
+            price=received.price,
             category=received.category_name,
-            photo=self._attachments_service.make_s3_url(received.photo),
         )
