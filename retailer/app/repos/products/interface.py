@@ -8,5 +8,5 @@ __all__ = ("IProductsRepo",)
 
 class IProductsRepo(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    async def get(self, name: str) -> Optional[ProductModel]:
+    async def get(self, product_id: int, shop_id: int) -> Optional[ProductModel]:
         pass
