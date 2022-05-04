@@ -22,7 +22,12 @@ class ProductModel(BaseModel):
     description = Column(Text, nullable=True)
     category_id = Column(Integer, ForeignKey("product_categories.id"), nullable=False)
 
-    def __init__(self, price: Optional[float] = None, category_name: Optional[str] = None, **kwargs):
+    def __init__(
+        self,
+        price: Optional[float] = None,
+        category_name: Optional[str] = None,
+        **kwargs
+    ):
         super().__init__(**kwargs)
         self._price = price
         self._category_name = category_name
@@ -34,7 +39,7 @@ class ProductModel(BaseModel):
             "photo": self.photo,
             "description": self.description,
             "price": self.price,
-            "category_name": self.category_name
+            "category_name": self.category_name,
         }
 
     @property

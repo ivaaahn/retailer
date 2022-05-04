@@ -35,5 +35,5 @@ class ProductsService(BaseService):
             name=received.name,
             description=received.description,
             price=received.price,
-            category=received.category_name
+            category=received.category_name,
         )
