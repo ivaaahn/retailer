@@ -20,7 +20,6 @@ class RedisAccessor(BaseAccessor[RedisConfig]):
         self._redis: Optional[Redis] = None
 
     async def _ping(self):
-        await self._connect()
         await self._redis.ping()
 
     async def _connect(self):
