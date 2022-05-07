@@ -1,8 +1,8 @@
 from fastapi import Depends, APIRouter
 
 from app.delivery.auth.deps import get_current_active_user
-from app.dto.profile import ProfileUpdateReqDTO
-from app.dto.user import UserRespDTO
+from app.dto.api.profile import ProfileUpdateReqDTO
+from app.dto.api.user import UserRespDTO
 from app.services.profile import ProfileService
 
 router = APIRouter(

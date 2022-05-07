@@ -21,7 +21,7 @@ server {
 
 
     location /img/ {
-        proxy_set_header User-Agent ${S3_SECRET_USER_AGENT_HEADER};
+#         proxy_set_header User-Agent ${S3_SECRET_USER_AGENT_HEADER};
         proxy_hide_header x-amz-request-id;
         proxy_hide_header x-amz-version-id;
         proxy_pass http://${S3_STORAGE_URL}/${S3_BUCKET_NAME}/;

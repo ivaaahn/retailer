@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import (
     Column,
     Integer,
@@ -21,39 +19,3 @@ class ProductModel(BaseModel):
     photo = Column(Text, nullable=True)
     description = Column(Text, nullable=True)
     category_id = Column(Integer, ForeignKey("product_categories.id"), nullable=False)
-
-    def __init__(
-        self,
-        price: Optional[float] = None,
-        category_name: Optional[str] = None,
-        **kwargs
-    ):
-        super().__init__(**kwargs)
-        self._price = price
-        self._category_name = category_name
-
-    def _as_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "name": self.name,
-            "photo": self.photo,
-            "description": self.description,
-            "price": self.price,
-            "category_name": self.category_name,
-        }
-
-    @property
-    def price(self) -> float:
-        return self._price
-
-    @price.setter
-    def price(self, value: float):
-        self._price = value
-
-    @property
-    def category_name(self) -> str:
-        return self._category_name
-
-    @category_name.setter
-    def category_name(self, value: str):
-        self._category_name = value

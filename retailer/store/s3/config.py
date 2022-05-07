@@ -1,10 +1,10 @@
 from functools import lru_cache
 from typing import Optional
 
-from config import RetailerSettings
+from config import RetailerConfig
 
 
-class S3Settings(RetailerSettings):
+class S3Config(RetailerConfig):
     endpoint_url: str
     secret_access_key: str
     access_key_id: str
@@ -15,9 +15,9 @@ class S3Settings(RetailerSettings):
         env_prefix = "S3_"
 
 
-_settings = S3Settings()
+_config = S3Config()
 
 
 @lru_cache
-def get_settings():
-    return _settings
+def get_config():
+    return _config

@@ -7,10 +7,11 @@ Create Date: 2022-03-28 00:37:51.294370
 """
 from alembic import op
 import sqlalchemy as sa
-import sqlalchemy.dialects.postgresql as sad_psql
+from sqlalchemy.dialects.postgresql import ENUM
 
 
 # revision identifiers, used by Alembic.
+
 revision = "b6a744784764"
 down_revision = None
 branch_labels = None
@@ -39,7 +40,7 @@ def upgrade():
         sa.Column("birthday", sa.Date(), nullable=True),
         sa.Column(
             "role",
-            sad_psql.ENUM(*vals, name=name),
+            ENUM(*vals, name=name),
             nullable=False,
             server_default="client",
         ),
@@ -73,5 +74,5 @@ def upgrade():
 def downgrade():
     op.drop_table("signup_session")
     op.drop_table("users")
-    psql_enum = sad_psql.ENUM(*vals, name=name)
+    psql_enum = ENUM(*vals, name=name)
     psql_enum.drop(op.get_bind())

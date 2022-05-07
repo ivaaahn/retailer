@@ -1,10 +1,10 @@
 from typing import Optional
 
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection, AsyncEngine
 
 from ..base.accessor import BaseAccessor
-from .settings import PgSettings, get_settings
+from .config import PgConfig, get_config
 from . import sa
 
 __all__ = (
@@ -13,12 +13,12 @@ __all__ = (
 )
 
 
-class PgAccessor(BaseAccessor[PgSettings]):
+class PgAccessor(BaseAccessor[PgConfig]):
     class Meta:
         name = "Postgres"
 
-    def __init__(self, settings: PgSettings):
-        super().__init__(settings)
+    def __init__(self, config: PgConfig):
+        super().__init__(config)
 
         self._engine: Optional[AsyncEngine] = None
         self._metadata: Optional[MetaData] = None
@@ -27,6 +27,10 @@ class PgAccessor(BaseAccessor[PgSettings]):
         async with self._engine.begin() as conn:
             yield conn
 
+    async def _ping(self):
+        async with self._engine.begin() as conn:
+            await conn.execute(text("SELECT 2+2;"))
+
     @property
     def meta(self) -> MetaData:
         return self._metadata
@@ -34,19 +38,15 @@ class PgAccessor(BaseAccessor[PgSettings]):
     async def _connect(self):
         conf = self._config
 
-        try:
-            self._engine = create_async_engine(
-                url=conf.dsn,
-                echo=conf.echo,
-            )
+        self._engine = create_async_engine(
+            url=conf.dsn,
+            echo=conf.echo,
+        )
 
-            self._metadata = sa.metadata
-            self._metadata.bind = self._engine  # TODO проверить обязательность
+        self._metadata = sa.metadata
+        self._metadata.bind = self._engine  # TODO проверить обязательность
 
-            return self
-        except Exception as err:
-            # TODO добавить logger
-            raise err
+        return self
 
 
-pg_accessor = PgAccessor(get_settings())
+pg_accessor = PgAccessor(get_config())

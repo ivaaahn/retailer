@@ -1,13 +1,19 @@
+import redis
+from django.conf import settings
 from django.contrib import admin
 
 from products.models import ProductModel
+
+redis_instance = redis.StrictRedis(
+    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB
+)
 
 
 @admin.register(ProductModel)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
-        "id",
         "name",
+        "id",
         "description",
         "category",
         "photo_preview",
@@ -20,3 +26,13 @@ class ProductAdmin(admin.ModelAdmin):
 
     photo_preview.short_description = "Photo preview"
     photo_preview.allow_tags = True
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+
+        if form.changed_data:
+            keys = [
+                key for key in redis_instance.scan_iter(f"product:{form.instance.pk}:*")
+            ]
+
+            redis_instance.delete(*keys)

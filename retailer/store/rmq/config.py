@@ -1,9 +1,9 @@
 from functools import lru_cache
 
-from config import RetailerSettings
+from config import RetailerConfig
 
 
-class RMQSettings(RetailerSettings):
+class RMQConfig(RetailerConfig):
     host: str
     port: int
     user: str
@@ -14,9 +14,9 @@ class RMQSettings(RetailerSettings):
         env_prefix = "RMQ_"
 
 
-_settings = RMQSettings()
+_config = RMQConfig()
 
 
 @lru_cache
-def get_settings():
-    return _settings
+def get_config():
+    return _config
