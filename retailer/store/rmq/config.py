@@ -14,9 +14,6 @@ class RMQConfig(RetailerConfig):
         env_prefix = "RMQ_"
 
 
-_config = RMQConfig()
-
-
 @lru_cache
 def get_config():
-    return _config
+    return RMQConfig()
