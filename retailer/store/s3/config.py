@@ -15,9 +15,6 @@ class S3Config(RetailerConfig):
         env_prefix = "S3_"
 
 
-_config = S3Config()
-
-
 @lru_cache
 def get_config():
-    return _config
+    return S3Config()
