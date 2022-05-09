@@ -64,7 +64,7 @@ async def get_list(
                         id=2, name="кока-кола", category="напитки", price=99, qty=10
                     ),
                 ],
-                status=OrderStatusEnum.created,
+                status=OrderStatusEnum.collecting,
                 created_at=datetime(2022, 4, 25, 3, 8, 45, 109647),
                 receive_kind=OrderReceiveKindEnum.takeaway,
                 total_price=187.5,
