@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.urls import setup_routes
-from store import shutdown_store
+from store import shutdown_store, setup_store
 
 app = FastAPI(
     title="RetailerAPI",
@@ -25,7 +25,7 @@ app.add_middleware(
 @app.on_event("startup")
 async def init_app():
     setup_routes(app)
-    # ping_store() # TODO
+    await setup_store()
 
 
 @app.on_event("shutdown")

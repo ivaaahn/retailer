@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import Depends, APIRouter, Query
 
 from app.delivery.orders.deps import order_paging_params
-from app.dto.orders import (
+from app.dto.api.orders import (
     OrderRespDTO,
     OrderStatusEnum,
     OrderReceiveKindEnum,
@@ -11,7 +11,7 @@ from app.dto.orders import (
     OrderListPagingParams,
     PlaceOrderRespDTO,
 )
-from app.dto.products import ShopProductDTO
+from app.dto.api.products import ShopProductDTO
 
 router = APIRouter(
     prefix="/order",

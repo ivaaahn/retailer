@@ -5,7 +5,6 @@ from aiobotocore.client import AioBaseClient
 from fastapi.responses import StreamingResponse
 
 from app.base.repo import BaseS3Repo
-from app.delivery.attachments.errors import AttachmentNotFound
 from app.repos.attachments import IAttachmentsRepo
 from store.s3.accessor import ACLTypeEnum
 
@@ -48,7 +47,8 @@ class AttachmentsRepo(IAttachmentsRepo, BaseS3Repo):
                 Key=key,
             )
         except Exception:
-            raise AttachmentNotFound(key)
+            pass
+            # raise AttachmentNotFound(key)
 
         object_info = s3_object["ResponseMetadata"]["HTTPHeaders"]
 

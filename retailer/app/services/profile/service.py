@@ -3,8 +3,8 @@ from functools import lru_cache
 from fastapi import Depends
 
 from app.base.services import BaseService
-from app.dto.profile import ProfileUpdateReqDTO
-from app.dto.user import UserRespDTO
+from app.dto.api.profile import ProfileUpdateReqDTO
+from app.dto.api.user import UserRespDTO
 from app.repos import IUsersRepo, UsersRepo
 
 __all__ = ("ProfileService",)

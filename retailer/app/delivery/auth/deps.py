@@ -1,7 +1,7 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 
-from app.dto.user import UserRespDTO
+from app.dto.api.user import UserRespDTO
 from app.services import AuthService
 from .errors import InactiveAccountError
 

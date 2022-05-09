@@ -1,9 +1,9 @@
 from pydantic import BaseSettings
 
-from config import RetailerSettings
+from config import RetailerConfig
 
 
-class LoggerSettings(RetailerSettings):
+class LoggerConfig(RetailerConfig):
     base_level: str
     log_format: str
     stderr_logger: bool
@@ -16,8 +16,8 @@ class LoggerSettings(RetailerSettings):
         env_prefix = "LOG_"
 
 
-_settings = LoggerSettings()
+_config = LoggerConfig()
 
 
-def get_settings() -> LoggerSettings:
-    return _settings
+def get_config() -> LoggerConfig:
+    return _config

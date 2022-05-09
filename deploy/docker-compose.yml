@@ -24,11 +24,13 @@ services:
     container_name: app
     environment:
       DEPLOY_MODE: "true"
+      WAIT_HOSTS: pg:5432, redis:6379, rabbit:5672
     ports:
       - "8080:8080"
     depends_on:
       - pg
       - rabbit
+      - redis
     restart: unless-stopped
 
   admin:
@@ -38,16 +40,29 @@ services:
       DEPLOY_MODE: "true"
       DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
       DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
+      WAIT_HOSTS: pg:5432, redis:6379, rabbit:5672
     ports:
       - "8000:8000"
     depends_on:
       - pg
       - app
+      - redis
     #For example, if you want to edit the source code in real time`volumes`Convenient to mount with
     # volumes:
     #   - ./app/app:/app/app
     #of the app container`CMD`To overwrite`command`use
     # command: "uvicorn app.main:app --reload --host 0.0.0.0"
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    volumes:
+      - redis_data_volume:/var/lib/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     restart: unless-stopped
 
   pymailer:
@@ -82,5 +97,6 @@ services:
 
 volumes:
   pg_data_volume:
+  redis_data_volume:
   rabbit_data_volume:
   rabbit_logs_volume:

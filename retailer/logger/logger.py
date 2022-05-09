@@ -1,16 +1,16 @@
 import logging
 
-from .settings import LoggerSettings, get_settings
+from .config import LoggerConfig, get_config
 from .formatter import CustomFormatter
 
 
 class LoggerFactory:
-    def __init__(self, settings: LoggerSettings):
-        self._settings = settings
+    def __init__(self, config: LoggerConfig):
+        self._config = config
 
     @property
-    def conf(self) -> LoggerSettings:
-        return self._settings
+    def conf(self) -> LoggerConfig:
+        return self._config
 
     def _setup_logger(self, name: str) -> logging.Logger:
         logger = logging.getLogger(name)
@@ -45,7 +45,7 @@ class LoggerFactory:
         logger.addHandler(stream_handler)
 
 
-_factory = LoggerFactory(get_settings())
+_factory = LoggerFactory(get_config())
 
 
 def get_logger(name: str) -> logging.Logger:

@@ -4,17 +4,17 @@ from typing import Optional
 from aio_pika import connect, Connection, Channel, Message, Queue
 
 from ..base.accessor import BaseAccessor
-from .settings import get_settings, RMQSettings
+from .config import get_config, RMQConfig
 
 __all__ = ("RMQAccessor", "rmq_accessor")
 
 
-class RMQAccessor(BaseAccessor[RMQSettings]):
+class RMQAccessor(BaseAccessor[RMQConfig]):
     class Meta:
         name = "RabbitMQ"
 
-    def __init__(self, settings: RMQSettings):
-        super().__init__(settings)
+    def __init__(self, config: RMQConfig):
+        super().__init__(config)
         self._connection: Optional[Connection] = None
         self._channel: Optional[Channel] = None
         self._queue: Optional[Queue] = None
@@ -42,4 +42,4 @@ class RMQAccessor(BaseAccessor[RMQSettings]):
         )
 
 
-rmq_accessor = RMQAccessor(get_settings())
+rmq_accessor = RMQAccessor(get_config())

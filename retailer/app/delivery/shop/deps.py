@@ -4,7 +4,7 @@ from fastapi import Depends, Query
 from pydantic import Field
 
 from app.base.deps import BasePagingParams, base_paging_params
-from app.dto.shop import ShopListSortByEnum, ShopListPagingParams
+from app.dto.api.shop import ShopListSortByEnum, ShopListPagingParams
 
 
 def shop_paging_params(

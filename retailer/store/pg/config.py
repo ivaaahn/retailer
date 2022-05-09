@@ -2,10 +2,10 @@ from functools import lru_cache
 
 from pydantic import PostgresDsn
 
-from config import RetailerSettings
+from config import RetailerConfig
 
 
-class PgSettings(RetailerSettings):
+class PgConfig(RetailerConfig):
     dsn: PostgresDsn
     echo: bool
 
@@ -13,9 +13,6 @@ class PgSettings(RetailerSettings):
         env_prefix = "PG_"
 
 
-_settings = PgSettings()
-
-
 @lru_cache
-def get_settings():
-    return _settings
+def get_config() -> PgConfig:
+    return PgConfig()

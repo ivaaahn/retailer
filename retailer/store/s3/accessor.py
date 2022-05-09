@@ -4,7 +4,7 @@ from aiobotocore.client import AioBaseClient
 from aiobotocore.session import get_session, AioSession
 
 from ..base.accessor import BaseAccessor
-from .settings import S3Settings, get_settings
+from .config import S3Config, get_config
 
 
 class ACLTypeEnum(str, Enum):
@@ -13,12 +13,12 @@ class ACLTypeEnum(str, Enum):
     public_read_write = "public_read_write"
 
 
-class S3Accessor(BaseAccessor[S3Settings]):
+class S3Accessor(BaseAccessor[S3Config]):
     class Meta:
         name = "S3"
 
-    def __init__(self, settings: S3Settings):
-        super().__init__(settings)
+    def __init__(self, config: S3Config):
+        super().__init__(config)
 
         self._session = get_session()
         self._client_ctx = None
@@ -49,4 +49,4 @@ class S3Accessor(BaseAccessor[S3Settings]):
         self._client = None
 
 
-s3_accessor = S3Accessor(get_settings())
+s3_accessor = S3Accessor(get_config())

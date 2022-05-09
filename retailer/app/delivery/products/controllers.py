@@ -1,7 +1,7 @@
 from fastapi import Depends, APIRouter
 
 from app.delivery.products.deps import ProductListPagingParams, product_paging_params
-from app.dto.products import ShopProductsListDTO, ShopProductDTO
+from app.dto.api.products import ShopProductsListDTO, ShopProductDTO
 from app.services import ProductsService
 
 router = APIRouter(

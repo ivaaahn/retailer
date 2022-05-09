@@ -101,3 +101,20 @@ class UnauthorizedError(AuthError):
             data=data,
             headers=headers,
         )
+
+
+class ConflictError(BaseError):
+    def __init__(
+        self,
+        description: str,
+        kind: str = None,
+        data: Optional[dict[str, Any]] = None,
+        headers: Optional[dict[str, Any]] = None,
+    ):
+        super(AuthError, self).__init__(
+            code=status.HTTP_409_CONFLICT,
+            description=description,
+            kind=kind,
+            data=data,
+            headers=headers,
+        )

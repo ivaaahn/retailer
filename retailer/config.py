@@ -11,6 +11,6 @@ dotenv_files = {
 }
 
 
-class RetailerSettings(BaseSettings):
+class RetailerConfig(BaseSettings):
     class Config:
         env_file = dotenv_files["deploy"] if DEPLOY_MODE else dotenv_files["test"]

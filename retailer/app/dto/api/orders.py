@@ -5,7 +5,8 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 from app.base.deps import BasePagingParams
-from app.dto.products import ShopProductDTO
+from app.dto.api.products import ShopProductDTO
+from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
 
 
 class OrderListSortByEnum(str, Enum):
@@ -16,22 +17,6 @@ class OrderListSortByEnum(str, Enum):
 @dataclass
 class OrderListPagingParams(BasePagingParams):
     sort_by: OrderListSortByEnum
-
-
-class OrderStatusEnum(str, Enum):
-    created = "created"
-    collecting = "collecting"
-    ready = "ready"
-    delivering = "delivering"
-    delivered = "delivered"
-    cancelled = "cancelled"
-    finished = "finished"
-    error = "error"
-
-
-class OrderReceiveKindEnum(str, Enum):
-    delivery = "delivery"
-    takeaway = "takeaway"
 
 
 class OrderRespDTO(BaseModel):

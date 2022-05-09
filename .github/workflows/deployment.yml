@@ -67,6 +67,20 @@ jobs:
           tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
           strip_components: 2
 
+      - name: Copy redis.conf template
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DOCKER_SSH_HOST }}
+          username: ${{ secrets.DOCKER_SSH_USER }}
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.PORT }}
+          source: "deploy/redis/redis.conf"
+          target: ${{ secrets.PATH_TO_DEPLOY }}/redis
+          overwrite: true
+          tar_tmp_path: ${{ secrets.PATH_TO_DEPLOY }}
+          strip_components: 2
+
+
       - name: Copy docker-compose.yml
         uses: appleboy/scp-action@master
         with:
