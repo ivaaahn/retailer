@@ -23,7 +23,6 @@ class OrderReceiveKindEnum(str, Enum):
 
 
 class OrderStatusEnum(str, Enum):
-    cart = "cart"
     collecting = "collecting"
     ready = "ready"
     delivering = "delivering"

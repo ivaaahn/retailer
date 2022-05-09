@@ -31,6 +31,7 @@ async def get_list(
                 description="Probably the most random thing you have ever seen!",
                 price=100,
                 category="Category1",
+                qty=100,
             ),
             ShopProductDTO(
                 id=2,
@@ -39,6 +40,7 @@ async def get_list(
                 description="Hello World!",
                 price=100,
                 category="Category2",
+                qty=100,
             ),
             ShopProductDTO(
                 id=3,
@@ -47,6 +49,7 @@ async def get_list(
                 photo="https://st.depositphotos.com/2632165/3063/i/600/depositphotos_30638835-stock-photo-coffee.jpg",
                 price=100,
                 category="Category2",
+                qty=100,
             ),
             ShopProductDTO(
                 id=4,
@@ -55,6 +58,7 @@ async def get_list(
                 photo="https://cdn.pixabay.com/photo/2017/05/12/08/29/coffee-2306471__340.jpg",
                 price=100,
                 category="Category2",
+                qty=100,
             ),
             ShopProductDTO(
                 id=5,
@@ -62,6 +66,7 @@ async def get_list(
                 description="Hello World!",
                 price=100,
                 category="Category1",
+                qty=100,
             ),
             ShopProductDTO(
                 id=6,
@@ -69,6 +74,7 @@ async def get_list(
                 description="Hello World!",
                 price=100,
                 category="Category1",
+                qty=100,
             ),
             ShopProductDTO(
                 id=7,
@@ -76,6 +82,7 @@ async def get_list(
                 description="Hello World!",
                 price=100,
                 category="Category2",
+                qty=100,
             ),
         ],
         total=7,
