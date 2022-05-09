@@ -1,7 +1,19 @@
 from .pg import pg_accessor
 from .rmq import rmq_accessor
+from .redis import redis_accessor
+
+
+def __accessors():
+    yield pg_accessor
+    yield redis_accessor
+    yield rmq_accessor
 
 
 async def shutdown_store():
-    await pg_accessor.disconnect()
-    await rmq_accessor.disconnect()
+    for accessor in __accessors():
+        await accessor.disconnect()
+
+
+async def setup_store():
+    for accessor in __accessors():
+        await accessor.connect()

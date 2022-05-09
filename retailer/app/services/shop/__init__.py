@@ -1,1 +1,1 @@
-from .shop import *
+from .service import *

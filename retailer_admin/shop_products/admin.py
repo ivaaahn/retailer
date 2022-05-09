@@ -1,9 +1,15 @@
+import redis
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 
 # Register your models here.
 from shop_products.models import ShopProductModel
 from shops.models import ShopModel
+
+redis_instance = redis.StrictRedis(
+    host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=settings.REDIS_DB
+)
 
 
 class ShopProductsFilter(SimpleListFilter):
@@ -34,18 +40,24 @@ def product_name(obj):
     return obj.product.name
 
 
+def product_id(obj):
+    return obj.product.pk
+
+
 def product_category(obj):
     return obj.product.category
 
 
 product_name.short_description = "Наименование"
 product_category.short_description = "Категория"
+product_id.short_description = "Идентификатор"
 
 
 @admin.register(ShopProductModel)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
         product_name,
+        product_id,
         product_category,
         "price",
         "qty",
@@ -75,3 +87,15 @@ class ProductAdmin(admin.ModelAdmin):
     #         queryset=ShopModel.objects.filter(pk__in=request.user.shop_set.all())
     #     )
     #     return form
+
+    @staticmethod
+    def _make_shop_product_key(product_id: int, shop_id: int) -> str:
+        return f"product:{product_id}:{shop_id}"
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+
+        if form.changed_data:
+            redis_instance.delete(
+                self._make_shop_product_key(form.data["product"], form.data["shop"])
+            )

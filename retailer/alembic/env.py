@@ -6,10 +6,11 @@ from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from store.pg.sa import metadata
-from store.pg.settings import get_settings
+from store.pg.config import get_config
 
 
 ###############DO NOT DELETE########################
+from app.models.orders import *
 from app.models.products import *
 from app.models.product_categories import *
 from app.models.shop_addresses import *
@@ -23,7 +24,7 @@ from app.models.users import *
 ####################################################
 
 
-pg_settings = get_settings()
+pg_config = get_config()
 
 
 alembic_config = context.config
@@ -65,7 +66,7 @@ def run_migrations_offline():
     script output.
     """
 
-    set_sqlalchemy_dsn(pg_settings.dsn)
+    set_sqlalchemy_dsn(pg_config.dsn)
 
     url = alembic_config.get_main_option("sqlalchemy.url")
     context.configure(
@@ -97,7 +98,7 @@ async def run_migrations_online():
     and associate a connection with the context.
 
     """
-    set_sqlalchemy_dsn(pg_settings.dsn)
+    set_sqlalchemy_dsn(pg_config.dsn)
 
     connectable = AsyncEngine(
         engine_from_config(

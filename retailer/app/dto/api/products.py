@@ -27,13 +27,16 @@ class BaseProduct(BaseModel):
 
 
 class ShopProductDTO(BaseProduct):
-    pass
-
-
-class CartProductDTO(BaseProduct):
+    price: float = Field(title="Цена продукта в магазине")
     qty: int = Field(title="Кол-во продуктов в наличии")
+
+
+class CartProductDTO(BaseModel):
+    product: ShopProductDTO = Field(title="Продукт")
+    qty: int = Field(title="Кол-во продукта в корзине")
+    price: float = Field(title="Суммарная цена продукта")
 
 
 class ShopProductsListDTO(BaseModel):
     products: list[ShopProductDTO] = Field(title="Список продуктов")
-    total: int = Field(title="Общее кол-во продуктов")
+    total: float = Field(title="Общее кол-во продуктов")

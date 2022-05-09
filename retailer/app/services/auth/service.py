@@ -19,8 +19,13 @@ from app.delivery.auth.errors import (
     IncorrectLoginCredsError,
     IncorrectCodeError,
 )
-from app.dto.signup import TokenDataDTO, TokenRespDTO, SignupRespDTO, ResendCodeRespDTO
-from app.dto.user import UserRespDTO
+from app.dto.api.signup import (
+    TokenDataDTO,
+    TokenRespDTO,
+    SignupRespDTO,
+    ResendCodeRespDTO,
+)
+from app.dto.api.user import UserRespDTO
 from app.models.signup_sessions import SignupSessionModel
 from app.models.users import UserModel
 from app.repos import (
@@ -31,7 +36,7 @@ from app.repos import (
     SignupSessionRepo,
     UsersRepo,
 )
-from .settings import AuthSettings, get_settings
+from .config import AuthConfig, get_config
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -47,14 +52,14 @@ class AuthService(BaseService):
         rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
-        self._settings = get_settings()
+        self._config = get_config()
         self._users_repo = users_repo
         self._signup_session_repo = signup_session_repo
         self._rmq_interact_repo = rmq_interact_repo
 
     @property
-    def cfg(self) -> AuthSettings:
-        return self._settings
+    def cfg(self) -> AuthConfig:
+        return self._config
 
     async def signup_user(self, email: str, pwd: str) -> SignupRespDTO:
         hashed_pwd = self._get_password_hash(pwd)

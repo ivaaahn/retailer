@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from fastapi import Depends
 from sqlalchemy import asc, desc
@@ -8,7 +9,9 @@ from sqlalchemy.orm import Query
 
 from app.base.deps import SortOrderEnum
 from logger.logger import get_logger
+from store import redis_accessor
 from store.pg import pg_accessor, PgAccessor
+from store.redis import RedisAccessor
 from store.rmq import RMQAccessor, rmq_accessor
 from store.s3 import S3Accessor, s3_accessor
 
@@ -40,6 +43,12 @@ class BaseS3Repo(BaseRepo):
     def __init__(self, s3: S3Accessor = Depends(s3_accessor)):
         super().__init__()
         self._s3 = s3
+
+
+class BaseRedisRepo(BaseRepo):
+    def __init__(self, redis: RedisAccessor = Depends(redis_accessor)):
+        super().__init__()
+        self._redis = redis
 
 
 class BasePgRepo(BaseRepo):
@@ -80,6 +89,14 @@ class BasePgRepo(BaseRepo):
             )
 
         return result
+
+    async def get_one(self, statement, parameters=None, **kwargs):
+        cursor = await self._execute(statement, parameters, **kwargs)
+        return cursor.first()
+
+    async def get_scalar(self, statement, parameters=None, **kwargs):
+        cursor = await self._execute(statement, parameters, **kwargs)
+        return cursor.scalar()
 
     @property
     def transaction(self) -> AsyncConnection:

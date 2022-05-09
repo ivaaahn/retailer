@@ -20,8 +20,8 @@ class AttachmentsService(BaseService):
         self._attachments_repo = attachments_repo
 
     @staticmethod
-    def make_s3_url(key: str) -> str:
-        return f"/api/attachments/s3/download?path={key}"
+    def make_s3_url(path: str) -> str:
+        return f"/img/{path}"
 
     async def download_from_s3(self, key: str) -> StreamingResponse:
         return await self._attachments_repo.download_object(key)

@@ -8,8 +8,6 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     Date,
-    ForeignKey,
-    String,
 )
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql import expression

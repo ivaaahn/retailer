@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from app.dto.products import CartProductDTO
+from app.dto.api.products import CartProductDTO
 
 
 class CartRespDTO(BaseModel):
