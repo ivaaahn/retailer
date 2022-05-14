@@ -70,7 +70,11 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
         )
         cursor_product = await self._execute(query)
 
-        stmt_total = select(func.count()).select_from(spt.join(pt).join(ct))
+        stmt_total = (
+            select(func.count())
+            .where(spt.c.shop_id == shop_id)
+            .select_from(spt.join(pt).join(ct))
+        )
         cursor_total = await self._execute(stmt_total)
         total = cursor_total.scalar()
 

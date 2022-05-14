@@ -17,6 +17,8 @@ class BasePagingParams:
 
 
 def base_paging_params(
-    count: int, offset: int, order: SortOrderEnum = Query(default=SortOrderEnum.desc)
+    count: int = Query(default=10),
+    offset: int = Query(default=0),
+    order: SortOrderEnum = Query(default=SortOrderEnum.desc),
 ) -> BasePagingParams:
     return BasePagingParams(count=count, offset=offset, order=order)
