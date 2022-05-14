@@ -14,7 +14,7 @@ class DBProductBaseDTO:
 @dataclass
 class DBShopProductDTO(DBProductBaseDTO):
     price: float
-    qty: int
+    availability: int
 
 
 @dataclass
@@ -24,7 +24,7 @@ class DBCartProductDTO:
 
 
 @dataclass
-class DBCartProductExtDTO(DBShopProductDTO):
+class DBCartProductExtDTO:
     product: DBShopProductDTO
     qty: int
     price: float
@@ -38,3 +38,9 @@ class DBCartInfoDTO:
 @dataclass
 class DBCartInfoExtDTO:
     products: list[DBCartProductExtDTO]
+
+
+@dataclass
+class DBShopProductListDTO:
+    products: list[DBShopProductDTO]
+    total: int

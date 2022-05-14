@@ -2,12 +2,15 @@ import json
 from dataclasses import asdict
 from functools import lru_cache
 
-from sqlalchemy import and_
+from fastapi import Depends
+from sqlalchemy import and_, func
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo, BaseRedisRepo
 from app.delivery.products.errors import ProductNotFoundError
-from app.dto.db.products import DBShopProductDTO
+from app.delivery.products.deps import product_paging_params
+from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
+from app.dto.api.products import ProductListPagingParams
 from app.misc import make_shop_product_key
 from app.models.product_categories import ProductCategoryModel
 from app.models.products import ProductModel
@@ -42,7 +45,49 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
             category=product.product_categories_name,
             description=product.description,
             photo=product.photo,
-            qty=product.qty,
+            availability=product.availability,
+        )
+
+    async def get_list(
+        self,
+        shop_id: int,
+        paging_params: ProductListPagingParams = Depends(product_paging_params),
+    ) -> DBShopProductListDTO:
+        pt = ProductModel.__table__
+        spt = ShopProductsModel.__table__
+        ct = ProductCategoryModel.__table__
+        stmt = (
+            select(pt, spt, ct)
+            .where(spt.c.shop_id == shop_id)
+            .select_from(spt.join(pt).join(ct))
+        )
+        query = self.with_pagination(
+            query=stmt,
+            count=paging_params.count,
+            offset=paging_params.offset,
+            order=paging_params.order,
+            sort=getattr(pt.c, paging_params.sort_by.value),
+        )
+        cursor_product = await self._execute(query)
+
+        stmt_total = select(func.count()).select_from(spt.join(pt).join(ct))
+        cursor_total = await self._execute(stmt_total)
+        total = cursor_total.scalar()
+
+        return DBShopProductListDTO(
+            [
+                DBShopProductDTO(
+                    id=product.id,
+                    photo=product.photo,
+                    name=product.name,
+                    description=product.description,
+                    price=product.price,
+                    category=product.product_categories_name,
+                    availability=product.shop_products_qty,
+                )
+                for product in cursor_product
+            ],
+            total,
         )
 
 
