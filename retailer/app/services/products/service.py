@@ -4,8 +4,13 @@ from functools import lru_cache
 from fastapi import Depends
 
 from app.base.services import BaseService
+from app.delivery.products.deps import product_paging_params
 from app.delivery.products.errors import ProductNotFoundError
-from app.dto.api.products import ShopProductDTO
+from app.dto.api.products import (
+    ShopProductDTO,
+    ProductListPagingParams,
+    ShopProductsListDTO,
+)
 from app.dto.db.products import DBShopProductDTO
 from app.repos.products import (
     IProductsRepo,
@@ -63,3 +68,26 @@ class ProductsService(BaseService):
             return shop_product
 
         return ShopProductDTO(**asdict(shop_product))
+
+    async def get_list(
+        self,
+        shop_id: int,
+        paging_params: ProductListPagingParams,
+    ) -> ShopProductsListDTO:
+        res = await self._products_repo.get_list(shop_id, paging_params)
+
+        return ShopProductsListDTO(
+            products=[
+                ShopProductDTO(
+                    id=product.id,
+                    photo=self._make_s3_url(product.photo),
+                    name=product.name,
+                    description=product.description,
+                    price=product.price,
+                    category=product.category,
+                    qty=product.availability,
+                )
+                for product in res.products
+            ],
+            total=res.total,
+        )
