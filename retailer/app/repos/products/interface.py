@@ -18,7 +18,7 @@ class IProductsRepo(metaclass=abc.ABCMeta):
     async def get_list(
         self,
         shop_id: int,
-        paging_params: ProductListPagingParams = Depends(product_paging_params),
+        paging_params: ProductListPagingParams,
     ) -> DBShopProductListDTO:
         pass
 
