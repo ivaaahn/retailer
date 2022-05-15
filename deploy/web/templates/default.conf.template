@@ -11,6 +11,8 @@ server {
     listen 80;
     server_name 51.250.86.153;
 
+    client_max_body_size 32M;
+
     location /admin {
         proxy_set_header Host localhost;
         proxy_set_header X-Real-IP $remote_addr;
