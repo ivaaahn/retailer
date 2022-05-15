@@ -28,7 +28,7 @@ class BaseProduct(BaseModel):
 
 class ShopProductDTO(BaseProduct):
     price: float = Field(title="Цена продукта в магазине")
-    qty: int = Field(title="Кол-во продуктов в наличии")
+    availability: int = Field(title="Кол-во продуктов в наличии")
 
 
 class CartProductDTO(BaseModel):

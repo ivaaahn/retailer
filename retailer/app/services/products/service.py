@@ -85,7 +85,7 @@ class ProductsService(BaseService):
                     description=product.description,
                     price=product.price,
                     category=product.category,
-                    qty=product.availability,
+                    availability=product.availability,
                 )
                 for product in res.products
             ],

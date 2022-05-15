@@ -45,7 +45,7 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
             category=product.product_categories_name,
             description=product.description,
             photo=product.photo,
-            availability=product.availability,
+            availability=product.shop_products_qty,
         )
 
     async def get_list(
