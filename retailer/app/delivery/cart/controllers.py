@@ -19,8 +19,7 @@ async def get(
     shop_id: int = Query(..., title="Идентификатор магазина"),
     user: UserRespDTO = Depends(get_current_active_user),
 ) -> CartRespDTO:
-    res = await cart_service.get(user.email, shop_id)
-    return res
+    return await cart_service.get(user.email, shop_id)
 
 
 @router.delete("", response_model=CartRespDTO)
@@ -33,6 +32,7 @@ async def delete(
 
 @router.patch("", response_model=CartRespDTO)
 async def patch(
+    shop_id: int = Query(..., title="Идентификатор магазина"),
     product_id: int = Query(..., title="Идентификатор продукта"),
     qty: int = Query(..., title="Количество (0 - удалить из корзины)", gt=-1),
     user: UserRespDTO = Depends(get_current_active_user),
@@ -43,3 +43,5 @@ async def patch(
         product_id=product_id,
         qty=qty,
     )
+
+    return await cart_service.get(user.email, shop_id)
