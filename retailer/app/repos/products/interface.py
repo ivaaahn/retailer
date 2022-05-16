@@ -1,8 +1,5 @@
 import abc
 
-from fastapi import Depends
-
-from app.delivery.products.deps import product_paging_params
 from app.dto.api.products import ProductListPagingParams
 from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
 

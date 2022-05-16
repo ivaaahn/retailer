@@ -65,7 +65,6 @@ class OrderModel(BaseModel):
             "receive_kind": self.receive_kind,
             "status": self.status,
             "created_at": self.created_at,
-            "category_name": self.category_name,
             "user": None,
             "shop": None,
         }

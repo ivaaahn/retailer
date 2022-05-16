@@ -19,8 +19,7 @@ async def get(
     shop_id: int = Query(..., title="Идентификатор магазина"),
     user: UserRespDTO = Depends(get_current_active_user),
 ) -> CartRespDTO:
-    res = await cart_service.get(user.email, shop_id)
-    return res
+    return await cart_service.get(user.email, shop_id)
 
 
 @router.delete("", response_model=CartRespDTO)

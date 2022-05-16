@@ -3,7 +3,7 @@ from sqlalchemy import (
     Integer,
     Identity,
     ForeignKey,
-    Float,
+    Float, CheckConstraint,
 )
 
 from app.base.models import BaseModel
@@ -19,3 +19,5 @@ class ShopProductsModel(BaseModel):
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     price = Column(Float, nullable=False)
     qty = Column(Integer, nullable=True)
+
+    CheckConstraint('qty >= 0', name='qty_check')

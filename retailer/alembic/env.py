@@ -20,6 +20,7 @@ from app.models.signup_sessions import *
 from app.models.staff import *
 from app.models.user_addresses import *
 from app.models.users import *
+from app.models.order_products import *
 
 ####################################################
 
