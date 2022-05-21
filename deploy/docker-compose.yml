@@ -7,7 +7,7 @@ services:
     image: nginx:alpine
     depends_on:
      - app
-      - admin
+     - admin
     ports:
       - "80:80"
       - "443:443"
