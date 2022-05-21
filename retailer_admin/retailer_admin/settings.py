@@ -47,7 +47,7 @@ DEBUG = config["DEBUG"]
 
 ALLOWED_HOSTS = ["0.0.0.0", "localhost", "51.250.86.153"]
 
-CSRF_TRUSTED_ORIGINS = ["http://51.250.86.153", "http://127.0.0.1"]
+CSRF_TRUSTED_ORIGINS = ["http://51.250.86.153", "http://127.0.0.1", "https://retailer.gq", "https://www.retailer.gq"]
 
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
