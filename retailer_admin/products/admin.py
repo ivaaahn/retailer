@@ -32,7 +32,8 @@ class ProductAdmin(admin.ModelAdmin):
 
         if form.changed_data:
             keys = [
-                key for key in redis_instance.scan_iter(f"product:{form.instance.pk}:*")
+                _ for _ in redis_instance.scan_iter(f"product:{form.instance.pk}:*")
             ]
 
-            redis_instance.delete(*keys)
+            if keys:
+                redis_instance.delete(*keys)
