@@ -14,6 +14,7 @@ from app.dto.api.orders import (
 )
 from app.dto.api.products import ShopProductDTO
 from app.dto.api.user import UserRespDTO
+from app.services.carts import CartService
 from app.services.orders.service import OrdersService
 
 router = APIRouter(
@@ -25,7 +26,6 @@ router = APIRouter(
 @router.get("", response_model=OrderRespDTO)
 async def get(
     id: int,
-    # user: UserRespDTO = Depends(get_current_active_user),
     order_service: OrdersService = Depends(),
 ) -> OrderRespDTO:
     return await order_service.get(id)
@@ -42,7 +42,12 @@ async def get_list(
 @router.put("")
 async def place_order(
     shop_id: int,
+    cart_service: CartService = Depends(),
+    order_service: OrdersService = Depends(),
     user: UserRespDTO = Depends(get_current_active_user),
     receive_kind: OrderReceiveKindEnum = Query(default=OrderReceiveKindEnum.takeaway),
 ) -> PlaceOrderRespDTO:
-    return PlaceOrderRespDTO(order_id=1)
+    cart = await cart_service.get_raw_cart(user.email)
+    return await order_service.place_order(
+        cart, shop_id, email=user.email, receive_kind=receive_kind
+    )

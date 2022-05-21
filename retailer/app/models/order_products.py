@@ -2,7 +2,8 @@ from sqlalchemy import (
     Column,
     Integer,
     ForeignKey,
-    Float, Identity,
+    Float,
+    Identity,
 )
 
 from app.base.models import BaseModel

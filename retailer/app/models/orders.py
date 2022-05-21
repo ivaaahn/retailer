@@ -14,7 +14,10 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
-__all__ = ("OrderModel",)
+__all__ = (
+    "OrderModel",
+    "OrderReceiveKindEnum",
+)
 
 
 class OrderReceiveKindEnum(str, Enum):

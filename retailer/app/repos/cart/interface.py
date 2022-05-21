@@ -11,7 +11,7 @@ class ICartsRepo(metaclass=abc.ABCMeta):
     async def remove(self, email: str, product_id: int) -> int:
         pass
 
-    async def get(self, email) -> DBCartInfoDTO:
+    async def get(self, email: str) -> DBCartInfoDTO:
         pass
 
     async def clear_cart(self, email: str) -> int:

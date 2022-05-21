@@ -23,3 +23,8 @@ class DBOrderProductsDTO(DBOrdersDTO):
 class DBOrderProductsListDTO:
     orders: list[DBOrderProductsDTO]
     total: int
+
+
+@dataclass
+class DBPlaceOrderDTO:
+    order_id: int
