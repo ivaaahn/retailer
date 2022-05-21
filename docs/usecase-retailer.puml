@@ -1,0 +1,80 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Сотрудник: as Staff
+actor :Клиент: as Cli
+actor :Менеджер: as Admin
+
+
+rectangle "Функционал клиента" {
+    usecase "Просмотреть список торговых точек" as ShopList
+    usecase "Просмотреть информацию о торговой точке" as ShopInfo
+    usecase "Просмотреть ассортимент товаров торговой точки" as ShopProductsInfo
+    usecase "Просмотреть информацию о товаре" as ShopProductInfo
+    usecase "Добавить товар в корзину" as AddProductToCart
+    usecase "Удалить товар из корзины" as RemoveProductFromCart
+    usecase "Просмотреть корзину" as CartInfo
+    usecase "Оформить заказ" as ApplyOrder
+    usecase "Просмотреть мой профиль" as CheckProfile
+    usecase "Изменить мой профиль" as UpdateProfile
+}
+
+rectangle "Функционал сотрудника" {
+    usecase "Просмотреть список доступных торговых точек" as StaffShopList
+    usecase "Просмотреть информацию о выбранной торговой точке" as StaffShopInfo
+    usecase "Просмотреть ассортимент товаров" as StaffShopProductsInfo
+    usecase "Редактировать цену/наличие товара" as StaffProductEdit
+}
+
+rectangle "Функционал менеджера" {
+    usecase "Просмотреть список всех торговых точек" as AdminShopList
+    usecase "Просмотреть список сотрудников торговой точки" as AdminStaffList
+    usecase "Создать аккаунт сотруднику" as AdminStaffCreate
+    usecase "Удалить аккаунт сотрудника" as AdminStaffRemove
+    usecase "Просмотреть список товаров" as AdminProductList
+    usecase "Редактировать базовое описание товара" as AdminEditProduct
+    usecase "Добавить новые базовый товар" as AdminAddProduct
+    usecase "Удалить базовые товары" as AdminRemoveProduct
+    usecase "Просмотреть статистику" as AdminGetStat
+}
+
+
+Admin --> AdminShopList
+AdminShopList ..> AdminStaffList : include
+
+Admin --> AdminStaffCreate
+Admin --> AdminStaffRemove
+
+Admin --> AdminProductList
+AdminProductList ..> AdminAddProduct : include
+AdminProductList ..> AdminEditProduct : include
+AdminProductList ..> AdminRemoveProduct : include
+
+Admin --> AdminGetStat
+
+
+Staff --> StaffShopList
+StaffShopList ..> StaffShopInfo : include
+StaffShopList ..> StaffShopProductsInfo : include
+
+StaffShopProductsInfo ..> StaffProductEdit : include
+
+
+Cli --> ShopList
+ShopList ..> ShopInfo : include
+ShopList ..> ShopProductsInfo : include
+ShopProductsInfo ..> ShopProductInfo : include
+ShopProductsInfo ..> AddProductToCart : include
+
+Cli --> CartInfo
+CartInfo ..> RemoveProductFromCart : include
+CartInfo ..> ApplyOrder : include
+
+Cli --> CheckProfile
+CheckProfile ..> UpdateProfile : include
+
+
+@enduml

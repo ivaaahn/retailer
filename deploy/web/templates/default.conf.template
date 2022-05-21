@@ -9,7 +9,25 @@ upstream admin {
 
 server {
     listen 80;
-    server_name 51.250.86.153;
+    server_name retailer.gq, www.retailer.gq, 51.250.86.153;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+	return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name retailer.gq, www.retailer.gq, 51.250.86.153;
+    ssl_certificate /etc/letsencrypt/live/retailer.gq/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/retailer.gq/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
     client_max_body_size 32M;
 
