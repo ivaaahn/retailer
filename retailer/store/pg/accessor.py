@@ -1,11 +1,12 @@
+import contextlib
 from typing import Optional
 
 from sqlalchemy import MetaData, text
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection, AsyncEngine
 
-from ..base.accessor import BaseAccessor
-from .config import PgConfig, get_config
 from . import sa
+from .config import PgConfig, get_config
+from ..base.accessor import BaseAccessor
 
 __all__ = (
     "PgAccessor",
@@ -22,10 +23,27 @@ class PgAccessor(BaseAccessor[PgConfig]):
 
         self._engine: Optional[AsyncEngine] = None
         self._metadata: Optional[MetaData] = None
+        self._conn: Optional[AsyncConnection] = None
 
+    @contextlib.asynccontextmanager
     async def acquire(self) -> AsyncConnection:
-        async with self._engine.begin() as conn:
-            yield conn
+        if self._conn:
+            yield self._conn
+        else:
+            try:
+                async with self._engine.begin() as conn:
+                    # self.logger.info("======[TX BEGIN]=====")
+                    self._conn = conn
+                    yield conn
+            except:  # noqa
+                raise
+                # self.logger.info("======[TX ROLLBACK]=====")
+            else:
+                pass
+                # self.logger.info("======[TX COMMIT]=====")
+            finally:
+                self._conn = None
+                # self.logger.info(">>>> CONN RELEASED <<<<")
 
     async def _ping(self):
         async with self._engine.begin() as conn:
@@ -41,6 +59,7 @@ class PgAccessor(BaseAccessor[PgConfig]):
         self._engine = create_async_engine(
             url=conf.dsn,
             echo=conf.echo,
+            echo_pool=True,
         )
 
         self._metadata = sa.metadata

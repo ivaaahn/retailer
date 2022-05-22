@@ -36,9 +36,6 @@ class CartService(BaseService):
                 email=email, dto=DBCartProductDTO(product_id, qty)
             )
 
-    async def get_raw_cart(self, email) -> DBCartInfoDTO:
-        return await self._carts_repo.get(email)
-
     async def get(self, email: str, shop_id: int) -> CartRespDTO:
         cart_raw = await self._carts_repo.get(email)
 

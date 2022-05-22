@@ -1,5 +1,6 @@
 import abc
 
+from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import ProductListPagingParams
 from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
 
@@ -17,6 +18,9 @@ class IProductsRepo(metaclass=abc.ABCMeta):
         shop_id: int,
         paging_params: ProductListPagingParams,
     ) -> DBShopProductListDTO:
+        pass
+
+    async def reduce_qty(self, shop_id: int, cart: CartRespDTO):
         pass
 
 

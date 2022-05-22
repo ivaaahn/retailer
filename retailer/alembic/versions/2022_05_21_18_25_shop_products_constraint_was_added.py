@@ -23,6 +23,8 @@ def upgrade():
         condition="qty >= 0",
     )
 
+    # TODO add unique index on pair (shop_id, product_id)
+
 
 def downgrade():
     op.drop_constraint(

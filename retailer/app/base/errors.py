@@ -26,6 +26,23 @@ class BaseError(HTTPException):
         )
 
 
+class PostgresError(BaseError):
+    def __init__(
+        self,
+        description: str,
+        kind: Optional[str] = None,
+        data: Optional[dict[str, Any]] = None,
+        headers: Optional[dict[str, Any]] = None,
+    ):
+        super().__init__(
+            code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            description=description,
+            kind=kind,
+            data=data,
+            headers=headers,
+        )
+
+
 class NotFoundError(BaseError):
     def __init__(
         self,
@@ -45,6 +62,8 @@ class NotFoundError(BaseError):
 
 class DBErrEnum(str, Enum):
     foreign_key_violation = "ForeignKeyViolationError"
+    check_violation = "CheckViolationError"
+    # todo: check constraint
 
 
 def check_err(err: IntegrityError, item: DBErrEnum):
@@ -86,6 +105,23 @@ class ForbiddenError(AuthError):
         )
 
 
+class BadRequestError(BaseError):
+    def __init__(
+        self,
+        description: str,
+        kind: str = None,
+        data: Optional[dict[str, Any]] = None,
+        headers: Optional[dict[str, Any]] = None,
+    ):
+        super().__init__(
+            code=status.HTTP_400_BAD_REQUEST,
+            description=description,
+            kind=kind,
+            data=data,
+            headers=headers,
+        )
+
+
 class UnauthorizedError(AuthError):
     def __init__(
         self,
@@ -111,7 +147,7 @@ class ConflictError(BaseError):
         data: Optional[dict[str, Any]] = None,
         headers: Optional[dict[str, Any]] = None,
     ):
-        super(AuthError, self).__init__(
+        super().__init__(
             code=status.HTTP_409_CONFLICT,
             description=description,
             kind=kind,

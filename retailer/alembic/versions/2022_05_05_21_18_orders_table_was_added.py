@@ -5,28 +5,29 @@ Revises: 9ace568f3e17
 Create Date: 2022-05-05 21:18:53.575227
 
 """
-from alembic import op
 import sqlalchemy as sa
-
-from sqlalchemy.dialects import postgresql
-
-# revision identifiers, used by Alembic.
+from alembic import op
 from sqlalchemy.dialects.postgresql import ENUM
+
+from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
 
 revision = "6f1856998bb3"
 down_revision = "9ace568f3e17"
 branch_labels = None
 depends_on = None
 
-vals_rk, name_rk = ("самовывоз", "доставка"), "receive_kind_enum"
+vals_rk, name_rk = (
+    OrderReceiveKindEnum.takeaway.value,
+    OrderReceiveKindEnum.delivery.value,
+), "receive_kind_enum"
 vals_s, name_s = (
-    "готовится",
-    "готов",
-    "в пути",
-    "доставлен",
-    "отменен",
-    "завершен",
-    "ошибка",
+    OrderStatusEnum.collecting.value,
+    OrderStatusEnum.ready.value,
+    OrderStatusEnum.delivering.value,
+    OrderStatusEnum.delivered.value,
+    OrderStatusEnum.cancelled.value,
+    OrderStatusEnum.finished.value,
+    OrderStatusEnum.error.value,
 ), "order_status_enum"
 
 
@@ -41,13 +42,13 @@ def upgrade():
         sa.Column(
             "receive_kind",
             ENUM(*vals_rk, name=name_rk),
-            server_default="самовывоз",
+            server_default=OrderReceiveKindEnum.takeaway.value,
             nullable=False,
         ),
         sa.Column(
             "status",
             ENUM(*vals_s, name=name_s),
-            server_default="готовится",
+            server_default=OrderStatusEnum.delivering.value,
             nullable=False,
         ),
         sa.Column(

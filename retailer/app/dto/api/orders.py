@@ -25,12 +25,23 @@ class OrderRespDTO(BaseModel):
     status: OrderStatusEnum = Field(title="Статус заказа")
     created_at: datetime = Field(title="Дата создания")
     receive_kind: OrderReceiveKindEnum = Field(title="Способ получения")
+    delivery_address: str | None = Field(title="Адрес доставки (если выбрана доставка)")
     total_price: float = Field(title="Общая стоимость заказа")
 
 
 class OrdersListRespDTO(BaseModel):
     orders: list[OrderRespDTO] = Field(title="Список заказов")
     total: int = Field(title="Общее кол-во заказов")
+
+
+class PlaceOrderReqDTO(BaseModel):
+    shop_id: int = Field(title="Идентификатор магазина")
+    receive_kind: OrderReceiveKindEnum = Field(
+        title="Способ получения", default=OrderReceiveKindEnum.takeaway
+    )
+    delivery_address_id: int | None = Field(
+        title="Адрес доставки (если выбрана доставка)"
+    )
 
 
 class PlaceOrderRespDTO(BaseModel):
