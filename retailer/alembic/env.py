@@ -111,18 +111,6 @@ async def run_migrations_online():
         )
     )
 
-    # target_metadata.reflect(, only=[
-    #     "django_content_type",
-    #     "auth_group",
-    #     "auth_group_permisssions",
-    #     "auth_permission",
-    #     "django_admin_log",
-    #     "django_migrations",
-    #     "django_session",
-    #     "users_groups",
-    #     "user_user_permissions",
-    # ])
-
     async with connectable.connect() as connection:
         await connection.run_sync(do_run_migrations)
 
