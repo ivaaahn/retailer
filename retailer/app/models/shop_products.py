@@ -19,6 +19,4 @@ class ShopProductsModel(BaseModel):
     shop_id = Column(Integer, ForeignKey("shops.id"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     price = Column(Float, nullable=False)
-    qty = Column(Integer, nullable=True)
-
-    CheckConstraint("qty >= 0", name="qty_check")
+    qty = Column(Integer, nullable=False)
