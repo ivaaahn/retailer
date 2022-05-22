@@ -29,9 +29,13 @@ async def get(
 @router.get(".list", response_model=OrdersListRespDTO)
 async def get_list(
     order_service: OrdersService = Depends(),
+    user: UserRespDTO = Depends(get_current_active_user),
     paging_params: OrderListPagingParams = Depends(order_paging_params),
 ) -> OrdersListRespDTO:
-    return await order_service.get_list(paging_params)
+    return await order_service.get_list(
+        user,
+        paging_params,
+    )
 
 
 @router.put("")

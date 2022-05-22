@@ -21,7 +21,7 @@ class DBOrderProductsDTO(DBOrdersDTO):
 
 @dataclass
 class DBOrderProductsListDTO:
-    orders: list[DBOrderProductsDTO]
+    orders: list[DBOrdersDTO]
     total: int
 
 

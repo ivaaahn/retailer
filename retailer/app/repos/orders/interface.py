@@ -2,6 +2,7 @@ import abc
 
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import OrderListPagingParams
+from app.dto.api.user import UserRespDTO
 from app.dto.db.orders import DBOrderProductsDTO, DBOrderProductsListDTO
 from app.models.orders import OrderReceiveKindEnum
 
@@ -15,7 +16,7 @@ class IOrdersRepo(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     async def get_list(
-        self, paging_params: OrderListPagingParams
+        self, user_id: int, paging_params: OrderListPagingParams
     ) -> DBOrderProductsListDTO:
         pass
 

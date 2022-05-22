@@ -51,9 +51,13 @@ class OrdersService(BaseService):
 
     async def get_list(
         self,
+        user: UserRespDTO,
         paging_params: OrderListPagingParams = Depends(order_paging_params),
     ) -> OrdersListRespDTO:
-        orders_list = await self._orders_repo.get_list(paging_params)
+        orders_list = await self._orders_repo.get_list(
+            user.id,
+            paging_params,
+        )
         return OrdersListRespDTO(**asdict(orders_list))
 
     async def _create_and_fill_order(
