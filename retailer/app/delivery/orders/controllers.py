@@ -1,17 +1,16 @@
-from datetime import datetime
+from fastapi import Depends, APIRouter
 
-from fastapi import Depends, APIRouter, Query
-
+from app.delivery.auth.deps import get_current_active_user
 from app.delivery.orders.deps import order_paging_params
 from app.dto.api.orders import (
     OrderRespDTO,
-    OrderStatusEnum,
-    OrderReceiveKindEnum,
     OrdersListRespDTO,
     OrderListPagingParams,
     PlaceOrderRespDTO,
+    PlaceOrderReqDTO,
 )
-from app.dto.api.products import ShopProductDTO
+from app.dto.api.user import UserRespDTO
+from app.services.orders.service import OrdersService
 
 router = APIRouter(
     prefix="/order",
@@ -20,63 +19,29 @@ router = APIRouter(
 
 
 @router.get("", response_model=OrderRespDTO)
-async def get(id: int) -> OrderRespDTO:
-    return OrderRespDTO(
-        id=1,
-        products=[
-            ShopProductDTO(
-                id=1,
-                name="молоко",
-                description="годен 3 дня после открытия",
-                category="молочные продукты",
-                price=88.5,
-                qty=30,
-            ),
-            ShopProductDTO(
-                id=3, name="Морковь по корейски", category="закуски", price=99, qty=10
-            ),
-        ],
-        status=OrderStatusEnum.created,
-        created_at=datetime(2022, 4, 25, 3, 8, 45, 109647),
-        receive_kind=OrderReceiveKindEnum.takeaway,
-        total_price=187.5,
-    )
+async def get(
+    id: int,
+    order_service: OrdersService = Depends(),
+) -> OrderRespDTO:
+    return await order_service.get(id)
 
 
 @router.get(".list", response_model=OrdersListRespDTO)
 async def get_list(
+    order_service: OrdersService = Depends(),
+    user: UserRespDTO = Depends(get_current_active_user),
     paging_params: OrderListPagingParams = Depends(order_paging_params),
 ) -> OrdersListRespDTO:
-    return OrdersListRespDTO(
-        orders=[
-            OrderRespDTO(
-                id=1,
-                products=[
-                    ShopProductDTO(
-                        id=1,
-                        name="молоко",
-                        description="годен 3 дня после открытия",
-                        category="молочные продукты",
-                        price=88.5,
-                        qty=30,
-                    ),
-                    ShopProductDTO(
-                        id=2, name="кока-кола", category="напитки", price=99, qty=10
-                    ),
-                ],
-                status=OrderStatusEnum.collecting,
-                created_at=datetime(2022, 4, 25, 3, 8, 45, 109647),
-                receive_kind=OrderReceiveKindEnum.takeaway,
-                total_price=187.5,
-            )
-        ],
-        total=1,
+    return await order_service.get_list(
+        user,
+        paging_params,
     )
 
 
 @router.put("")
 async def place_order(
-    shop_id: int,
-    receive_kind: OrderReceiveKindEnum = Query(default=OrderReceiveKindEnum.takeaway),
+    data: PlaceOrderReqDTO,
+    order_service: OrdersService = Depends(),
+    user: UserRespDTO = Depends(get_current_active_user),
 ) -> PlaceOrderRespDTO:
-    return PlaceOrderRespDTO(order_id=1)
+    return await order_service.place_order(data=data, user=user)

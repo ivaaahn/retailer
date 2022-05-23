@@ -34,5 +34,3 @@ class CartsRepo(BaseRedisRepo, ICartsRepo):
 
     async def clear_cart(self, email: str) -> int:
         return await self._redis.cli.delete(make_cart_key(email))
-
-    # TODO add clear all products

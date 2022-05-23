@@ -7,11 +7,68 @@ from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
 from app.models.users import UserModel
+from app.models.user_addresses import UserAddressModel
+from app.delivery.profile.errors import AddressesNotFoundError
+from app.dto.db.profile import DBAddressListDTO, DBAddressDTO
 from .interface import IUsersRepo
 
 
 @lru_cache
 class UsersRepo(IUsersRepo, BasePgRepo):
+    async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
+        user_addr = UserAddressModel.__table__
+
+        stmt = (
+            select(user_addr)
+            .where(user_addr.c.user_id == user_id)
+            .select_from(user_addr)
+        )
+
+        cursor = await self._execute(stmt)
+        if not cursor:
+            raise AddressesNotFoundError(user_id)
+
+        return DBAddressListDTO(
+            [
+                DBAddressDTO(
+                    id=addr.id,
+                    city=addr.city,
+                    street=addr.street,
+                    house=addr.house,
+                    entrance=addr.entrance,
+                    floor=addr.floor,
+                    flat=addr.flat,
+                )
+                for addr in cursor
+            ]
+        )
+
+    async def add_address(
+        self,
+        user_id: int,
+        city: str,
+        street: str,
+        house: str,
+        entrance: int,
+        floor: Optional[int],
+        flat: Optional[str],
+    ) -> int:
+        user_addr = UserAddressModel.__table__
+
+        stmt = insert(user_addr).values(
+            user_id=user_id,
+            city=city,
+            street=street,
+            house=house,
+            entrance=entrance,
+            floor=floor,
+            flat=flat,
+        )
+
+        addr_id = await self.execute_with_pk(stmt)
+
+        return addr_id
+
     async def update(self, email: str, **kwargs) -> Optional[UserModel]:
         stmt = (
             update(UserModel)

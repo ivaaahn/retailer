@@ -5,24 +5,19 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from store.pg.sa import metadata
+from app.models.order_products import *  # noqa
+from app.models.orders import *  # noqa
+from app.models.product_categories import *  # noqa
+from app.models.products import *  # noqa
+from app.models.shop_addresses import *  # noqa
+from app.models.shop_products import *  # noqa
+from app.models.shops import *  # noqa
+from app.models.signup_sessions import *  # noqa
+from app.models.staff import *  # noqa
+from app.models.user_addresses import *  # noqa
+from app.models.users import *  # noqa
 from store.pg.config import get_config
-
-
-###############DO NOT DELETE########################
-from app.models.orders import *
-from app.models.products import *
-from app.models.product_categories import *
-from app.models.shop_addresses import *
-from app.models.shop_products import *
-from app.models.shops import *
-from app.models.signup_sessions import *
-from app.models.staff import *
-from app.models.user_addresses import *
-from app.models.users import *
-
-####################################################
-
+from store.pg.sa import metadata
 
 pg_config = get_config()
 
@@ -35,6 +30,10 @@ def set_sqlalchemy_dsn(dsn: str):
         name="sqlalchemy.url",
         value=dsn,
     )
+
+
+def include_object(object, name, type_, reflected, compare_to):
+    return not (type_ == "table" and reflected and compare_to is None)
 
 
 # Interpret the cfg file for Python logging.
@@ -74,6 +73,7 @@ def run_migrations_offline():
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -85,6 +85,7 @@ def do_run_migrations(connection):
         connection=connection,
         target_metadata=target_metadata,
         compare_type=True,
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -98,6 +99,7 @@ async def run_migrations_online():
     and associate a connection with the context.
 
     """
+
     set_sqlalchemy_dsn(pg_config.dsn)
 
     connectable = AsyncEngine(

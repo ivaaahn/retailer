@@ -19,18 +19,32 @@ class OrderListPagingParams(BasePagingParams):
     sort_by: OrderListSortByEnum
 
 
-class OrderRespDTO(BaseModel):
+class OrderBaseDTO(BaseModel):
     id: int = Field(title="Идентификатор заказа")
-    products: list[ShopProductDTO] = Field(title="Список добавленных продуктов")
     status: OrderStatusEnum = Field(title="Статус заказа")
     created_at: datetime = Field(title="Дата создания")
     receive_kind: OrderReceiveKindEnum = Field(title="Способ получения")
+    delivery_address: str | None = Field(title="Адрес доставки (если выбрана доставка)")
     total_price: float = Field(title="Общая стоимость заказа")
 
 
+class OrderRespDTO(OrderBaseDTO):
+    products: list[ShopProductDTO] = Field(title="Список добавленных продуктов")
+
+
 class OrdersListRespDTO(BaseModel):
-    orders: list[OrderRespDTO] = Field(title="Список заказов")
+    orders: list[OrderBaseDTO] = Field(title="Список заказов")
     total: int = Field(title="Общее кол-во заказов")
+
+
+class PlaceOrderReqDTO(BaseModel):
+    shop_id: int = Field(title="Идентификатор магазина")
+    receive_kind: OrderReceiveKindEnum = Field(
+        title="Способ получения", default=OrderReceiveKindEnum.takeaway
+    )
+    delivery_address_id: int | None = Field(
+        title="Адрес доставки (если выбрана доставка)"
+    )
 
 
 class PlaceOrderRespDTO(BaseModel):

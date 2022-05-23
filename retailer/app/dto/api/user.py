@@ -13,6 +13,7 @@ class PasswordMixin(BaseModel):
 
 
 class UserRespDTO(EmailMixin):
+    id: int = Field(title="Идентификатор пользователя в базе данных")
     created_at: datetime = Field(title="Дата и время создания аккаунта")
     is_active: bool = Field(title="Признак активного аккаунта")
     name: Optional[str] = Field(title="Имя")
@@ -21,3 +22,7 @@ class UserRespDTO(EmailMixin):
 
 class UserInDBSchema(UserRespDTO, PasswordMixin):
     pass
+
+
+class UserAddressDTO(BaseModel):
+    address_id: int = Field(title="Идентификатор адреса в базе данных")
