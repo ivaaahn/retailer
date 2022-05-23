@@ -31,6 +31,7 @@ class UsersRepo(IUsersRepo, BasePgRepo):
         return DBAddressListDTO(
             [
                 DBAddressDTO(
+                    id=addr.id,
                     city=addr.city,
                     street=addr.street,
                     house=addr.house,

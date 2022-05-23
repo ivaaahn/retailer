@@ -4,6 +4,7 @@ from typing import Optional
 
 @dataclass
 class DBAddressDTO:
+    id: int
     city: str
     street: str
     house: str
