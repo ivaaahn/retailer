@@ -3,12 +3,13 @@ from sqlalchemy import insert, func
 
 from app.base.repo import BasePgRepo
 from app.delivery.orders.deps import order_paging_params
-from app.delivery.orders.errors import OrderNotFoundError
+from app.delivery.orders.errors import OrderNotFoundError, OrdersNotFoundError
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import OrderListPagingParams
 from app.dto.db.orders import (
     DBOrderProductsDTO,
-    DBOrderProductsListDTO, DBOrdersDTO,
+    DBOrderProductsListDTO,
+    DBOrdersDTO,
 )
 from app.dto.db.products import DBShopProductDTO
 from app.models.order_products import OrderProductsModel
@@ -22,7 +23,6 @@ __all__ = ("OrdersRepo",)
 
 
 class OrdersRepo(IOrdersRepo, BasePgRepo):
-    #todo add errors
     async def get(self, id: int) -> DBOrderProductsDTO:
         pt = ProductModel.__table__
         ord = OrderModel.__table__
@@ -73,15 +73,12 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         user_id: int,
         paging_params: OrderListPagingParams = Depends(order_paging_params),
     ) -> DBOrderProductsListDTO:
-        pt = ProductModel.__table__
         ord = OrderModel.__table__
-        ordpt = OrderProductsModel.__table__
-        ct = ProductCategoryModel.__table__
 
         stmt_order = (
-            select(ord, ordpt)
+            select(ord)
             .where(ord.c.user_id == user_id)
-            .select_from(ordpt.join(ord))
+            .select_from(ord)
         )
 
         query = self.with_pagination(
@@ -89,7 +86,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
             count=paging_params.count,
             offset=paging_params.offset,
             order=paging_params.order,
-            sort=getattr(ordpt.c, paging_params.sort_by.value),
+            sort=getattr(ord.c, paging_params.sort_by.value),
         )
 
         cursor_orders = await self._execute(query)
@@ -97,10 +94,13 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         stmt_total = (
             select(func.count())
             .where(ord.c.user_id == user_id)
-            .select_from(ordpt.join(pt).join(ct))
+            .select_from(ord)
         )
         cursor_total = await self._execute(stmt_total)
         total = cursor_total.scalar()
+
+        if total == 0:
+            raise OrdersNotFoundError(user_id)
 
         return DBOrderProductsListDTO(
             [
