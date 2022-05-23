@@ -14,12 +14,15 @@ from sqlalchemy.sql.functions import now
 
 from app.base.models import BaseModel
 
-__all__ = ("OrderModel",)
+__all__ = (
+    "OrderModel",
+    "OrderReceiveKindEnum",
+)
 
 
 class OrderReceiveKindEnum(str, Enum):
-    takeaway = "самовывоз"
-    delivery = "доставка"
+    takeaway = "takeaway"
+    delivery = "delivery"
 
 
 class OrderStatusEnum(str, Enum):
@@ -41,14 +44,15 @@ class OrderModel(BaseModel):
     total_price = Column(Float, nullable=False)
     receive_kind = Column(
         ENUM(OrderReceiveKindEnum, name="receive_kind_enum"),
-        server_default=OrderReceiveKindEnum.takeaway,
+        server_default=OrderReceiveKindEnum.takeaway.value,
         nullable=False,
     )
     status = Column(
         ENUM(OrderStatusEnum, name="order_status_enum"),
-        server_default=OrderStatusEnum.collecting,
+        server_default=OrderStatusEnum.collecting.value,
         nullable=False,
     )
+    address_id = Column(Integer, ForeignKey("user_addresses.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=now())
 
     def __init__(
@@ -65,7 +69,6 @@ class OrderModel(BaseModel):
             "receive_kind": self.receive_kind,
             "status": self.status,
             "created_at": self.created_at,
-            "category_name": self.category_name,
             "user": None,
             "shop": None,
         }

@@ -4,7 +4,6 @@ from functools import lru_cache
 from fastapi import Depends
 
 from app.base.services import BaseService
-from app.delivery.products.deps import product_paging_params
 from app.delivery.products.errors import ProductNotFoundError
 from app.dto.api.products import (
     ShopProductDTO,

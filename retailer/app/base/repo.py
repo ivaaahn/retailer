@@ -1,10 +1,8 @@
 import logging
-from typing import Optional
 
 from fastapi import Depends
 from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
-from sqlalchemy.ext.asyncio import AsyncConnection
 from sqlalchemy.orm import Query
 
 from app.base.deps import SortOrderEnum
@@ -75,13 +73,11 @@ class BasePgRepo(BaseRepo):
         parameters=None,
         **kwargs,
     ) -> CursorResult:
-        self.logger.info(
-            f"\n{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
-        )
+        # self.logger.info(
+        #     f"\n{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
+        # )
 
-        async with self._pg._engine.begin() as conn:
-            conn: AsyncConnection
-
+        async with self._pg.acquire() as conn:
             result = await conn.execute(
                 statement=statement,
                 parameters=parameters,
@@ -90,6 +86,10 @@ class BasePgRepo(BaseRepo):
 
         return result
 
+    async def execute_with_pk(self, statement, parameters=None, **kwargs) -> int:
+        cursor = await self._execute(statement, parameters, **kwargs)
+        return cursor.inserted_primary_key[0]
+
     async def get_one(self, statement, parameters=None, **kwargs):
         cursor = await self._execute(statement, parameters, **kwargs)
         return cursor.first()
@@ -97,7 +97,3 @@ class BasePgRepo(BaseRepo):
     async def get_scalar(self, statement, parameters=None, **kwargs):
         cursor = await self._execute(statement, parameters, **kwargs)
         return cursor.scalar()
-
-    @property
-    def transaction(self) -> AsyncConnection:
-        return self._pg._engine.begin()

@@ -1,22 +1,21 @@
 from sqlalchemy import (
     Column,
     Integer,
-    Identity,
     ForeignKey,
     Float,
-    CheckConstraint,
+    Identity,
 )
 
 from app.base.models import BaseModel
 
-__all__ = ("ShopProductsModel",)
+__all__ = ("OrderProductsModel",)
 
 
-class ShopProductsModel(BaseModel):
-    __tablename__ = "shop_products"
+class OrderProductsModel(BaseModel):
+    __tablename__ = "order_products"
 
     id = Column(Integer, Identity(), primary_key=True)
-    shop_id = Column(Integer, ForeignKey("shops.id"), nullable=False)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False)
     product_id = Column(Integer, ForeignKey("products.id"), nullable=False)
     price = Column(Float, nullable=False)
     qty = Column(Integer, nullable=False)
