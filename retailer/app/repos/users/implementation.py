@@ -8,10 +8,37 @@ from sqlalchemy.future import select
 from app.base.repo import BasePgRepo
 from app.models.users import UserModel
 from .interface import IUsersRepo
+from app.models.user_addresses import UserAddressModel
 
 
 @lru_cache
 class UsersRepo(IUsersRepo, BasePgRepo):
+    async def add(
+            self,
+            user_id: int,
+            city: str,
+            street: str,
+            house: str,
+            entrance: int,
+            floor: Optional[int],
+            flat: Optional[str],
+    ) -> int:
+        user_addr = UserAddressModel.__table__
+
+        stmt = insert(user_addr).values(
+            user_id=user_id,
+            city=city,
+            street=street,
+            house=house,
+            entrance=entrance,
+            floor=floor,
+            flat=flat,
+        )
+
+        addr_id = await self.execute_with_pk(stmt)
+
+        return addr_id
+
     async def update(self, email: str, **kwargs) -> Optional[UserModel]:
         stmt = (
             update(UserModel)

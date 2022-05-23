@@ -22,3 +22,7 @@ class UserRespDTO(EmailMixin):
 
 class UserInDBSchema(UserRespDTO, PasswordMixin):
     pass
+
+
+class UserAddressDTO(BaseModel):
+    address_id: int = Field(title="Идентификатор адреса в базе данных")

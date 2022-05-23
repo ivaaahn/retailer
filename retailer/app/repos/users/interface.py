@@ -16,3 +16,16 @@ class IUsersRepo(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     async def get(self, email: str, only_active: bool = True) -> Optional[UserModel]:
         pass
+
+    @abc.abstractmethod
+    async def add(
+        self,
+        user_id: int,
+        city: str,
+        street: str,
+        house: str,
+        entrance: int,
+        floor: Optional[int],
+        flat: Optional[str],
+    ) -> int:
+        pass

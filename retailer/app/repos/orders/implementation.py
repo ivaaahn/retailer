@@ -75,11 +75,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
     ) -> DBOrderProductsListDTO:
         ord = OrderModel.__table__
 
-        stmt_order = (
-            select(ord)
-            .where(ord.c.user_id == user_id)
-            .select_from(ord)
-        )
+        stmt_order = select(ord).where(ord.c.user_id == user_id).select_from(ord)
 
         query = self.with_pagination(
             query=stmt_order,
@@ -92,9 +88,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         cursor_orders = await self._execute(query)
 
         stmt_total = (
-            select(func.count())
-            .where(ord.c.user_id == user_id)
-            .select_from(ord)
+            select(func.count()).where(ord.c.user_id == user_id).select_from(ord)
         )
         cursor_total = await self._execute(stmt_total)
         total = cursor_total.scalar()
