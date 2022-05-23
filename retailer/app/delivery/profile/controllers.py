@@ -3,7 +3,7 @@ from fastapi import Depends, APIRouter
 from app.delivery.auth.deps import get_current_active_user
 from app.dto.api.profile import (
     ProfileUpdateReqDTO,
-    AddressAddReqDTO,
+    AddressAddDTO,
     UserAddressListDTO,
 )
 from app.dto.api.user import UserRespDTO, UserAddressDTO
@@ -29,11 +29,11 @@ async def patch(
 
 @router.put("/address", response_model=UserAddressDTO)
 async def put(
-    body: AddressAddReqDTO,
+    body: AddressAddDTO,
     user: UserRespDTO = Depends(get_current_active_user),
     profile_service: ProfileService = Depends(),
 ) -> UserAddressDTO:
-    return await profile_service.put(user_id=user.id, new_addr=body)
+    return await profile_service.add_address(user_id=user.id, new_addr=body)
 
 
 @router.get("/address.list", response_model=UserAddressListDTO)
@@ -41,4 +41,4 @@ async def get_list(
     user: UserRespDTO = Depends(get_current_active_user),
     profile_service: ProfileService = Depends(),
 ) -> UserAddressListDTO:
-    return await profile_service.get_list(user.id)
+    return await profile_service.get_addresses_list(user.id)

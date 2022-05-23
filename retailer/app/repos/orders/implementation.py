@@ -3,7 +3,7 @@ from sqlalchemy import insert, func
 
 from app.base.repo import BasePgRepo
 from app.delivery.orders.deps import order_paging_params
-from app.delivery.orders.errors import OrderNotFoundError, OrdersNotFoundError
+from app.delivery.orders.errors import OrderNotFoundError
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import OrderListPagingParams
 from app.dto.db.orders import (
@@ -36,6 +36,8 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         )
 
         order = await self.get_one(stmt_order)
+        if not order:
+            raise OrderNotFoundError(id)
 
         stmt_products = (
             select(pt, ordpt, ct)
@@ -44,9 +46,6 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         )
 
         products = await self._execute(stmt_products)
-
-        if not order:
-            raise OrderNotFoundError(id)
 
         return DBOrderProductsDTO(
             id=order.id,
@@ -92,9 +91,6 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         )
         cursor_total = await self._execute(stmt_total)
         total = cursor_total.scalar()
-
-        if total == 0:
-            raise OrdersNotFoundError(user_id)
 
         return DBOrderProductsListDTO(
             [

@@ -8,13 +8,6 @@ class OrderNotFoundError(NotFoundError):
         )
 
 
-class OrdersNotFoundError(NotFoundError):
-    def __init__(self, id: int):
-        super().__init__(
-            description=f" User-{id} does not have any orders",
-        )
-
-
 class NoProductsInCartError(BadRequestError):
     def __init__(self):
         super().__init__(description="No products in your cart!")

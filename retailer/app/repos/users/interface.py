@@ -19,7 +19,7 @@ class IUsersRepo(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    async def add(
+    async def add_address(
         self,
         user_id: int,
         city: str,
@@ -32,5 +32,5 @@ class IUsersRepo(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    async def get_list(self, user_id: int) -> DBAddressListDTO:
+    async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
         pass

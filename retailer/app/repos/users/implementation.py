@@ -7,15 +7,15 @@ from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
 from app.models.users import UserModel
-from .interface import IUsersRepo
 from app.models.user_addresses import UserAddressModel
-from ...delivery.profile.errors import AddressesNotFoundError
-from ...dto.db.profile import DBAddressListDTO, DBAddressDTO
+from app.delivery.profile.errors import AddressesNotFoundError
+from app.dto.db.profile import DBAddressListDTO, DBAddressDTO
+from .interface import IUsersRepo
 
 
 @lru_cache
 class UsersRepo(IUsersRepo, BasePgRepo):
-    async def get_list(self, user_id: int) -> DBAddressListDTO:
+    async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
         user_addr = UserAddressModel.__table__
 
         stmt = (
@@ -43,7 +43,7 @@ class UsersRepo(IUsersRepo, BasePgRepo):
             ]
         )
 
-    async def add(
+    async def add_address(
         self,
         user_id: int,
         city: str,

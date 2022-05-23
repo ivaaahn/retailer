@@ -6,7 +6,7 @@ from fastapi import Depends
 from app.base.services import BaseService
 from app.dto.api.profile import (
     ProfileUpdateReqDTO,
-    AddressAddReqDTO,
+    AddressAddDTO,
     UserAddressListDTO,
 )
 from app.dto.api.user import UserRespDTO, UserAddressDTO
@@ -32,8 +32,10 @@ class ProfileService(BaseService):
 
         return UserRespDTO(**updated.as_dict())
 
-    async def put(self, user_id: int, new_addr: AddressAddReqDTO) -> UserAddressDTO:
-        addr_id = await self._users_repo.add(
+    async def add_address(
+        self, user_id: int, new_addr: AddressAddDTO
+    ) -> UserAddressDTO:
+        addr_id = await self._users_repo.add_address(
             user_id=user_id,
             city=new_addr.city,
             street=new_addr.street,
@@ -44,7 +46,7 @@ class ProfileService(BaseService):
         )
         return UserAddressDTO(address_id=addr_id)
 
-    async def get_list(self, user_id: int) -> UserAddressListDTO:
-        addresses = await self._users_repo.get_list(user_id)
+    async def get_addresses_list(self, user_id: int) -> UserAddressListDTO:
+        addresses = await self._users_repo.get_addresses_list(user_id)
 
         return UserAddressListDTO(**asdict(addresses))
