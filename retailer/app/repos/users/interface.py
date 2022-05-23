@@ -1,6 +1,7 @@
 import abc
 from typing import Optional
 
+from app.dto.db.profile import DBAddressListDTO
 from app.models.users import UserModel
 
 
@@ -28,4 +29,8 @@ class IUsersRepo(metaclass=abc.ABCMeta):
         floor: Optional[int],
         flat: Optional[str],
     ) -> int:
+        pass
+
+    @abc.abstractmethod
+    async def get_list(self, user_id: int) -> DBAddressListDTO:
         pass

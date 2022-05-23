@@ -1,9 +1,14 @@
+from dataclasses import asdict
 from functools import lru_cache
 
 from fastapi import Depends
 
 from app.base.services import BaseService
-from app.dto.api.profile import ProfileUpdateReqDTO, AddressAddReqDTO
+from app.dto.api.profile import (
+    ProfileUpdateReqDTO,
+    AddressAddReqDTO,
+    UserAddressListDTO,
+)
 from app.dto.api.user import UserRespDTO, UserAddressDTO
 from app.repos import IUsersRepo, UsersRepo
 
@@ -38,3 +43,8 @@ class ProfileService(BaseService):
             flat=new_addr.flat,
         )
         return UserAddressDTO(address_id=addr_id)
+
+    async def get_list(self, user_id: int) -> UserAddressListDTO:
+        addresses = await self._users_repo.get_list(user_id)
+
+        return UserAddressListDTO(**asdict(addresses))

@@ -16,3 +16,7 @@ class AddressAddReqDTO(BaseModel):
     entrance: int = Field(title="Подъезд")
     floor: Optional[int] = Field(title="Этаж")
     flat: Optional[str] = Field(title="Квартира")
+
+
+class UserAddressListDTO(BaseModel):
+    addresses: list[AddressAddReqDTO]

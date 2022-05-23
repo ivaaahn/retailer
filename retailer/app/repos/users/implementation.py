@@ -9,19 +9,48 @@ from app.base.repo import BasePgRepo
 from app.models.users import UserModel
 from .interface import IUsersRepo
 from app.models.user_addresses import UserAddressModel
+from ...delivery.profile.errors import AddressesNotFoundError
+from ...dto.db.profile import DBAddressListDTO, DBAddressDTO
 
 
 @lru_cache
 class UsersRepo(IUsersRepo, BasePgRepo):
+    async def get_list(self, user_id: int) -> DBAddressListDTO:
+        user_addr = UserAddressModel.__table__
+
+        stmt = (
+            select(user_addr)
+            .where(user_addr.c.user_id == user_id)
+            .select_from(user_addr)
+        )
+
+        cursor = await self._execute(stmt)
+        if not cursor:
+            raise AddressesNotFoundError(user_id)
+
+        return DBAddressListDTO(
+            [
+                DBAddressDTO(
+                    city=addr.city,
+                    street=addr.street,
+                    house=addr.house,
+                    entrance=addr.entrance,
+                    floor=addr.floor,
+                    flat=addr.flat,
+                )
+                for addr in cursor
+            ]
+        )
+
     async def add(
-            self,
-            user_id: int,
-            city: str,
-            street: str,
-            house: str,
-            entrance: int,
-            floor: Optional[int],
-            flat: Optional[str],
+        self,
+        user_id: int,
+        city: str,
+        street: str,
+        house: str,
+        entrance: int,
+        floor: Optional[int],
+        flat: Optional[str],
     ) -> int:
         user_addr = UserAddressModel.__table__
 
