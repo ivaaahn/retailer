@@ -18,3 +18,16 @@ class RMQInteractRepo(IRMQInteractRepo, BaseRMQRepo):
                 },
             }
         )
+
+    async def send_accept(self, email: str, order_id: int):
+        await self._rmq.send(
+            message={
+                "subject": "Подтверждение заказа",
+                "recipients": [email],
+                "formatted_body": {
+                    "title": f"Подтверждение оформления заказа",
+                    "data": f"Заказ №{order_id}",
+                    "description": "Заказ оформлен и направлен в магазин",
+                },
+            }
+        )
