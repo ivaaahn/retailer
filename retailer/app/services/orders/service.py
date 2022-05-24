@@ -23,6 +23,7 @@ from app.dto.api.products import ShopProductDTO
 from app.dto.api.profile import AddressDTO
 from app.dto.api.user import UserRespDTO
 from app.dto.db.profile import DBAddressDTO
+from app.repos import IRMQInteractRepo, RMQInteractRepo
 from app.repos.cart.implementation import CartsRepo
 from app.repos.cart.interface import ICartsRepo
 from app.repos.orders.implementation import OrdersRepo
@@ -39,12 +40,14 @@ class OrdersService(BaseService):
         cart_service: CartService = Depends(),
         carts_repo: ICartsRepo = Depends(CartsRepo),
         products_repo: IProductsRepo = Depends(ProductsRepo),
+        rmq_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
         self._carts_repo = carts_repo
         self._orders_repo = orders_repo
         self._products_repo = products_repo
         self._cart_service = cart_service
+        self._rmq_repo = rmq_repo
 
     @staticmethod
     def _make_s3_url(path: str) -> str:
@@ -128,6 +131,7 @@ class OrdersService(BaseService):
         except Exception as err:
             raise PostgresError(description=str(err))
         else:
+            await self._rmq_repo.send_accept(user.email, order_id)
             await self._cart_service.clear_cart(user.email)
 
         # todo payment
