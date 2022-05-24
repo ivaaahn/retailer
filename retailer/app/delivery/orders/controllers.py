@@ -23,7 +23,8 @@ async def get(
     id: int,
     order_service: OrdersService = Depends(),
 ) -> OrderRespDTO:
-    return await order_service.get(id)
+    res = await order_service.get(id)
+    return res
 
 
 @router.get(".list", response_model=OrdersListRespDTO)
