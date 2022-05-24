@@ -19,7 +19,10 @@ from app.dto.api.orders import (
     PlaceOrderRespDTO,
     PlaceOrderReqDTO,
 )
+from app.dto.api.products import ShopProductDTO
+from app.dto.api.profile import AddressDTO
 from app.dto.api.user import UserRespDTO
+from app.dto.db.profile import DBAddressDTO
 from app.repos.cart.implementation import CartsRepo
 from app.repos.cart.interface import ICartsRepo
 from app.repos.orders.implementation import OrdersRepo
@@ -43,11 +46,40 @@ class OrdersService(BaseService):
         self._products_repo = products_repo
         self._cart_service = cart_service
 
+    @staticmethod
+    def _make_s3_url(path: str) -> str:
+        return f"/img/{path}" if path else None
+
     async def get(self, id: int) -> OrderRespDTO:
         order = await self._orders_repo.get(id)
+
         if not order:
             raise OrderNotFoundError(id)
-        return OrderRespDTO(**asdict(order))
+
+        delivery_address = None
+        if order.delivery_address:
+            delivery_address = AddressDTO(**asdict(order.delivery_address))
+
+        return OrderRespDTO(
+            id=order.id,
+            status=order.status,
+            created_at=order.created_at,
+            receive_kind=order.receive_kind,
+            total_price=order.total_price,
+            delivery_address=delivery_address,
+            products=[
+                ShopProductDTO(
+                    id=product.id,
+                    photo=self._make_s3_url(product.photo),
+                    name=product.name,
+                    description=product.description,
+                    price=product.price,
+                    category=product.category,
+                    availability=product.availability,
+                )
+                for product in order.products
+            ],
+        )
 
     async def get_list(
         self,

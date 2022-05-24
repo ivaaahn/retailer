@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from sqlalchemy import DateTime
 
 from app.dto.db.products import DBShopProductDTO
+from app.dto.db.profile import DBAddressDTO
 
 
 @dataclass
@@ -16,6 +17,7 @@ class DBOrdersDTO:
 
 @dataclass
 class DBOrderProductsDTO(DBOrdersDTO):
+    delivery_address: DBAddressDTO | None
     products: list[DBShopProductDTO]
 
 

@@ -12,10 +12,12 @@ from app.dto.db.orders import (
     DBOrdersDTO,
 )
 from app.dto.db.products import DBShopProductDTO
+from app.dto.db.profile import DBAddressDTO
 from app.models.order_products import OrderProductsModel
 from app.models.orders import OrderReceiveKindEnum, OrderModel
 from app.models.product_categories import ProductCategoryModel
 from app.models.products import ProductModel
+from app.models.user_addresses import UserAddressModel
 from app.repos.orders.interface import IOrdersRepo
 from sqlalchemy.future import select
 
@@ -28,6 +30,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         ord = OrderModel.__table__
         ordpt = OrderProductsModel.__table__
         ct = ProductCategoryModel.__table__
+        useraddr = UserAddressModel.__table__
 
         stmt_order = (
             select(ord, ordpt)
@@ -47,12 +50,30 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
 
         products = await self._execute(stmt_products)
 
+        stmt_delivery_addr = (
+            select(useraddr).where(ord.c.id == id).select_from(ord.join(useraddr))
+        )
+        delivery_addr_db = await self.get_one(stmt_delivery_addr)
+
+        delivery_address = None
+        if delivery_addr_db:
+            delivery_address = DBAddressDTO(
+                id=delivery_addr_db.id,
+                city=delivery_addr_db.city,
+                street=delivery_addr_db.street,
+                house=delivery_addr_db.house,
+                entrance=delivery_addr_db.entrance,
+                floor=delivery_addr_db.floor,
+                flat=delivery_addr_db.flat,
+            )
+
         return DBOrderProductsDTO(
             id=order.id,
             total_price=order.total_price,
             receive_kind=order.receive_kind.value,
             status=order.status,
             created_at=order.created_at,
+            delivery_address=delivery_address,
             products=[
                 DBShopProductDTO(
                     id=product.id,
