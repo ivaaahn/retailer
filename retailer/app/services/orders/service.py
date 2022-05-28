@@ -3,34 +3,31 @@ from dataclasses import asdict
 from fastapi import Depends
 from sqlalchemy.exc import IntegrityError
 
-from app.base.errors import PostgresError, check_err, DBErrEnum
+from app.base.errors import DBErrEnum, PostgresError, check_err
 from app.base.services import BaseService
 from app.delivery.orders.deps import order_paging_params
 from app.delivery.orders.errors import (
-    OrderNotFoundError,
     NoProductsInCartError,
+    OrderNotFoundError,
     ProductTemporarilyUnavailable,
 )
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import (
+    OrderListPagingParams,
     OrderRespDTO,
     OrdersListRespDTO,
-    OrderListPagingParams,
-    PlaceOrderRespDTO,
     PlaceOrderReqDTO,
+    PlaceOrderRespDTO,
 )
 from app.dto.api.products import ShopProductDTO
 from app.dto.api.profile import AddressDTO
 from app.dto.api.user import UserRespDTO
-from app.dto.db.profile import DBAddressDTO
 from app.repos import IRMQInteractRepo, RMQInteractRepo
 from app.repos.cart.implementation import CartsRepo
 from app.repos.cart.interface import ICartsRepo
 from app.repos.orders.implementation import OrdersRepo
 from app.repos.orders.interface import IOrdersRepo
-from app.repos.products import IProductsRepo, ProductsRepo
 from app.services.carts import CartService
-from store.pg.accessor import pg_accessor
 
 
 class OrdersService(BaseService):
@@ -39,13 +36,11 @@ class OrdersService(BaseService):
         orders_repo: IOrdersRepo = Depends(OrdersRepo),
         cart_service: CartService = Depends(),
         carts_repo: ICartsRepo = Depends(CartsRepo),
-        products_repo: IProductsRepo = Depends(ProductsRepo),
         rmq_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
         self._carts_repo = carts_repo
         self._orders_repo = orders_repo
-        self._products_repo = products_repo
         self._cart_service = cart_service
         self._rmq_repo = rmq_repo
 
@@ -95,21 +90,6 @@ class OrdersService(BaseService):
         )
         return OrdersListRespDTO(**asdict(orders_list))
 
-    async def _create_and_fill_order(
-        self, user: UserRespDTO, data: PlaceOrderReqDTO, cart: CartRespDTO
-    ) -> int:
-        order_id = await self._orders_repo.create_order(
-            user_id=user.id,
-            shop_id=data.shop_id,
-            address_id=data.delivery_address_id,
-            receive_kind=data.receive_kind,
-            total_price=cart.total_price,
-        )
-
-        await self._orders_repo.fill_order_with_products(order_id=order_id, cart=cart)
-
-        return order_id
-
     async def place_order(
         self,
         data: PlaceOrderReqDTO,
@@ -121,18 +101,23 @@ class OrdersService(BaseService):
             raise NoProductsInCartError()
 
         try:
-            async with pg_accessor.acquire():
-                order_id = await self._create_and_fill_order(user, data, cart)
-                await self._products_repo.reduce_qty(data.shop_id, cart)
+            order_id = await self._orders_repo.create(
+                user_id=user.id,
+                shop_id=data.shop_id,
+                address_id=data.delivery_address_id,
+                receive_kind=data.receive_kind,
+                cart=cart,
+            )
         except IntegrityError as err:
-            if check_err(err, DBErrEnum.check_violation):
-                raise ProductTemporarilyUnavailable(*err.params[1:])
+            check_err(
+                err,
+                exp_error=DBErrEnum.check_violation,
+                raise_exc=ProductTemporarilyUnavailable(*err.params[1:]),
+            )
             raise PostgresError(description=str(err))
-        except Exception as err:
-            raise PostgresError(description=str(err))
-        else:
-            await self._rmq_repo.send_accept(user.email, order_id)
-            await self._cart_service.clear_cart(user.email)
+
+        await self._rmq_repo.send_accept(user.email, order_id)
+        await self._cart_service.clear_cart(user.email)
 
         # todo payment
 

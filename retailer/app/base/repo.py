@@ -1,14 +1,16 @@
 import logging
+from asyncio import gather
 
 from fastapi import Depends
 from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
+from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from sqlalchemy.orm import Query
 
 from app.base.deps import SortOrderEnum
 from logger.logger import get_logger
 from store import redis_accessor
-from store.pg import pg_accessor, PgAccessor
+from store.pg import PgAccessor, pg_accessor
 from store.redis import RedisAccessor
 from store.rmq import RMQAccessor, rmq_accessor
 from store.s3 import S3Accessor, s3_accessor
@@ -54,6 +56,10 @@ class BasePgRepo(BaseRepo):
         super().__init__()
         self._pg = pg
 
+    @property
+    def engine(self) -> AsyncEngine:
+        return self._pg.engine
+
     @staticmethod
     def with_pagination(
         query: Query, count: int, offset: int, order: SortOrderEnum, sort: any
@@ -67,33 +73,53 @@ class BasePgRepo(BaseRepo):
 
         return query
 
+    async def _gather_execute(self, *stmts):
+        queries = [self._execute(stmt) for stmt in stmts]
+        return await gather(*queries)
+
     async def _execute(
         self,
         statement,
         parameters=None,
+        conn: AsyncConnection | None = None,
         **kwargs,
     ) -> CursorResult:
         # self.logger.info(
         #     f"\n{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
         # )
 
-        async with self._pg.acquire() as conn:
-            result = await conn.execute(
+        if conn:
+            return await conn.execute(
                 statement=statement,
                 parameters=parameters,
                 **kwargs,
             )
 
-        return result
+        async with self.engine.connect() as conn:
+            res = await conn.execute(
+                statement=statement,
+                parameters=parameters,
+                **kwargs,
+            )
 
-    async def execute_with_pk(self, statement, parameters=None, **kwargs) -> int:
-        cursor = await self._execute(statement, parameters, **kwargs)
+            await conn.commit()
+
+        return res
+
+    async def execute_with_pk(
+        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+    ) -> int:
+        cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.inserted_primary_key[0]
 
-    async def get_one(self, statement, parameters=None, **kwargs):
-        cursor = await self._execute(statement, parameters, **kwargs)
+    async def get_one(
+        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+    ):
+        cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.first()
 
-    async def get_scalar(self, statement, parameters=None, **kwargs):
-        cursor = await self._execute(statement, parameters, **kwargs)
+    async def get_scalar(
+        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+    ):
+        cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.scalar()

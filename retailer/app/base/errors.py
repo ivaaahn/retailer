@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Any
+from typing import Any, Optional
 
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
@@ -63,11 +63,19 @@ class NotFoundError(BaseError):
 class DBErrEnum(str, Enum):
     foreign_key_violation = "ForeignKeyViolationError"
     check_violation = "CheckViolationError"
-    # todo: check constraint
 
 
-def check_err(err: IntegrityError, item: DBErrEnum):
-    return item.value in str(err.orig)
+def check_err(
+    err: IntegrityError,
+    exp_error: DBErrEnum,
+    raise_exc: Exception,
+    default_exc: Exception | None = None,
+):
+    if exp_error in str(err.orig):
+        raise raise_exc
+
+    if default_exc:
+        raise default_exc
 
 
 class AuthError(BaseError):

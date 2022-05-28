@@ -1,4 +1,4 @@
-from .pg import pg_accessor
+from .pg import pg_accessor, PgAccessor
 from .rmq import rmq_accessor
 from .redis import redis_accessor
 
