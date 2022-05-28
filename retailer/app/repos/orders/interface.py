@@ -21,20 +21,12 @@ class IOrdersRepo(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    async def create_order(
+    async def create(
         self,
         user_id: int,
         shop_id: int,
         address_id: int,
         receive_kind: OrderReceiveKindEnum,
-        total_price: float,
-    ) -> int:
-        pass
-
-    @abc.abstractmethod
-    async def fill_order_with_products(
-        self,
-        order_id: int,
         cart: CartRespDTO,
-    ):
+    ) -> int:
         pass

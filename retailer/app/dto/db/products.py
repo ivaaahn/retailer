@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, Optional
 
 
 @dataclass
@@ -15,6 +15,22 @@ class DBProductBaseDTO:
 class DBShopProductDTO(DBProductBaseDTO):
     price: float
     availability: int
+
+    @classmethod
+    def from_db(cls, db: Any | None) -> Optional["DBShopProductDTO"]:
+        return (
+            cls(
+                id=db.id,
+                photo=db.photo,
+                name=db.name,
+                description=db.description,
+                price=db.price,
+                category=db.product_categories_name,
+                availability=db.order_products_qty,
+            )
+            if db
+            else None
+        )
 
 
 @dataclass
