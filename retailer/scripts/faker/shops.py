@@ -5,7 +5,7 @@ from faker import Faker
 from scripts.faker.rw import write
 
 ABC = "АБВ"
-COUNT = 10
+COUNT = 1000
 FILENAME_SHOPS = "data/shop.csv"
 
 

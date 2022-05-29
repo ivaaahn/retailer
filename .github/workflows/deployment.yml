@@ -2,7 +2,7 @@ name: Deployment
 
 on:
   push:
-    branches: [ main ]
+    branches: [ generate ]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
           echo "${{ secrets.RETAILER_ADMIN_ENV_DEPLOY }}" > retailer_admin/.env.deploy
           echo "${{ secrets.DOCKER_COMPOSE_ENV }}" > deploy/.env.docker-compose
-          
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -36,14 +36,6 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:${{ steps.commit.outputs.short }}
-
-      - name: Build the Retailer Admin
-        uses: docker/build-push-action@v2
-        with:
-          file: ./deploy/admin/Dockerfile
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer-admin:${{ steps.commit.outputs.short }}
 
       - name: Downing
         uses: appleboy/ssh-action@master

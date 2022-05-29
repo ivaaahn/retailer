@@ -67,7 +67,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
     ) -> DBOrderProductsListDTO:
         orders_cursor, total = await gather(
             self._execute(self._select_orders_stmt(user_id, paging_params)),
-            self.get_scalar(self._select_total_stmt(user_id))
+            self.get_scalar(self._select_total_stmt(user_id)),
         )
 
         return DBOrderProductsListDTO(

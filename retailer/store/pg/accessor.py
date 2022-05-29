@@ -42,8 +42,8 @@ class PgAccessor(BaseAccessor[PgConfig]):
         self._engine = create_async_engine(
             url=conf.dsn,
             echo=conf.echo,
-            echo_pool="debug",
-            pool_size=8,
+            echo_pool=conf.echo_pool,
+            pool_size=conf.pool_size,
         )
 
         self._metadata = sa.metadata
