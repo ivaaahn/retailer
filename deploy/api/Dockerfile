@@ -1,9 +1,13 @@
 FROM python:3.10-slim
 
-WORKDIR /project
+ENV POETRY_VERSION=1.0.0
 
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install "poetry==$POETRY_VERSION"
+
+WORKDIR /project
+COPY poetry.lock pyproject.toml ./
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-dev --no-interaction --no-ansi
 
 COPY ./retailer .
 
