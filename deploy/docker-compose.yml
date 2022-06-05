@@ -48,7 +48,7 @@ services:
     environment:
       DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
       DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
-      WAIT_HOSTS: pg:5432, redis:6379, rabbit:5672
+      WAIT_HOSTS: app:8080, pg:5432, redis:6379, rabbit:5672
     ports:
       - "8000:8000"
     depends_on:
