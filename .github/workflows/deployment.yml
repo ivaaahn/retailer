@@ -34,7 +34,8 @@ jobs:
           file: ./deploy/api/Dockerfile
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:${{ steps.commit.outputs.short }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:latest
+#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:${{ steps.commit.outputs.short }}
 
       - name: Downing
         uses: appleboy/ssh-action@master
@@ -93,4 +94,5 @@ jobs:
           username: ${{ secrets.DOCKER_SSH_USER }}
           key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
-          script: bash ${{ secrets.PATH_TO_DEPLOY_SCRIPT }} ${{ steps.commit.outputs.short }} ${{ steps.commit.outputs.short }}
+          script: bash ${{ secrets.PATH_TO_DEPLOY_SCRIPT }} latest latest
+#          script: bash ${{ secrets.PATH_TO_DEPLOY_SCRIPT }} ${{ steps.commit.outputs.short }} ${{ steps.commit.outputs.short }}
