@@ -24,6 +24,7 @@ uvloop = "^0.16.0"
 email-validator = "^1.2.1"
 python-multipart = "^0.0.5"
 asyncpg = "^0.25.0"
+beautifulsoup4 = "^4.11.1"
 
 [tool.poetry.dev-dependencies]
 matplotlib = "^3.5.2"

@@ -190,7 +190,7 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 name = "beautifulsoup4"
 version = "4.11.1"
 description = "Screen-scraping library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.0"
 
@@ -640,7 +640,7 @@ python-versions = ">=3.5"
 name = "soupsieve"
 version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -771,7 +771,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "724d7c9a83f73769c8f0a01269a117b9b4133326d1e581909dfd575ad3755556"
+content-hash = "4bb08b8c518f41f56ec922fcff4d9e562708527a25e37b608276a3b0d324f420"
 
 [metadata.files]
 aio-pika = [
