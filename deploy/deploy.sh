@@ -19,7 +19,7 @@ echo "  [+]  Pymailer Version: $PYMAILER_VERSION"
 echo "  [+]  RabbitMQ Version: $RABBITMQ_VERSION"
 
 echo "  [+] Start (or Restart) containers: docker-compose up -d"
-docker-compose --env-file /home/www/retailer/deploy/.env.docker-compose -f /home/www/retailer/deploy/docker-compose.yml up -d
+UID_GID="$(id -u):$(id -g)" docker-compose --env-file /home/www/retailer/deploy/.env.docker-compose -f /home/www/retailer/deploy/docker-compose.yml up -d
 echo "Exit status: $?"
 
 

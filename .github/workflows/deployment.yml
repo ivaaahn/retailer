@@ -36,6 +36,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-20.04
+    needs: build
 
     steps:
       - name: Check out the repo
