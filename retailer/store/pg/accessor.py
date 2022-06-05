@@ -22,7 +22,6 @@ class PgAccessor(BaseAccessor[PgConfig]):
 
         self._engine: Optional[AsyncEngine] = None
         self._metadata: Optional[MetaData] = None
-        # self._conn: Optional[AsyncConnection] = None
 
     @property
     def engine(self) -> AsyncEngine:
