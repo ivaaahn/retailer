@@ -94,10 +94,10 @@ services:
       DEFAULT_PSWD: $PG_DEFAULT_PSWD
       ADMIN_USER: $PG_ADMIN_USER
       ADMIN_PSWD: $PG_ADMIN_PSWD
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      PGDATA: "/data/lib/postgresql/data/pgdata"
     volumes:
       - ./pg/scripts:/docker-entrypoint-initdb.d
-      - ./pg/data/:/var/lib/postgresql/data
+      - ./pg/data/:/data/lib/postgresql/data
     restart: unless-stopped
 
   rabbit:
