@@ -16,7 +16,6 @@ jobs:
       - name: Setuping .env files
         run: |
           echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
-          echo "${{ secrets.RETAILER_ADMIN_ENV_DEPLOY }}" > retailer_admin/.env.deploy
           echo "${{ secrets.DOCKER_COMPOSE_ENV }}" > deploy/.env.docker-compose
 
       - name: Login to DockerHub
