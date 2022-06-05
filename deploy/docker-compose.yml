@@ -84,12 +84,19 @@ services:
   pg:
     image: postgres:alpine
     container_name: pg
+    expose:
+      - 5432
     environment:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
       POSTGRES_PASSWORD: $PG_PSWD
+      DEFAULT_USER: $PG_DEFAULT_USER
+      DEFAULT_PSWD: $PG_DEFAULT_PSWD
+      ADMIN_USER: $PG_ADMIN_USER
+      ADMIN_PSWD: $PG_ADMIN_PSWD
       PGDATA: "/data/lib/postgresql/data/pgdata"
     volumes:
+      - ./pg/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
       - pg_data_volume:/data/lib/postgresql/data
     restart: unless-stopped
 

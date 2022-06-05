@@ -23,7 +23,11 @@ class RedisAccessor(BaseAccessor[RedisConfig]):
         await self._redis.ping()
 
     async def _connect(self):
-        self._redis = from_url(self.conf.dsn, encoding="utf-8", decode_responses=True)
+        self._redis = from_url(
+            self.conf.dsn,
+            encoding="utf-8",
+            decode_responses=True,
+        )
 
     async def _disconnect(self):
         if self._redis.connection:
