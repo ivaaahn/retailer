@@ -21,7 +21,4 @@ echo "[>] docker remove images retailer and retailer-admin"
 docker rmi ivaaahn/retailer:latest
 docker rmi ivaaahn/retailer-admin:latest
 
-
-sudo chmod +w pg/scripts
-
 echo "[>] Downing is done."

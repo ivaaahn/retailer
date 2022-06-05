@@ -96,7 +96,7 @@ services:
       ADMIN_PSWD: $PG_ADMIN_PSWD
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./pg/scripts:/docker-entrypoint-initdb.d:ro
+      - ./pg/scripts:/docker-entrypoint-initdb.d
       - ./pg/data/:/var/lib/postgresql/data
     restart: unless-stopped
 
