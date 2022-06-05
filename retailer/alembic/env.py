@@ -65,7 +65,7 @@ def run_migrations_offline():
     script output.
     """
 
-    set_sqlalchemy_dsn(pg_config.dsn)
+    set_sqlalchemy_dsn(pg_config.dsn_alembic)
 
     url = alembic_config.get_main_option("sqlalchemy.url")
     context.configure(
@@ -100,7 +100,7 @@ async def run_migrations_online():
 
     """
 
-    set_sqlalchemy_dsn(pg_config.dsn)
+    set_sqlalchemy_dsn(pg_config.dsn_alembic)
 
     connectable = AsyncEngine(
         engine_from_config(

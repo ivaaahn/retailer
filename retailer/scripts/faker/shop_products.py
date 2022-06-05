@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from scripts.faker.rw import write
 
 FILENAME_SHOP_PRODUCTS = "data/shop_products.csv"
-NUMBER_OF_PRODUCTS_IN_DB = 11
-NUMBER_OF_SHOPS_IN_DB = 10
+NUMBER_OF_PRODUCTS_IN_DB = 1108
+NUMBER_OF_SHOPS_IN_DB = 1000
 
 
 def _get_random_price() -> float:

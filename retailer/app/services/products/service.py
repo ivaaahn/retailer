@@ -6,17 +6,18 @@ from fastapi import Depends
 from app.base.services import BaseService
 from app.delivery.products.errors import ProductNotFoundError
 from app.dto.api.products import (
-    ShopProductDTO,
     ProductListPagingParams,
+    ShopProductDTO,
     ShopProductsListDTO,
 )
 from app.dto.db.products import DBShopProductDTO
 from app.repos.products import (
-    IProductsRepo,
-    ProductsRepo,
-    ProductsCacheRepo,
     IProductsCacheRepo,
+    IProductsRepo,
+    ProductsCacheRepo,
+    ProductsRepo,
 )
+from app.services.products.config import get_config
 
 __all__ = ("ProductsService",)
 
@@ -31,6 +32,7 @@ class ProductsService(BaseService):
         super().__init__()
         self._products_repo = products_repo
         self._products_cache_repo = products_cache_repo
+        self._config = get_config()
 
     @staticmethod
     def _make_s3_url(path: str) -> str:
@@ -57,6 +59,8 @@ class ProductsService(BaseService):
         use_cache: bool = True,
         as_db_dto: bool = False,
     ) -> ShopProductDTO | DBShopProductDTO:
+        use_cache = self._config.use_cache and use_cache
+
         if not use_cache:
             shop_product = await self._products_repo.get(product_id, shop_id)
         else:

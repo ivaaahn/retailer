@@ -19,6 +19,4 @@ def read(filename: str) -> list[dict]:
         reader.__iter__()
 
         result = [item for item in reader]
-        print(result)
-
     return result

@@ -22,8 +22,12 @@ def upgrade():
         table_name="shop_products",
         condition="qty >= 0",
     )
-
-    # TODO add unique index on pair (shop_id, product_id)
+    op.create_index(
+        index_name="shop_products_product_id_shop_id_idx",
+        table_name="shop_products",
+        columns=["product_id", "shop_id"],
+        unique=True,
+    )
 
 
 def downgrade():
@@ -31,3 +35,4 @@ def downgrade():
         constraint_name="ck_shop_products_qty_check",
         table_name="shop_products",
     )
+    op.drop_index(index_name="shop_products_product_id_shop_id_idx")
