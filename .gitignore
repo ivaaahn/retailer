@@ -18,7 +18,6 @@ lib/
 lib64/
 parts/
 sdist/
-data/
 wheels/
 pip-wheel-metadata/
 share/python-wheels/
@@ -116,6 +115,8 @@ venv.bak/
 
 # Rope project settings
 .ropeproject
+/retailer/scripts/faker/data/products/
+
 
 # mkdocs documentation
 /site

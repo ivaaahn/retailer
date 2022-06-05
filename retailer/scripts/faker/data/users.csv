@@ -1,0 +1,11 @@
+email,password,name,birthday,is_active
+viktor1970@example.org,$2b$12$Ilwrq4IN.uP5kNA7qCneeej8JOiCYmHvseNko04yHZ2jECSbF7Cq2,Фаина Антоновна Агафонова,2000-09-09,True
+komarovmina@example.org,$2b$12$I7jkQQppmEFWC45qW8kFR.wkJp69SG0Fx6SlC5u1SOt/4UHRCf5EK,Устинов Аггей Изотович,1994-08-06,True
+jakov2001@example.org,$2b$12$dTV1RjjGydJXo5GlekZgP.hHogdAcnEUOwAAW55v/xikaYNzT87RG,Кулаков Викентий Авдеевич,1974-10-31,True
+ipat1974@example.net,$2b$12$Zq11QMZNcC/9IxquRrqMwuWh1ijHx.k83McMe6pM2Jtf8LXbZ.a66,Абрамова Ангелина Эльдаровна,1998-03-31,True
+kopilovfoka@example.org,$2b$12$MjWCy0Ka0n9QLm12cCJVjuReCykhbBfXck.Jt.VPkYgKQZ/SPwlbK,Федор Арсенович Юдин,1947-07-10,True
+mina1988@example.org,$2b$12$H7iWpTmqm.2OcsosP8CseOM/XCDP2.y0en.X..nZcbtvQ9EBZ0Pg2,Медведева Оксана Станиславовна,1996-12-03,True
+fokinaraisa@example.org,$2b$12$ex3juPlGfd0FtMtAKLZkOeyQBw54RBwhMc3rUxeSW4658PaU5J3bC,Баранов Савватий Матвеевич,1929-02-08,True
+vorobevafevronija@example.com,$2b$12$Nvf9q/rDQyl.tg2TKc59Ne4LrX2YOSwxsB9gxWk0n2enTekXBzzN.,Наумов Ермолай Викторович,1910-01-20,True
+uljana_18@example.org,$2b$12$IakArR.lKa3jQrOMyv2ERuNR/ZNSLLaquHWpThuqEgpXgBempfjxi,Панова Алина Николаевна,1944-01-12,True
+borisovairaida@example.org,$2b$12$39aDvU00XKZhSwGxeViIfeaWEtlIKUBiTJDhy6mVo2fvkantho3Wu,Герман Фомич Волков,1983-01-01,True
