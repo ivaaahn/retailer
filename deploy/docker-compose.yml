@@ -85,7 +85,7 @@ services:
     container_name: pg
     expose:
       - 5432
-    user: "${UID_GID}"
+#    user: "${UID_GID}"
     environment:
       POSTGRES_DB: $PG_DB
       POSTGRES_USER: $PG_USER
@@ -94,10 +94,10 @@ services:
       DEFAULT_PSWD: $PG_DEFAULT_PSWD
       ADMIN_USER: $PG_ADMIN_USER
       ADMIN_PSWD: $PG_ADMIN_PSWD
-      PGDATA: "/data/lib/postgresql/data/pgdata"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./pg/scripts:/docker-entrypoint-initdb.d
-      - ./pg/data/:/data/lib/postgresql/data
+      - ./pg/scripts:/docker-entrypoint-initdb.d:ro
+      - pg_data_volume:/var/lib/postgresql/data
     restart: unless-stopped
 
   rabbit:
@@ -112,6 +112,7 @@ services:
     restart: unless-stopped
 
 volumes:
+  pg_data_volume:
   redis_data_volume:
   rabbit_data_volume:
   rabbit_logs_volume:
