@@ -10,6 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+from sqlalchemy import text
+
 revision = "bbcd1f6c9b84"
 down_revision = "7g1856998bb3"
 branch_labels = None
@@ -34,6 +36,14 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_order_products")),
     )
+
+    permissions = (
+        text("grant select, insert on orders to defretailer;"),
+        text("grant all on orders to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():
