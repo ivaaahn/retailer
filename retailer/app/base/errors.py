@@ -1,63 +1,54 @@
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
-from starlette import status
+from starlette.status import (
+    HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
+    HTTP_404_NOT_FOUND,
+    HTTP_409_CONFLICT,
+    HTTP_500_INTERNAL_SERVER_ERROR,
+)
 
 
 class BaseError(HTTPException):
+    code: int = 500
+    description: str = "Internal server error"
+    kind: str = "internal_server_error"
+    data: dict | None = None
+    headers: dict | None = None
+
     def __init__(
         self,
-        code: int,
-        description: str,
-        kind: Optional[str] = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
+        code: int | None = None,
+        description: str | None = None,
+        kind: str | None = None,
+        data: dict[str, Any] | None = None,
+        headers: dict[str, Any] | None = None,
     ):
         super().__init__(
-            status_code=code,
+            status_code=code or self.code,
             detail={
-                "type": kind or self.__class__.__name__,
-                "description": description,
-                "data": data or {},
+                "kind": kind or self.kind,
+                "description": description or self.description,
+                "data": data or self.data or {},
             },
-            headers=headers,
+            headers=headers or self.headers or {},
         )
 
 
-class PostgresError(BaseError):
-    def __init__(
-        self,
-        description: str,
-        kind: Optional[str] = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super().__init__(
-            code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+class DatabaseError(BaseError):
+    code = (HTTP_500_INTERNAL_SERVER_ERROR,)
+    description = "Internal database error"
+    kind = "internal_database_error"
 
 
 class NotFoundError(BaseError):
-    def __init__(
-        self,
-        description: str,
-        kind: Optional[str] = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super().__init__(
-            code=status.HTTP_404_NOT_FOUND,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+    code = HTTP_404_NOT_FOUND
+    description = "Not found error"
+    kind = "not_found_error"
 
 
 class DBErrEnum(str, Enum):
@@ -78,87 +69,25 @@ def check_err(
         raise default_exc
 
 
-class AuthError(BaseError):
-    def __init__(
-        self,
-        code: int,
-        description: str,
-        kind: str = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super(AuthError, self).__init__(
-            code=code,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
-
-
-class ForbiddenError(AuthError):
-    def __init__(
-        self,
-        description: str,
-        kind: str = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super(AuthError, self).__init__(
-            code=status.HTTP_403_FORBIDDEN,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+class ForbiddenError(BaseError):
+    code = HTTP_403_FORBIDDEN
+    description = "Forbidden"
+    kind = "forbidden_error"
 
 
 class BadRequestError(BaseError):
-    def __init__(
-        self,
-        description: str,
-        kind: str = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super().__init__(
-            code=status.HTTP_400_BAD_REQUEST,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+    code = HTTP_400_BAD_REQUEST
+    description = "Bad request"
+    kind = "bad_request_error"
 
 
-class UnauthorizedError(AuthError):
-    def __init__(
-        self,
-        description: str,
-        kind: str = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super(AuthError, self).__init__(
-            code=status.HTTP_401_UNAUTHORIZED,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+class UnauthorizedError(BaseError):
+    code = HTTP_401_UNAUTHORIZED
+    description = "Unauthorized"
+    kind = "unauthorized_error"
 
 
 class ConflictError(BaseError):
-    def __init__(
-        self,
-        description: str,
-        kind: str = None,
-        data: Optional[dict[str, Any]] = None,
-        headers: Optional[dict[str, Any]] = None,
-    ):
-        super().__init__(
-            code=status.HTTP_409_CONFLICT,
-            description=description,
-            kind=kind,
-            data=data,
-            headers=headers,
-        )
+    code = HTTP_409_CONFLICT
+    description = "Conflict"
+    kind = "conflict_error"

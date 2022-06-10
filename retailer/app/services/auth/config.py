@@ -1,6 +1,5 @@
 from functools import lru_cache
 
-
 from config import RetailerConfig
 
 

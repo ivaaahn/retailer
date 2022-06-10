@@ -1,12 +1,11 @@
 from fastapi import APIRouter, FastAPI
 
 from .auth.controllers import router as auth_router
+from .cart.controllers import router as cart_router
+from .orders.controllers import router as order_router
 from .products.controllers import router as products_router
 from .profile.controllers import router as profile_router
 from .shop.controllers import router as shop_router
-from .orders.controllers import router as order_router
-from .cart.controllers import router as cart_router
-
 
 _router = APIRouter(
     prefix="/api",

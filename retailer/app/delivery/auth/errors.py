@@ -1,84 +1,55 @@
-from typing import Optional, Any
-
-from starlette import status
-
-from app.base.errors import NotFoundError, AuthError, ForbiddenError, UnauthorizedError
-
-
-class AuthConflictError(AuthError):
-    def __init__(self, description: str, data: Optional[dict[str, Any]] = None):
-        super().__init__(
-            code=status.HTTP_409_CONFLICT,
-            description=description,
-            data=data,
-        )
+from app.base.errors import (
+    ConflictError,
+    ForbiddenError,
+    NotFoundError,
+    UnauthorizedError,
+)
 
 
-class SignupSessionCreateTimeoutNotExpired(AuthConflictError):
+class SignupSessionCreateTimeoutNotExpired(ConflictError):
+    description = "Signup session timeout not expired yet"
+
     def __init__(self, seconds_left: int):
-        super().__init__(
-            description="Signup session timeout not expired yet",
-            data={
-                "seconds_left": seconds_left,
-            },
-        )
+        super().__init__(data=dict(seconds_left=seconds_left))
 
 
-class UserAlreadyExistsError(AuthConflictError):
+class UserAlreadyExistsError(ConflictError):
+    description = "User with this email already exist"
+
     def __init__(self, email: str):
-        super().__init__(
-            description=f"User with email {email} already exist",
-            data={
-                "email": email,
-            },
-        )
+        super().__init__(data=dict(email=email))
 
 
 class SignupSessionExpiredError(ForbiddenError):
-    def __init__(self):
-        super().__init__(description="Session expired")
+    description = "Session expired"
 
 
 class IncorrectCredsError(UnauthorizedError):
-    def __init__(self, description: str = "Could not validate credentials"):
-        super().__init__(
-            description=description,
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    description = "Could not validate credentials"
+    headers = {"WWW-Authenticate": "Bearer"}
 
 
 class IncorrectLoginCredsError(IncorrectCredsError):
-    def __init__(self):
-        super().__init__(description="Incorrect email or password")
+    description = "Incorrect email or password"
 
 
 class IncorrectCodeError(IncorrectCredsError):
+    description = "Bad code"
+
     def __init__(self, attempts_left: int):
-        super().__init__(
-            description=f"Bad code. You have {attempts_left} attempts yet!"
-        )
+        super().__init__(data=dict(attempts_left=attempts_left))
 
 
 class InactiveAccountError(UnauthorizedError):
-    def __init__(self):
-        super().__init__(
-            description="Inactive account",
-        )
+    description = "Inactive account"
 
 
-# TODO вынести как более общую ошибку
 class UserNotFoundError(NotFoundError):
+    description = "User with this email not found"
+
     def __init__(self, email: str):
-        super().__init__(
-            description=f"User with email {email} not found",
-            data={
-                "email": email,
-            },
-        )
+        super().__init__(data=dict(email=email))
 
 
 class SessionNotFoundError(NotFoundError):
-    def __init__(self):
-        super().__init__(
-            description="Session not found",
-        )
+    description = "Session not found"

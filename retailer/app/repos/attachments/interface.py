@@ -1,10 +1,8 @@
 import abc
 
-__all__ = ("IAttachmentsRepo",)
-
-from typing import Optional
-
 from store.s3 import ACLTypeEnum
+
+__all__ = ("IAttachmentsRepo",)
 
 
 class IAttachmentsRepo(metaclass=abc.ABCMeta):

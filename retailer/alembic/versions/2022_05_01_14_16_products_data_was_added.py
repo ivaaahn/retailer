@@ -57,8 +57,9 @@ def upgrade():
             name=p["name"],
             category_id=int(p["category_id"]),
             photo=p["photo"],
-            description=""
-        ) for p in products_raw
+            description="",
+        )
+        for p in products_raw
     ]
 
     try:

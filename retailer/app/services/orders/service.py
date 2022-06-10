@@ -3,7 +3,7 @@ from dataclasses import asdict
 from fastapi import Depends
 from sqlalchemy.exc import IntegrityError
 
-from app.base.errors import DBErrEnum, PostgresError, check_err
+from app.base.errors import DBErrEnum, DatabaseError, check_err
 from app.base.services import BaseService
 from app.delivery.orders.deps import order_paging_params
 from app.delivery.orders.errors import (
@@ -20,7 +20,7 @@ from app.dto.api.orders import (
     PlaceOrderRespDTO,
 )
 from app.dto.api.products import ShopProductDTO
-from app.dto.api.profile import AddressDTO
+from app.dto.api.profile import AddressRespDTO
 from app.dto.api.user import UserRespDTO
 from app.repos import IRMQInteractRepo, RMQInteractRepo
 from app.repos.cart.implementation import CartsRepo
@@ -56,7 +56,7 @@ class OrdersService(BaseService):
 
         delivery_address = None
         if order.delivery_address:
-            delivery_address = AddressDTO(**asdict(order.delivery_address))
+            delivery_address = AddressRespDTO(**asdict(order.delivery_address))
 
         return OrderRespDTO(
             id=order.id,
@@ -114,7 +114,7 @@ class OrdersService(BaseService):
                 exp_error=DBErrEnum.check_violation,
                 raise_exc=ProductTemporarilyUnavailable(*err.params[1:]),
             )
-            raise PostgresError(description=str(err))
+            raise DatabaseError(description=str(err))
 
         await self._rmq_repo.send_accept(user.email, order_id)
         await self._cart_service.clear_cart(user.email)

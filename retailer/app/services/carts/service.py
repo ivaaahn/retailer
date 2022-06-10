@@ -6,7 +6,7 @@ from fastapi import Depends
 from app.base.services import BaseService
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import CartProductDTO
-from app.dto.db.products import DBCartProductDTO, DBCartInfoDTO
+from app.dto.db.products import DBCartProductDTO
 from app.repos.cart.implementation import CartsRepo
 from app.repos.cart.interface import ICartsRepo
 from app.services import ProductsService

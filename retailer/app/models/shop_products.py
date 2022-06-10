@@ -1,11 +1,4 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    Identity,
-    ForeignKey,
-    Float,
-    CheckConstraint,
-)
+from sqlalchemy import Column, Float, ForeignKey, Identity, Integer
 
 from app.base.models import BaseModel
 

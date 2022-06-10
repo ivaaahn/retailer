@@ -14,6 +14,7 @@ class DBOrdersDTO:
     receive_kind: str
     status: str
     created_at: DateTime
+    delivery_address: int
 
     @classmethod
     def from_db(cls, db: Any | None) -> Optional["DBOrdersDTO"]:
@@ -26,6 +27,7 @@ class DBOrdersDTO:
             receive_kind=db.receive_kind,
             status=db.status,
             created_at=db.created_at,
+            delivery_address=db.address_id,
         )
 
 

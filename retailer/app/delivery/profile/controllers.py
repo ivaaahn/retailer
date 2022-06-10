@@ -1,12 +1,8 @@
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter, Depends
 
 from app.delivery.auth.deps import get_current_active_user
-from app.dto.api.profile import (
-    ProfileUpdateReqDTO,
-    AddressAddDTO,
-    UserAddressListDTO,
-)
-from app.dto.api.user import UserRespDTO, UserAddressDTO
+from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
+from app.dto.api.user import UserAddressDTO, UserRespDTO
 from app.services.profile import ProfileService
 
 router = APIRouter(
@@ -36,7 +32,7 @@ async def put(
     return await profile_service.add_address(user_id=user.id, new_addr=body)
 
 
-@router.get("/address.list", response_model=UserAddressListDTO)
+@router.get("/address", response_model=UserAddressListDTO)
 async def get_list(
     user: UserRespDTO = Depends(get_current_active_user),
     profile_service: ProfileService = Depends(),

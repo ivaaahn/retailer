@@ -24,17 +24,17 @@ echo "Creating database role and granting priveleges: ${ADMIN_USER}"
 $POSTGRES <<-EOSQL
 CREATE USER ${ADMIN_USER} WITH PASSWORD '${ADMIN_PSWD}';
 GRANT ALL ON DATABASE ${POSTGRES_DB} TO ${ADMIN_USER};
-GRANT ALL ON SCHEMA PUBLIC TO ${ADMIN_USER};
+GRANT USAGE ON SCHEMA PUBLIC TO ${ADMIN_USER};
 GRANT ALL ON ALL TABLES IN SCHEMA PUBLIC TO ${ADMIN_USER};
 GRANT ALL ON ALL SEQUENCES IN SCHEMA PUBLIC TO ${ADMIN_USER};
 GRANT ALL ON ALL FUNCTIONS IN SCHEMA PUBLIC TO ${ADMIN_USER};
 EOSQL
 
+#alter default privileges in schema public grant all on tables to ${DEFAULT_USER};
+#alter default privileges in schema public grant all on tables to ${ADMIN_USER};
 
 echo "Altering default privileges for access to future objects..."
 $POSTGRES <<-EOSQL
-alter default privileges in schema public grant all on tables to ${DEFAULT_USER};
-alter default privileges in schema public grant all on tables to ${ADMIN_USER};
 alter default privileges in schema public grant all on sequences to ${DEFAULT_USER};
 alter default privileges in schema public grant all on sequences to ${ADMIN_USER};
 alter default privileges in schema public grant execute on functions to ${DEFAULT_USER};

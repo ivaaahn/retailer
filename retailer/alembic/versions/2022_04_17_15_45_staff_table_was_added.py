@@ -10,6 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+from sqlalchemy import text
 from sqlalchemy.dialects import postgresql
 
 revision = "547a17f639a0"
@@ -33,7 +34,14 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_staff")),
     )
-    # ### end Alembic commands ###
+
+    permissions = (
+        text("grant select on staff to defretailer;"),
+        text("grant all on staff to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():

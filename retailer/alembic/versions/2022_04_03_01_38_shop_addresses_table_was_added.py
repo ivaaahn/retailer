@@ -10,6 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+from sqlalchemy import text
+
 revision = "9b55a88e1cd5"
 down_revision = "39f94d3d830d"
 branch_labels = None
@@ -32,6 +34,14 @@ def upgrade():
     op.create_index(
         op.f("ix_shop_addresses_street"), "shop_addresses", ["street"], unique=False
     )
+
+    permissions = (
+        text("grant select on shop_addresses to defretailer;"),
+        text("grant all on shop_addresses to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():

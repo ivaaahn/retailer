@@ -1,10 +1,4 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    ForeignKey,
-    Float,
-    Identity,
-)
+from sqlalchemy import Column, Float, ForeignKey, Identity, Integer
 
 from app.base.models import BaseModel
 

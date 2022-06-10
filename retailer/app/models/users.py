@@ -1,14 +1,6 @@
 import enum
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    Identity,
-    Text,
-    DateTime,
-    Boolean,
-    Date,
-)
+from sqlalchemy import Boolean, Column, Date, DateTime, Identity, Integer, Text
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.functions import now

@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.urls import setup_routes
-from store import shutdown_store, setup_store
+from store import setup_store, shutdown_store
 
 app = FastAPI(
     title="RetailerAPI",
-    version="0.1.11",
+    version="1.0.0",
 )
 
 origins = [

@@ -53,25 +53,6 @@ async def generate(to_file: bool = False) -> None:
     pprint(cat)
     pprint(prod)
 
-    #
-    # temp_categories = _parse_categoris_names(main_page)
-    # categories = [Category(c.id, c.name) for c in temp_categories]
-    #
-    # products: list[Product] = []
-    #
-    # unique_names = set()
-    # for p in await _parse_products(temp_categories):
-    #     if p.name not in unique_names:
-    #         products.append(
-    #             Product(
-    #                 name=p.name,
-    #                 category_id=p.category.id,
-    #                 photo=p.photo,
-    #                 description=p.description,
-    #             )
-    #         )
-    #         unique_names.add(p.name)
-
     if to_file:
         write(cat, CATEGORIES_FILE)
         write(prod, PRODUCTS_FILE)
@@ -82,9 +63,11 @@ async def _fetch_html(url: str) -> str:
         async with client.get(url) as resp:
             return await resp.text()
 
+
 async def _parse_product_photo_mock(url: str, name: str) -> str | None:
     path = f"data/products/{name.replace(' ', '_').lower()}"
     return path[5:]
+
 
 async def _parse_product_photo(url: str, name: str) -> str | None:
     async with aiohttp.ClientSession() as session:
@@ -176,8 +159,7 @@ async def _parse_products(soup: BeautifulSoup) -> tuple[list[Category], list[Pro
     res_products: list[Product] = []
 
     for category, category_products_photo_paths in zip(
-        products_separated_by_categories,
-        products_photo_paths
+        products_separated_by_categories, products_photo_paths
     ):
         res_categories.append(Category(id=category.id, name=category.name))
         for product, product_photo_path in zip(
@@ -189,6 +171,7 @@ async def _parse_products(soup: BeautifulSoup) -> tuple[list[Category], list[Pro
                 )
             )
     return res_categories, res_products
+
 
 if __name__ == "__main__":
     asyncio.run(generate(to_file=True))
