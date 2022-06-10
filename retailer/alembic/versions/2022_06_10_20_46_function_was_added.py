@@ -33,7 +33,7 @@ create or replace function order_stats(in count int, in date_from date, in date_
                 shop_address        text,
                 client_name         text,
                 client_orders_qty   bigint,
-                client_spent        float
+                client_spend        float
             )
 as
 $$
