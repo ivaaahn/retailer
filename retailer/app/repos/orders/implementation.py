@@ -116,7 +116,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         order_product_t = OrderProductsModel.__table__
         return (
             select(order_t, order_product_t)
-            .where(order_product_t.c.order_id == order_id)
+            .where(order_product_t.c.id == order_id)
             .select_from(order_product_t.join(order_t))
         )
 
@@ -127,7 +127,7 @@ class OrdersRepo(IOrdersRepo, BasePgRepo):
         product_category_t = ProductCategoryModel.__table__
         return (
             select(product_t, order_product_t, product_category_t)
-            .where(order_product_t.c.order_id == order_id)
+            .where(order_product_t.c.id == order_id)
             .select_from(order_product_t.join(product_t).join(product_category_t))
         )
 

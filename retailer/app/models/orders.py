@@ -1,14 +1,7 @@
 from enum import Enum
 from typing import Optional
 
-from sqlalchemy import (
-    Column,
-    Integer,
-    Identity,
-    ForeignKey,
-    Float,
-    DateTime,
-)
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Identity, Integer
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql.functions import now
 

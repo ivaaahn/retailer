@@ -1,20 +1,19 @@
-from app.base.errors import NotFoundError, BadRequestError
+from app.base.errors import BadRequestError, NotFoundError
 
 
 class OrderNotFoundError(NotFoundError):
+    description = "Order with this ID not found"
+
     def __init__(self, id: int):
-        super().__init__(
-            description=f"Order {id} not found",
-        )
+        super().__init__(data=dict(id=id))
 
 
 class NoProductsInCartError(BadRequestError):
-    def __init__(self):
-        super().__init__(description="No products in your cart!")
+    description = "No products in your cart!"
 
 
 class ProductTemporarilyUnavailable(BadRequestError):
+    description = "The product temporarily unavailable in the shop"
+
     def __init__(self, product_id: int, shop_id: int):
-        super().__init__(
-            description=f"Продукт {product_id} временно не доступен в магазине {shop_id}"
-        )
+        super().__init__(data=dict(product_id=product_id, shop_id=shop_id))

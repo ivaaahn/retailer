@@ -72,7 +72,7 @@ async def test(count: int):
 
 
 async def main():
-    await test(1000)
+    await test(100)
 
 
 if __name__ == "__main__":

@@ -18,9 +18,9 @@ class AddressAddDTO(BaseModel):
     flat: Optional[str] = Field(title="Квартира")
 
 
-class AddressDTO(AddressAddDTO):
+class AddressRespDTO(AddressAddDTO):
     id: int = Field(title="Идентификатор адреса")
 
 
 class UserAddressListDTO(BaseModel):
-    addresses: list[AddressDTO]
+    addresses: list[AddressRespDTO]

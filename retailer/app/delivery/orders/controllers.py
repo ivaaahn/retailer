@@ -1,33 +1,32 @@
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter, Depends
 
 from app.delivery.auth.deps import get_current_active_user
 from app.delivery.orders.deps import order_paging_params
 from app.dto.api.orders import (
+    OrderListPagingParams,
     OrderRespDTO,
     OrdersListRespDTO,
-    OrderListPagingParams,
-    PlaceOrderRespDTO,
     PlaceOrderReqDTO,
+    PlaceOrderRespDTO,
 )
 from app.dto.api.user import UserRespDTO
 from app.services.orders.service import OrdersService
 
 router = APIRouter(
-    prefix="/order",
+    prefix="/orders",
     tags=["order"],
 )
 
 
-@router.get("", response_model=OrderRespDTO)
+@router.get("/{order_id}", response_model=OrderRespDTO)
 async def get(
-    id: int,
+    order_id: int,
     order_service: OrdersService = Depends(),
 ) -> OrderRespDTO:
-    res = await order_service.get(id)
-    return res
+    return await order_service.get(order_id)
 
 
-@router.get(".list", response_model=OrdersListRespDTO)
+@router.get("", response_model=OrdersListRespDTO)
 async def get_list(
     order_service: OrdersService = Depends(),
     user: UserRespDTO = Depends(get_current_active_user),

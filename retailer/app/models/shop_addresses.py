@@ -1,9 +1,4 @@
-from sqlalchemy import (
-    Column,
-    Integer,
-    Identity,
-    Text,
-)
+from sqlalchemy import Column, Identity, Integer, Text
 
 from app.base.models import BaseModel
 

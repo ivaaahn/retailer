@@ -1,4 +1,4 @@
-"""orders table was added
+"""shop_products data was added
 
 Revision ID: 7g1856998bb3
 Revises: 6f1856998bb3

@@ -1,10 +1,9 @@
-from dataclasses import dataclass, asdict
+from dataclasses import asdict
 
 from fastapi import Depends, Query
-from pydantic import Field
 
 from app.base.deps import BasePagingParams, base_paging_params
-from app.dto.api.shop import ShopListSortByEnum, ShopListPagingParams
+from app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
 
 
 def shop_paging_params(

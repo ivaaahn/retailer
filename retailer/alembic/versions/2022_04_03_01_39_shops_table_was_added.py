@@ -10,6 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
+from sqlalchemy import text
+
 revision = "49f94d3d830d"
 down_revision = "9b55a88e1cd5"
 branch_labels = None
@@ -28,6 +30,14 @@ def upgrade():
             name=op.f("fk_shops_address_id_shop_addresses"),
         ),
     )
+
+    permissions = (
+        text("grant select on shops to defretailer;"),
+        text("grant all on shops to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():

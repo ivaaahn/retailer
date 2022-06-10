@@ -2,7 +2,6 @@ import abc
 
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import OrderListPagingParams
-from app.dto.api.user import UserRespDTO
 from app.dto.db.orders import DBOrderProductsDTO, DBOrderProductsListDTO
 from app.models.orders import OrderReceiveKindEnum
 

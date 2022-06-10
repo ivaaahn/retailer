@@ -7,6 +7,7 @@ Create Date: 2022-03-28 00:37:51.294370
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import ENUM
 
 
@@ -68,7 +69,16 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("email", name=op.f("pk_signup_session")),
     )
-    # ### end Alembic commands ###
+
+    permissions = (
+        text("grant select, insert, update on users to defretailer;"),
+        text("grant all on users to adretailer;"),
+        text("grant select, insert, update on signup_session to defretailer"),
+        text("grant all on signup_session to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():

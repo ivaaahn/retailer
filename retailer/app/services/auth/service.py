@@ -1,6 +1,6 @@
 import random
 import string
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 from functools import lru_cache
 
 from fastapi import Depends
@@ -8,22 +8,22 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
 
-from app.base.errors import check_err, DBErrEnum
+from app.base.errors import DBErrEnum, check_err
 from app.base.services import BaseService
 from app.delivery.auth.errors import (
-    UserNotFoundError,
+    InactiveAccountError,
+    IncorrectCodeError,
+    IncorrectCredsError,
+    IncorrectLoginCredsError,
     SignupSessionCreateTimeoutNotExpired,
     UserAlreadyExistsError,
-    IncorrectCredsError,
-    InactiveAccountError,
-    IncorrectLoginCredsError,
-    IncorrectCodeError,
+    UserNotFoundError,
 )
 from app.dto.api.signup import (
+    ResendCodeRespDTO,
+    SignupRespDTO,
     TokenDataDTO,
     TokenRespDTO,
-    SignupRespDTO,
-    ResendCodeRespDTO,
 )
 from app.dto.api.user import UserRespDTO
 from app.models.signup_sessions import SignupSessionModel

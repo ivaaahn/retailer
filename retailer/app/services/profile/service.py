@@ -4,12 +4,8 @@ from functools import lru_cache
 from fastapi import Depends
 
 from app.base.services import BaseService
-from app.dto.api.profile import (
-    ProfileUpdateReqDTO,
-    AddressAddDTO,
-    UserAddressListDTO,
-)
-from app.dto.api.user import UserRespDTO, UserAddressDTO
+from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
+from app.dto.api.user import UserAddressDTO, UserRespDTO
 from app.repos import IUsersRepo, UsersRepo
 
 __all__ = ("ProfileService",)

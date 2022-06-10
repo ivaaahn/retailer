@@ -7,6 +7,7 @@ Create Date: 2022-05-05 21:18:53.575227
 """
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import ENUM
 
 from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
@@ -48,7 +49,7 @@ def upgrade():
         sa.Column(
             "status",
             ENUM(*vals_s, name=name_s),
-            server_default=OrderStatusEnum.delivering.value,
+            server_default=OrderStatusEnum.collecting.value,
             nullable=False,
         ),
         sa.Column(
@@ -65,7 +66,13 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_orders")),
     )
-    # ### end Alembic commands ###
+    permissions = (
+        text("grant select, insert on orders to defretailer;"),
+        text("grant all on orders to adretailer;"),
+    )
+
+    for perm in permissions:
+        op.get_bind().execute(perm)
 
 
 def downgrade():

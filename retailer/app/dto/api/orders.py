@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 from app.base.deps import BasePagingParams
 from app.dto.api.products import ShopProductDTO
-from app.dto.api.profile import AddressDTO
+from app.dto.api.profile import AddressRespDTO
 from app.dto.db.profile import DBAddressDTO
 from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
 
@@ -26,13 +26,14 @@ class OrderBaseDTO(BaseModel):
     status: OrderStatusEnum = Field(title="Статус заказа")
     created_at: datetime = Field(title="Дата создания")
     receive_kind: OrderReceiveKindEnum = Field(title="Способ получения")
-    delivery_address: str | None = Field(title="Адрес доставки (если выбрана доставка)")
+    delivery_address: int | None = Field(title="Адрес доставки (если выбрана доставка)")
     total_price: float = Field(title="Общая стоимость заказа")
 
 
+# TODO доделать адрес
 class OrderRespDTO(OrderBaseDTO):
     products: list[ShopProductDTO] = Field(title="Список добавленных продуктов")
-    delivery_address: AddressDTO | None = Field(title="Адрес доставки")
+    # delivery_address: AddressRespDTO | None = Field(title="Адрес доставки")
 
 
 class OrdersListRespDTO(BaseModel):
