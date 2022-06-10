@@ -3,6 +3,7 @@ from functools import lru_cache
 
 from fastapi import Depends
 
+from app.base.errors import BaseError, DatabaseError
 from app.base.services import BaseService
 from app.dto.api.stats import StatEntityDTO, StatReqDTO, StatRespDTO
 from app.repos.stat.implementation import StatsRepo
@@ -24,6 +25,7 @@ class StatsService(BaseService):
             res = await self._stats_repo.get_stats(count, date_from, date_to)
         except Exception as err:
             self.logger.exception(err)
+            raise DatabaseError(code=500)
 
         return StatRespDTO(
             best_shops=[
