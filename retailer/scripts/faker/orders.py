@@ -6,11 +6,11 @@ from enum import Enum
 from faker import Faker
 from passlib.context import CryptContext
 
-COUNT = 1_000_000
-USERS_COUNT = 10_000
-SHOPS_COUNT = 1_000
+COUNT = 250_000
+USERS_COUNT = 1_000
+SHOPS_COUNT = 500
 PRODUCT_COUNT = 1_108
-ADDRESSES_COUNT = 10
+ADDRESSES_COUNT = 1_000
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

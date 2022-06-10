@@ -5,7 +5,7 @@ from scripts.faker.rw import write
 
 FILENAME_SHOP_PRODUCTS = "data/shop_products.csv"
 NUMBER_OF_PRODUCTS_IN_DB = 1108
-NUMBER_OF_SHOPS_IN_DB = 1000
+NUMBER_OF_SHOPS_IN_DB = 500
 
 
 def _get_random_price() -> float:

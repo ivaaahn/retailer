@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 
 from scripts.faker.rw import write
 
-COUNT = 10_000
+COUNT = 1_000
 FILENAME_USERS = "data/users.csv"
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
