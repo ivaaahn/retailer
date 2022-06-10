@@ -38,8 +38,8 @@ def upgrade():
     )
 
     permissions = (
-        text("grant select, insert on orders to defretailer;"),
-        text("grant all on orders to adretailer;"),
+        text("grant select, insert on order_products to defretailer;"),
+        text("grant all on order_products to adretailer;"),
     )
 
     for perm in permissions:
