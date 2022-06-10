@@ -50,7 +50,7 @@ services:
     environment:
       DJANGO_SUPERUSER_PASSWORD: $SU_PSWD
       DJANGO_SUPERUSER_EMAIL: $SU_EMAIL
-      WAIT_HOSTS: app:8080, pg:5432, redis:637
+      WAIT_HOSTS: app:8080, pg:5432, redis:6379
       WAIT_TIMEOUT: 900
       WAIT_SLEEP_INTERVAL: 5
     ports:
