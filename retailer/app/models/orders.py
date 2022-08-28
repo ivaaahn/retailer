@@ -48,9 +48,7 @@ class OrderModel(BaseModel):
     address_id = Column(Integer, ForeignKey("user_addresses.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), nullable=False, server_default=now())
 
-    def __init__(
-        self, user: Optional[dict] = None, shop: Optional[dict] = None, **kwargs
-    ):
+    def __init__(self, user: dict | None = None, shop: dict | None = None, **kwargs):
         super().__init__(**kwargs)
         self._user = user
         self._shop = shop

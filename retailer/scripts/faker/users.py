@@ -2,7 +2,6 @@ import datetime
 import string
 from dataclasses import dataclass
 from random import choice
-from typing import Optional
 
 from faker import Faker
 from passlib.context import CryptContext
@@ -28,8 +27,8 @@ f = init_faker(1234)
 class User:
     email: str
     password: str
-    name: Optional[str] = None
-    birthday: Optional[datetime.date] = None
+    name: str | None = None
+    birthday: datetime.date | None = None
     is_active: bool = True
 
 

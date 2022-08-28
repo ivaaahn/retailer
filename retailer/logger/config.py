@@ -14,8 +14,5 @@ class LoggerConfig(RetailerConfig):
         env_prefix = "LOG_"
 
 
-_config = LoggerConfig()
-
-
 def get_config() -> LoggerConfig:
-    return _config
+    return LoggerConfig()

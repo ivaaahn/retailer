@@ -1,10 +1,9 @@
 import json
-from typing import Optional
 
-from aio_pika import connect, Connection, Channel, Message, Queue
+from aio_pika import Channel, Connection, Message, Queue, connect
 
+from .config import RMQConfig, get_config
 from ..base.accessor import BaseAccessor
-from .config import get_config, RMQConfig
 
 __all__ = ("RMQAccessor", "rmq_accessor")
 
@@ -15,9 +14,9 @@ class RMQAccessor(BaseAccessor[RMQConfig]):
 
     def __init__(self, config: RMQConfig):
         super().__init__(config)
-        self._connection: Optional[Connection] = None
-        self._channel: Optional[Channel] = None
-        self._queue: Optional[Queue] = None
+        self._connection: Connection | None = None
+        self._channel: Channel | None = None
+        self._queue: Queue | None = None
 
     async def _connect(self):
         self._connection = await connect(

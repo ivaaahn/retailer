@@ -8,7 +8,7 @@ class DBProductBaseDTO:
     name: str
     photo: str
     description: str
-    category: Optional[str]
+    category: str | None
 
 
 @dataclass
@@ -18,18 +18,17 @@ class DBShopProductDTO(DBProductBaseDTO):
 
     @classmethod
     def from_db(cls, db: Any | None) -> Optional["DBShopProductDTO"]:
-        return (
-            cls(
-                id=db.id,
-                photo=db.photo,
-                name=db.name,
-                description=db.description,
-                price=db.price,
-                category=db.product_categories_name,
-                availability=db.order_products_qty,
-            )
-            if db
-            else None
+        if not db:
+            return None
+
+        return cls(
+            id=db.id,
+            photo=db.photo,
+            name=db.name,
+            description=db.description,
+            price=db.price,
+            category=db.product_categories_name,
+            availability=db.order_products_qty,
         )
 
 

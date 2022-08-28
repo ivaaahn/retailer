@@ -4,10 +4,10 @@ from typing import Optional
 
 @dataclass
 class DBShopAddressDTO:
-    city: Optional[str]
-    street: Optional[str]
-    house: Optional[str]
-    floor: Optional[int]
+    city: str | None
+    street: str | None
+    house: str | None
+    floor: int | None
 
 
 @dataclass

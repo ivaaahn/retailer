@@ -40,7 +40,7 @@ class BaseError(HTTPException):
 
 
 class DatabaseError(BaseError):
-    code = (HTTP_500_INTERNAL_SERVER_ERROR,)
+    code = HTTP_500_INTERNAL_SERVER_ERROR
     description = "Internal database error"
     kind = "internal_database_error"
 

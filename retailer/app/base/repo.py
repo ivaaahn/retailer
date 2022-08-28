@@ -36,7 +36,7 @@ class BaseRepo:
 class BaseRMQRepo(BaseRepo):
     def __init__(self, rmq: RMQAccessor = Depends(rmq_accessor)):
         super().__init__()
-        self._rmq: "RMQAccessor" = rmq
+        self._rmq = rmq
 
 
 class BaseS3Repo(BaseRepo):
@@ -84,10 +84,6 @@ class BasePgRepo(BaseRepo):
         conn: AsyncConnection | None = None,
         **kwargs,
     ) -> CursorResult:
-        # self.logger.info(
-        #     f"\n{'='*44}[PG_REQUEST]{'='*44}\n" f"{str(statement)}\n" f"{'='*100}\n"
-        # )
-
         if conn:
             return await conn.execute(
                 statement=statement,

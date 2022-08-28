@@ -43,7 +43,7 @@ class ShopAddress:
     city: str
     street: str
     house: str
-    floor: Optional[int] = None
+    floor: int | None = None
 
 
 def _generate_shop_addresses(count: int) -> list[ShopAddress]:

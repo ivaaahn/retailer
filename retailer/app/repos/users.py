@@ -1,20 +1,18 @@
 from functools import lru_cache
-from typing import Optional
 
-from sqlalchemy import update, and_
+from sqlalchemy import and_, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
-from app.models.users import UserModel
-from app.models.user_addresses import UserAddressModel
 from app.delivery.profile.errors import AddressesNotFoundError
-from app.dto.db.profile import DBAddressListDTO, DBAddressDTO
-from .interface import IUsersRepo
+from app.dto.db.profile import DBAddressDTO, DBAddressListDTO
+from app.models.user_addresses import UserAddressModel
+from app.models.users import UserModel
 
 
 @lru_cache
-class UsersRepo(IUsersRepo, BasePgRepo):
+class UsersRepo(BasePgRepo):
     async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
         user_addr = UserAddressModel.__table__
 
@@ -50,12 +48,12 @@ class UsersRepo(IUsersRepo, BasePgRepo):
         street: str,
         house: str,
         entrance: int,
-        floor: Optional[int],
-        flat: Optional[str],
+        floor: int | None,
+        flat: str | None,
     ) -> int:
-        user_addr = UserAddressModel.__table__
+        user_addr_t = UserAddressModel.__table__
 
-        stmt = insert(user_addr).values(
+        stmt = insert(user_addr_t).values(
             user_id=user_id,
             city=city,
             street=street,
@@ -69,7 +67,7 @@ class UsersRepo(IUsersRepo, BasePgRepo):
 
         return addr_id
 
-    async def update(self, email: str, **kwargs) -> Optional[UserModel]:
+    async def update(self, email: str, **kwargs) -> UserModel | None:
         stmt = (
             update(UserModel)
             .values(**kwargs)
@@ -94,18 +92,18 @@ class UsersRepo(IUsersRepo, BasePgRepo):
         cursor = await self._execute(do_update_stmt)
         return UserModel.from_cursor(cursor)
 
-    async def get(self, email: str, only_active: bool = True) -> Optional[UserModel]:
+    async def get(self, email: str, only_active: bool = True) -> UserModel | None:
         select_stmt = select(UserModel)
 
-        if only_active:
+        if not only_active:
+            stmt = select_stmt.where(UserModel.__table__.c.email == email)
+        else:
             stmt = select_stmt.where(
                 and_(
                     UserModel.__table__.c.email == email,
                     UserModel.__table__.c.is_active.is_(True),
                 )
             )
-        else:
-            stmt = select_stmt.where(UserModel.__table__.c.email == email)
 
         cursor = await self._execute(stmt)
         return UserModel.from_cursor(cursor)

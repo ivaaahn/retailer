@@ -16,8 +16,8 @@ class UserRespDTO(EmailMixin):
     id: int = Field(title="Идентификатор пользователя в базе данных")
     created_at: datetime = Field(title="Дата и время создания аккаунта")
     is_active: bool = Field(title="Признак активного аккаунта")
-    name: Optional[str] = Field(title="Имя")
-    birthday: Optional[date] = Field(title="Дата рождения")
+    name: str | None = Field(title="Имя")
+    birthday: date | None = Field(title="Дата рождения")
 
 
 class UserInDBSchema(UserRespDTO, PasswordMixin):

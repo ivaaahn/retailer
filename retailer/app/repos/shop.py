@@ -11,14 +11,13 @@ from app.dto.api.shop import ShopListPagingParams
 from app.dto.db.shops import DBShopDTO, DBShopListDTO, DBShopAddressDTO
 from app.models.shop_addresses import ShopAddressModel
 from app.models.shops import ShopModel
-from .interface import IShopsRepo
 
 __all__ = ("ShopsRepo",)
 
 
 @lru_cache
-class ShopsRepo(IShopsRepo, BasePgRepo):
-    async def get_shop(self, id: int) -> Optional[DBShopDTO]:
+class ShopsRepo(BasePgRepo):
+    async def get_shop(self, id: int) -> DBShopDTO | None:
         sp = ShopModel.__table__
         adr = ShopAddressModel.__table__
 

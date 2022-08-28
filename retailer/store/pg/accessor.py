@@ -20,8 +20,8 @@ class PgAccessor(BaseAccessor[PgConfig]):
     def __init__(self, config: PgConfig):
         super().__init__(config)
 
-        self._engine: Optional[AsyncEngine] = None
-        self._metadata: Optional[MetaData] = None
+        self._engine: AsyncEngine | None = None
+        self._metadata: MetaData | None = None
 
     @property
     def engine(self) -> AsyncEngine:
