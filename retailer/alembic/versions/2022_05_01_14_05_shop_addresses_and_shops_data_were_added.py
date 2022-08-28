@@ -12,7 +12,7 @@ from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-from sqlalchemy import column, table, Integer, Text
+from sqlalchemy import column, table, Integer, Text, text
 
 from scripts.faker.shops import generate as generate_shops, Shop
 from scripts.faker.shop_addresses import ShopAddress, generate as generate_addresses
@@ -52,6 +52,9 @@ def upgrade():
             shops_table,
             [asdict(shop) for shop in shops],
         )
+        op.get_bind().execute(text("SELECT SETVAL('shops_id_seq', COALESCE(MAX(id), 1) ) FROM shops;"))
+        op.get_bind().execute(text("SELECT SETVAL('shop_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM shop_addresses;"))
+
     except Exception as err:
         logging.warning(f"Error with shop' data insertion: {err}")
         raise

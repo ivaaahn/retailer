@@ -33,7 +33,7 @@ class OrderBaseDTO(BaseModel):
 # TODO доделать адрес
 class OrderRespDTO(OrderBaseDTO):
     products: list[ShopProductDTO] = Field(title="Список добавленных продуктов")
-    # delivery_address: AddressRespDTO | None = Field(title="Адрес доставки")
+    delivery_address: AddressRespDTO | None = Field(title="Адрес доставки")
 
 
 class OrdersListRespDTO(BaseModel):

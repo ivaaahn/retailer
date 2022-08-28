@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-from sqlalchemy import DateTime, Float, Integer, String, column, table
+from sqlalchemy import DateTime, Float, Integer, String, column, table, text
 from sqlalchemy.dialects.postgresql import ENUM
 
 from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
@@ -72,6 +72,8 @@ def upgrade():
 
         print("orders_products table was filled")
 
+        op.get_bind().execute(text("SELECT SETVAL('orders_id_seq', COALESCE(MAX(id), 1) ) FROM orders;"))
+        op.get_bind().execute(text("SELECT SETVAL('order_products_id_seq', COALESCE(MAX(id), 1) ) FROM order_products;"))
     except Exception as err:
         logging.warning(f"Error with orders' data insertion: {err}")
         raise
