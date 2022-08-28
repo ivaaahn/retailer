@@ -20,6 +20,8 @@ services:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     restart: unless-stopped
+    networks:
+      - net
 
   app:
     image: ivaaahn/retailer:${RETAILER_VERSION}
@@ -37,6 +39,8 @@ services:
     extra_hosts:
       - "pg:10.128.0.19"
     restart: unless-stopped
+    networks:
+      - net
 
   admin:
     image: ivaaahn/retailer-admin:${RETAILER_ADMIN_VERSION}
@@ -55,6 +59,8 @@ services:
     extra_hosts:
       - "pg:10.128.0.19"
     restart: unless-stopped
+    networks:
+      - net
 
   redis:
     image: redis:alpine
@@ -66,6 +72,8 @@ services:
       - redis_data_volume:/var/lib/redis
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     restart: unless-stopped
+    networks:
+      - net
 
   pymailer:
     image: ivaaahn/pymailer:${PYMAILER_VERSION}
@@ -73,7 +81,8 @@ services:
     depends_on:
       - rabbit
     restart: unless-stopped
-
+    networks:
+      - net
 
   rabbit:
     image: ivaaahn/rabbitmq:${RABBITMQ_VERSION}
@@ -85,8 +94,17 @@ services:
       - rabbit_data_volume:/data/lib/rabbitmq/
       - rabbit_logs_volume:/data/log/rabbitmq/
     restart: unless-stopped
+    networks:
+      - net
 
 volumes:
   redis_data_volume:
   rabbit_data_volume:
   rabbit_logs_volume:
+
+networks:
+  net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
