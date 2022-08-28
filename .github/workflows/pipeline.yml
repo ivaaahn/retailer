@@ -81,20 +81,7 @@ jobs:
           tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
           strip_components: 2
 
-      - name: Copy pg scripts
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "deploy/pg/scripts/"
-          target: ${{ secrets.PATH_TO_ROOT }}
-          overwrite: true
-          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
-          strip_components: 1
-
-      - name: Copy deploy scripts and docker-compose
+      - name: Copy docker-compose
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}

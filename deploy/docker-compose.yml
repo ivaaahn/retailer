@@ -16,7 +16,7 @@ services:
       S3_BUCKET_NAME: $S3_BUCKET_NAME
     volumes:
       - ./nginx/templates:/etc/nginx/templates
-      - ./nginx/data/log:/data/log/
+      - ./nginx/data/log:/var/log/nginx
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
     restart: unless-stopped
