@@ -1,5 +1,4 @@
 from dataclasses import asdict
-from functools import lru_cache
 
 from fastapi import Depends
 
@@ -7,17 +6,15 @@ from app.base.services import BaseService
 from app.delivery.shop.deps import shop_paging_params
 from app.delivery.shop.errors import ShopNotFoundError
 from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
-from app.repos.shop.implementation import ShopsRepo
-from app.repos.shop.interface import IShopsRepo
+from app.repos.shop import ShopsRepo
 
 __all__ = ("ShopsService",)
 
 
-@lru_cache
 class ShopsService(BaseService):
     def __init__(
         self,
-        shops_repo: IShopsRepo = Depends(ShopsRepo),
+        shops_repo: ShopsRepo = Depends(),
     ):
         super().__init__()
         self._shops_repo = shops_repo

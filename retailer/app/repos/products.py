@@ -17,13 +17,12 @@ from app.misc import make_shop_product_key
 from app.models.product_categories import ProductCategoryModel
 from app.models.products import ProductModel
 from app.models.shop_products import ShopProductsModel
-from .interface import IProductsRepo
 
 __all__ = ("ProductsRepo", "ProductsCacheRepo")
 
 
 @lru_cache
-class ProductsRepo(IProductsRepo, BasePgRepo):
+class ProductsRepo(BasePgRepo):
     async def reduce_qty(self, shop_id: int, cart: CartRespDTO):
         shop_product_t = ShopProductsModel.__table__
 
@@ -76,11 +75,11 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
     ) -> DBShopProductListDTO:
         pt = ProductModel.__table__
         spt = ShopProductsModel.__table__
-        ct = ProductCategoryModel.__table__
+        pct = ProductCategoryModel.__table__
         stmt = (
-            select(pt, spt, ct)
+            select(pt, spt, pct)
             .where(spt.c.shop_id == shop_id)
-            .select_from(spt.join(pt).join(ct))
+            .select_from(spt.join(pt).join(pct))
         )
         query = self.with_pagination(
             query=stmt,
@@ -94,13 +93,13 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
         stmt_total = (
             select(func.count())
             .where(spt.c.shop_id == shop_id)
-            .select_from(spt.join(pt).join(ct))
+            .select_from(spt.join(pt).join(pct))
         )
         cursor_total = await self._execute(stmt_total)
         total = cursor_total.scalar()
 
         return DBShopProductListDTO(
-            [
+            products=[
                 DBShopProductDTO(
                     id=product.id,
                     photo=product.photo,
@@ -112,7 +111,7 @@ class ProductsRepo(IProductsRepo, BasePgRepo):
                 )
                 for product in cursor_product
             ],
-            total,
+            total=total,
         )
 
 

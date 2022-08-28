@@ -17,7 +17,7 @@ class RedisAccessor(BaseAccessor[RedisConfig]):
 
     def __init__(self, config: RedisConfig):
         super().__init__(config)
-        self._redis: Optional[Redis] = None
+        self._redis: Redis | None = None
 
     async def _ping(self):
         await self._redis.ping()

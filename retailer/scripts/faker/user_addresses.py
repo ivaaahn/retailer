@@ -49,8 +49,8 @@ class UserAddress:
     street: str
     house: str
     entrance: int
-    floor: Optional[int] = None
-    flat: Optional[str] = None
+    floor: int | None = None
+    flat: str | None = None
 
 
 def _generate_customer_addresses(count: int) -> list[UserAddress]:

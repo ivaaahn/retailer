@@ -1,5 +1,4 @@
 from dataclasses import asdict
-from functools import lru_cache
 
 from fastapi import Depends
 
@@ -12,8 +11,6 @@ from app.dto.api.products import (
 )
 from app.dto.db.products import DBShopProductDTO
 from app.repos.products import (
-    IProductsCacheRepo,
-    IProductsRepo,
     ProductsCacheRepo,
     ProductsRepo,
 )
@@ -22,12 +19,11 @@ from app.services.products.config import get_config
 __all__ = ("ProductsService",)
 
 
-@lru_cache
 class ProductsService(BaseService):
     def __init__(
         self,
-        products_repo: IProductsRepo = Depends(ProductsRepo),
-        products_cache_repo: IProductsCacheRepo = Depends(ProductsCacheRepo),
+        products_repo: ProductsRepo = Depends(),
+        products_cache_repo: ProductsCacheRepo = Depends(),
     ):
         super().__init__()
         self._products_repo = products_repo

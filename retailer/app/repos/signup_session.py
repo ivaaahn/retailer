@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import Optional
 
 from sqlalchemy import update
@@ -10,12 +9,10 @@ from sqlalchemy.sql.functions import now as sa_now
 from app.base.repo import BasePgRepo
 from app.delivery.auth.errors import SessionNotFoundError, SignupSessionExpiredError
 from app.models.signup_sessions import SignupSessionModel
-from .interface import ISignupSessionRepo
 
 
-@lru_cache
-class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
-    async def get(self, email: str) -> Optional[SignupSessionModel]:
+class SignupSessionRepo(BasePgRepo):
+    async def get(self, email: str) -> SignupSessionModel | None:
         stmt = select(SignupSessionModel).where(
             SignupSessionModel.__table__.c.email == email
         )
@@ -51,7 +48,7 @@ class SignupSessionRepo(ISignupSessionRepo, BasePgRepo):
         cursor = await self._execute(stmt)
         return SignupSessionModel.from_cursor(cursor)
 
-    async def update(self, email: str, **kwargs) -> Optional[SignupSessionModel]:
+    async def update(self, email: str, **kwargs) -> SignupSessionModel | None:
         stmt = (
             update(SignupSessionModel)
             .values(**kwargs)

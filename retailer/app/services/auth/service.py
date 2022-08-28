@@ -1,7 +1,6 @@
 import random
 import string
 from datetime import datetime, timedelta
-from functools import lru_cache
 
 from fastapi import Depends
 from jose import JWTError, jwt
@@ -29,9 +28,6 @@ from app.dto.api.user import UserRespDTO
 from app.models.signup_sessions import SignupSessionModel
 from app.models.users import UserModel
 from app.repos import (
-    IRMQInteractRepo,
-    ISignupSessionRepo,
-    IUsersRepo,
     RMQInteractRepo,
     SignupSessionRepo,
     UsersRepo,
@@ -43,13 +39,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 __all__ = ("AuthService",)
 
 
-@lru_cache
 class AuthService(BaseService):
     def __init__(
         self,
-        users_repo: IUsersRepo = Depends(UsersRepo),
-        signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
-        rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
+        users_repo: UsersRepo = Depends(),
+        signup_session_repo: SignupSessionRepo = Depends(),
+        rmq_interact_repo: RMQInteractRepo = Depends(),
     ):
         super().__init__()
         self._config = get_config()

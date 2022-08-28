@@ -6,3 +6,6 @@ __pycache__/
 example*
 .idea/
 /retailer/scripts/faker/data/products/
+/deploy/deploy.sh
+/deploy/down.sh
+!/deploy/pg/scripts/00_create_user.sh

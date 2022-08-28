@@ -5,8 +5,8 @@ from pydantic import BaseModel, Field
 
 
 class ProfileUpdateReqDTO(BaseModel):
-    name: Optional[str]
-    birthday: Optional[date]
+    name: str | None
+    birthday: date | None
 
 
 class AddressAddDTO(BaseModel):
@@ -14,8 +14,8 @@ class AddressAddDTO(BaseModel):
     street: str = Field(title="Улица")
     house: str = Field(title="Дом")
     entrance: int = Field(title="Подъезд")
-    floor: Optional[int] = Field(title="Этаж")
-    flat: Optional[str] = Field(title="Квартира")
+    floor: int | None = Field(title="Этаж")
+    flat: str | None = Field(title="Квартира")
 
 
 class AddressRespDTO(AddressAddDTO):

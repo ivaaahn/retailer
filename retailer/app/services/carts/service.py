@@ -1,5 +1,4 @@
 import asyncio
-from functools import lru_cache
 
 from fastapi import Depends
 
@@ -7,18 +6,16 @@ from app.base.services import BaseService
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import CartProductDTO
 from app.dto.db.products import DBCartProductDTO
-from app.repos.cart.implementation import CartsRepo
-from app.repos.cart.interface import ICartsRepo
+from app.repos.cart import CartsRepo
 from app.services import ProductsService
 
 __all__ = ("CartService",)
 
 
-@lru_cache
 class CartService(BaseService):
     def __init__(
         self,
-        carts_repo: ICartsRepo = Depends(CartsRepo),
+        carts_repo: CartsRepo = Depends(),
         products_service: ProductsService = Depends(),
     ):
         super().__init__()

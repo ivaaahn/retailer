@@ -19,9 +19,9 @@ class ProductListPagingParams(BasePagingParams):
 
 class BaseProduct(BaseModel):
     id: int = Field(title="Идентификатор продукта")
-    photo: Optional[str] = Field(title="Фото продукта")
+    photo: str | None = Field(title="Фото продукта")
     name: str = Field(title="Название продукта")
-    description: Optional[str] = Field(title="Описание продукта")
+    description: str | None = Field(title="Описание продукта")
     price: float = Field(title="Цена продукта")
     category: str = Field(title="Категория продукта")
 

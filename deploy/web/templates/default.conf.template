@@ -9,22 +9,22 @@ upstream admin {
 
 server {
     listen 80;
-    server_name retailer.gq, www.retailer.gq, 51.250.86.153;
+    server_name retailerx.gq, www.retailerx.gq;
 
     location /.well-known/acme-challenge/ {
         root /var/www/certbot;
     }
 
     location / {
-	return 301 https://$host$request_uri;
+		return 301 https://$host$request_uri;
     }
 }
 
 server {
     listen 443 ssl;
-    server_name retailer.gq, www.retailer.gq, 51.250.86.153;
-    ssl_certificate /etc/letsencrypt/live/retailer.gq/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/retailer.gq/privkey.pem;
+    server_name retailerx.gq, www.retailerx.gq;
+    ssl_certificate /etc/letsencrypt/live/retailerx.gq/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/retailerx.gq/privkey.pem;
 
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
@@ -41,7 +41,6 @@ server {
 
 
     location /img/ {
-#         proxy_set_header User-Agent ${S3_SECRET_USER_AGENT_HEADER};
         proxy_hide_header x-amz-request-id;
         proxy_hide_header x-amz-version-id;
         proxy_pass http://${S3_STORAGE_URL}/${S3_BUCKET_NAME}/;

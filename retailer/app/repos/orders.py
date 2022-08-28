@@ -23,18 +23,17 @@ from app.models.product_categories import ProductCategoryModel
 from app.models.products import ProductModel
 from app.models.shop_products import ShopProductsModel
 from app.models.user_addresses import UserAddressModel
-from app.repos.orders.interface import IOrdersRepo
-from app.repos.products import IProductsRepo, ProductsRepo
+from app.repos.products import ProductsRepo
 from store import PgAccessor, pg_accessor
 
 __all__ = ("OrdersRepo",)
 
 
-class OrdersRepo(IOrdersRepo, BasePgRepo):
+class OrdersRepo(BasePgRepo):
     def __init__(
         self,
         pg: PgAccessor = Depends(pg_accessor),
-        products_repo: IProductsRepo = Depends(ProductsRepo),
+        products_repo: ProductsRepo = Depends(),
     ):
         super(OrdersRepo, self).__init__(pg=pg)
         self._products_repo = products_repo

@@ -2,7 +2,7 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, Query
 
-from app.dto.api.stats import StatReqDTO, StatRespDTO
+from app.dto.api.stats import StatRespDTO
 from app.services.stats.service import StatsService
 
 router = APIRouter(

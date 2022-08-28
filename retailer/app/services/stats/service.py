@@ -3,10 +3,10 @@ from functools import lru_cache
 
 from fastapi import Depends
 
-from app.base.errors import BaseError, DatabaseError
+from app.base.errors import DatabaseError
 from app.base.services import BaseService
-from app.dto.api.stats import StatEntityDTO, StatReqDTO, StatRespDTO
-from app.repos.stat.implementation import StatsRepo
+from app.dto.api.stats import StatEntityDTO, StatRespDTO
+from app.repos.stat import StatsRepo
 
 __all__ = ("StatsService",)
 
@@ -15,7 +15,7 @@ __all__ = ("StatsService",)
 class StatsService(BaseService):
     def __init__(
         self,
-        stats_repo: StatsRepo = Depends(StatsRepo),
+        stats_repo: StatsRepo = Depends(),
     ):
         super().__init__()
         self._stats_repo = stats_repo

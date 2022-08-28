@@ -1,21 +1,19 @@
 from dataclasses import asdict
-from functools import lru_cache
 
 from fastapi import Depends
 
 from app.base.services import BaseService
 from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
 from app.dto.api.user import UserAddressDTO, UserRespDTO
-from app.repos import IUsersRepo, UsersRepo
+from app.repos import UsersRepo
 
 __all__ = ("ProfileService",)
 
 
-@lru_cache
 class ProfileService(BaseService):
     def __init__(
         self,
-        users_repo: IUsersRepo = Depends(UsersRepo),
+        users_repo: UsersRepo = Depends(),
     ):
         super().__init__()
         self._users_repo = users_repo

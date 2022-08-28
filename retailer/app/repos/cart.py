@@ -1,10 +1,9 @@
 from app.base.repo import BaseRedisRepo
 from app.dto.db.products import DBCartProductDTO, DBCartInfoDTO
 from app.misc import make_cart_key, make_product_key, parse_product_key
-from .interface import ICartsRepo
 
 
-class CartsRepo(BaseRedisRepo, ICartsRepo):
+class CartsRepo(BaseRedisRepo):
     async def add_to_cart(self, email: str, dto: DBCartProductDTO) -> int:
         return await self._redis.cli.hset(
             name=make_cart_key(email),

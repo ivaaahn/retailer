@@ -9,8 +9,8 @@ class DBAddressDTO:
     street: str
     house: str
     entrance: int
-    floor: Optional[int]
-    flat: Optional[str]
+    floor: int | None
+    flat: str | None
 
     @classmethod
     def from_db(cls, db: Any | None) -> Optional["DBAddressDTO"]:
