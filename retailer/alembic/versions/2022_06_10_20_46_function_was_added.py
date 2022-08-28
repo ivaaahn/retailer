@@ -1,4 +1,4 @@
-"""Add orders data
+"""Add stats function
 
 Revision ID: 6be3768caf79
 Revises: 5be3768caf79
@@ -33,7 +33,7 @@ create or replace function order_stats(in count int, in date_from date, in date_
                 shop_address        text,
                 client_name         text,
                 client_orders_qty   bigint,
-                client_spent        float
+                client_spend        float
             )
 as
 $$
@@ -43,7 +43,7 @@ select o.shop_id                                              as shop_id,
        concat(sa.city || ' ' || sa.street || ' ' || sa.house) as shop_address,
        bc.name                                                as client_name,
        bc.sum_count                                           as client_orders_qty,
-       bc.sum_total                                           as client_spent
+       bc.sum_total                                           as client_spend
 from orders o
          join shops s on o.shop_id = s.id
          join shop_addresses sa on s.address_id = sa.id
