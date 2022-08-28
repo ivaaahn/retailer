@@ -21,12 +21,6 @@ services:
       - ./certbot/www:/var/www/certbot
     restart: unless-stopped
 
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-
   app:
     image: ivaaahn/retailer:${RETAILER_VERSION}
     container_name: app
