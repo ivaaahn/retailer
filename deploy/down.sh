@@ -2,7 +2,7 @@
 
 echo "[>>>] Downing..."
 
-cd ~/retailer/deploy/ || exit
+cd ~/retailer/ || exit
 
 echo "[>] Docker compose down..."
 docker compose down
