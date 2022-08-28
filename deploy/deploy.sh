@@ -4,7 +4,7 @@ echo "  [>] Starting deployment"
 echo "  [+] Remove containers, volume and networks older than 1h ..."
 docker system prune --force --filter "until=1h"
 
-cd ~/retailer/deploy/ || exit
+cd ~/retailer/ || exit
 
 export RETAILER_VERSION=latest
 export RETAILER_ADMIN_VERSION=latest
