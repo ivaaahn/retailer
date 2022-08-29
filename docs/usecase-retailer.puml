@@ -4,8 +4,8 @@ title Варианты использования приложения "Retailer
 
 left to right direction
 
-actor :Сотрудник: as Staff
 actor :Клиент: as Cli
+actor :Сотрудник: as Staff
 actor :Менеджер: as Admin
 
 
@@ -30,23 +30,34 @@ rectangle "Функционал сотрудника" {
 }
 
 rectangle "Функционал менеджера" {
-    usecase "Просмотреть список всех торговых точек" as AdminShopList
-    usecase "Просмотреть список сотрудников торговой точки" as AdminStaffList
+    usecase "Получить список всех торговых точек" as AdminShopList
+	usecase "Получить список товаров торговой точки" as AdminShopInfo
+	usecase "Редактировать цену/наличие товара" as AdminProductEdit
+    usecase "Просмотреть список сотрудников торговой точки" as AdminShopStaffList
+    usecase "Забрать доступ у сотрудника" as RevokeStaff
+    usecase "Дать доступ новому сотруднику" as GrantStaff
+    usecase "Получить список пользователей" as AdminStaffList
     usecase "Создать аккаунт сотруднику" as AdminStaffCreate
     usecase "Удалить аккаунт сотрудника" as AdminStaffRemove
-    usecase "Просмотреть список товаров" as AdminProductList
-    usecase "Редактировать базовое описание товара" as AdminEditProduct
-    usecase "Добавить новые базовый товар" as AdminAddProduct
-    usecase "Удалить базовые товары" as AdminRemoveProduct
+    usecase "Получить базовый ассортимент товара" as AdminProductList
+    usecase "Редактировать описание" as AdminEditProduct
+    usecase "Добавить товар" as AdminAddProduct
+    usecase "Удалить товар" as AdminRemoveProduct
     usecase "Просмотреть статистику" as AdminGetStat
+    usecase "Получить список заказов" as AdminOrdersList
 }
 
 
 Admin --> AdminShopList
-AdminShopList ..> AdminStaffList : include
+AdminShopList ..> AdminShopStaffList : include
+AdminShopStaffList ..> RevokeStaff : include
+AdminShopStaffList ..> GrantStaff : include
+AdminShopList ..> AdminShopInfo : include
+AdminShopInfo ..> AdminProductEdit : include
 
-Admin --> AdminStaffCreate
-Admin --> AdminStaffRemove
+Admin --> AdminStaffList
+AdminStaffList ..> AdminStaffCreate
+AdminStaffList ..> AdminStaffRemove
 
 Admin --> AdminProductList
 AdminProductList ..> AdminAddProduct : include
@@ -54,6 +65,7 @@ AdminProductList ..> AdminEditProduct : include
 AdminProductList ..> AdminRemoveProduct : include
 
 Admin --> AdminGetStat
+Admin --> AdminOrdersList
 
 
 Staff --> StaffShopList
