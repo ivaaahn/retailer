@@ -10,7 +10,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from alembic import op
-from sqlalchemy import Integer, Text, column, table
+from sqlalchemy import Integer, Text, column, table, text
 
 from scripts.faker.product_categories import (
     CATEGORIES_FILE,
@@ -71,6 +71,8 @@ def upgrade():
             p_table,
             [asdict(p) for p in products],
         )
+        op.get_bind().execute(text("SELECT SETVAL('products_id_seq', COALESCE(MAX(id), 1) ) FROM products;"))
+
     except Exception as err:
         logging.warning(f"Error with products' or categories' data insertion: {err}")
         raise
