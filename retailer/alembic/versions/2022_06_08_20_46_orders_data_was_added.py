@@ -65,13 +65,7 @@ def upgrade():
 
     try:
         op.bulk_insert(orders_table, orders)
-
-        print("orders table was filled")
-
         op.bulk_insert(order_products_table, products)
-
-        print("orders_products table was filled")
-
         op.get_bind().execute(text("SELECT SETVAL('orders_id_seq', COALESCE(MAX(id), 1) ) FROM orders;"))
         op.get_bind().execute(text("SELECT SETVAL('order_products_id_seq', COALESCE(MAX(id), 1) ) FROM order_products;"))
     except Exception as err:
