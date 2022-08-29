@@ -9,7 +9,7 @@ import logging
 from dataclasses import asdict
 
 from alembic import op
-from sqlalchemy import column, table, Integer, Text
+from sqlalchemy import column, table, Integer, Text, text
 
 from scripts.faker.user_addresses import UserAddress, generate as generate_addresses
 
@@ -39,6 +39,8 @@ def upgrade():
             addresses_table,
             [asdict(address) for address in addresses],
         )
+        op.get_bind().execute(text("SELECT SETVAL('user_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM user_addresses;"))
+
     except Exception as err:
         logging.warning(f"Error with user addresses' data insertion: {err}")
         raise

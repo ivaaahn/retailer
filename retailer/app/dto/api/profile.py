@@ -9,7 +9,7 @@ class ProfileUpdateReqDTO(BaseModel):
     birthday: date | None
 
 
-class AddressAddDTO(BaseModel):
+class AddressDTO(BaseModel):
     city: str = Field(title="Город")
     street: str = Field(title="Улица")
     house: str = Field(title="Дом")
@@ -18,7 +18,11 @@ class AddressAddDTO(BaseModel):
     flat: str | None = Field(title="Квартира")
 
 
-class AddressRespDTO(AddressAddDTO):
+class AddressAddDTO(AddressDTO):
+    pass
+
+
+class AddressRespDTO(AddressDTO):
     id: int = Field(title="Идентификатор адреса")
 
 
