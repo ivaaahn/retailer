@@ -96,15 +96,14 @@ class AuthService(BaseService):
     async def get_current_user(self, token: str) -> UserRespDTO:
         try:
             payload = jwt.decode(token, self.cfg.secret, algorithms=[self.cfg.alg])
-            email: str = payload.get("sub")
-
-            if email is None:
-                raise IncorrectCredsError
-
-            token_data = TokenDataDTO(email=email)
         except JWTError:
             raise IncorrectCredsError
 
+        email = payload.get("sub")
+        if email is None:
+            raise IncorrectCredsError
+
+        token_data = TokenDataDTO(email=email)
         user = await self._users_repo.get(token_data.email, only_active=False)
         if not user:
             raise IncorrectCredsError

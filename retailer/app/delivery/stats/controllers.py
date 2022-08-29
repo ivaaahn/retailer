@@ -2,7 +2,10 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, Query
 
+from app.base.errors import ForbiddenError
+from app.delivery.auth.deps import get_current_active_user
 from app.dto.api.stats import StatRespDTO
+from app.dto.api.user import UserRespDTO
 from app.services.stats.service import StatsService
 
 router = APIRouter(
@@ -17,5 +20,9 @@ async def get_stat(
     date_from: date = Query(..., title="Дата начала периода"),
     date_to: date = Query(..., title="Дата окончания периода"),
     stat_service: StatsService = Depends(),
+    user: UserRespDTO = Depends(get_current_active_user),
 ) -> StatRespDTO:
+    if not user.is_manager:
+        raise ForbiddenError
+
     return await stat_service.get_stat(count, date_from, date_to)

@@ -3,6 +3,8 @@ from typing import Optional
 
 from pydantic import EmailStr, BaseModel, Field
 
+from app.models.users import UserRolesEnum
+
 
 class EmailMixin(BaseModel):
     email: EmailStr = Field(title="Email (логин)")
@@ -18,6 +20,11 @@ class UserRespDTO(EmailMixin):
     is_active: bool = Field(title="Признак активного аккаунта")
     name: str | None = Field(title="Имя")
     birthday: date | None = Field(title="Дата рождения")
+    role: UserRolesEnum = Field(title="Роль")
+
+    @property
+    def is_manager(self) -> bool:
+        return self.role is UserRolesEnum.superuser
 
 
 class UserInDBSchema(UserRespDTO, PasswordMixin):
