@@ -10,22 +10,33 @@ actor :Менеджер: as Admin
 
 
 rectangle "Функционал клиента" {
+    usecase "Просмотреть профиль" as CheckProfile
+    usecase "Изменить профиль" as UpdateProfile
+
     usecase "Просмотреть список торговых точек" as ShopList
+    usecase "Выбрать торговую точку для заказа" as ChooseShop
+    usecase "Проверить наличие (цену) товаров" as ShopProductsInfo
     usecase "Просмотреть информацию о торговой точке" as ShopInfo
-    usecase "Просмотреть ассортимент товаров торговой точки" as ShopProductsInfo
-    usecase "Просмотреть информацию о товаре" as ShopProductInfo
+
+    usecase "Получить список товаров" as CliProductsListInfo
+    usecase "Получить информацию о товаре" as ShopProductInfo
     usecase "Добавить товар в корзину" as AddProductToCart
-    usecase "Удалить товар из корзины" as RemoveProductFromCart
-    usecase "Просмотреть корзину" as CartInfo
+
+    usecase "Просмотреть корзину" as CheckCart
+    usecase "Удалить товар" as RemoveProductFromCart
+    usecase "Изменить количество единиц товара" as EditProductInCart
     usecase "Оформить заказ" as ApplyOrder
-    usecase "Просмотреть мой профиль" as CheckProfile
-    usecase "Изменить мой профиль" as UpdateProfile
+
+    usecase "Получить список заказов" as OrdersList
+    usecase "Получить информацию о заказе" as OrderInfo
 }
 
 rectangle "Функционал сотрудника" {
     usecase "Просмотреть список доступных торговых точек" as StaffShopList
     usecase "Просмотреть информацию о выбранной торговой точке" as StaffShopInfo
-    usecase "Просмотреть ассортимент товаров" as StaffShopProductsInfo
+    usecase "Просмотреть ассортимент товаров торговой точки" as StaffShopProductsInfo
+    usecase "Получить базовый ассортимент товара" as StaffProductListInfo
+    usecase "Просмотреть описание товара" as StaffProductInfo
     usecase "Редактировать цену/наличие товара" as StaffProductEdit
 }
 
@@ -72,18 +83,28 @@ Staff --> StaffShopList
 StaffShopList ..> StaffShopInfo : include
 StaffShopList ..> StaffShopProductsInfo : include
 
+Staff --> StaffProductListInfo
+StaffProductListInfo ..> StaffProductInfo : include
+
 StaffShopProductsInfo ..> StaffProductEdit : include
 
 
 Cli --> ShopList
 ShopList ..> ShopInfo : include
+ShopList ..> ChooseShop : include
 ShopList ..> ShopProductsInfo : include
-ShopProductsInfo ..> ShopProductInfo : include
-ShopProductsInfo ..> AddProductToCart : include
 
-Cli --> CartInfo
-CartInfo ..> RemoveProductFromCart : include
-CartInfo ..> ApplyOrder : include
+Cli --> CliProductsListInfo
+CliProductsListInfo ..> AddProductToCart : include
+CliProductsListInfo ..> ShopProductInfo : include
+
+Cli --> OrdersList
+OrdersList ..> OrderInfo : include
+
+Cli --> CheckCart
+CheckCart ..> RemoveProductFromCart : include
+CheckCart ..> EditProductInCart : include
+CheckCart ..> ApplyOrder : include
 
 Cli --> CheckProfile
 CheckProfile ..> UpdateProfile : include
