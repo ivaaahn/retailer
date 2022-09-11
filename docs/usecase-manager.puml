@@ -1,0 +1,49 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Менеджер: as Admin
+
+
+rectangle "Функционал менеджера" {
+    usecase "Получить список всех торговых точек" as AdminShopList
+	usecase "Получить список товаров торговой точки" as AdminShopInfo
+	usecase "Редактировать цену/наличие товара" as AdminProductEdit
+    usecase "Просмотреть список сотрудников торговой точки" as AdminShopStaffList
+    usecase "Забрать доступ у сотрудника" as RevokeStaff
+    usecase "Дать доступ новому сотруднику" as GrantStaff
+    usecase "Получить список пользователей" as AdminStaffList
+    usecase "Создать аккаунт сотруднику" as AdminStaffCreate
+    usecase "Удалить аккаунт сотрудника" as AdminStaffRemove
+    usecase "Получить базовый ассортимент товара" as AdminProductList
+    usecase "Редактировать описание" as AdminEditProduct
+    usecase "Добавить товар" as AdminAddProduct
+    usecase "Удалить товар" as AdminRemoveProduct
+    usecase "Просмотреть статистику" as AdminGetStat
+    usecase "Получить список заказов" as AdminOrdersList
+}
+
+
+Admin --> AdminShopList
+AdminShopList ..> AdminShopStaffList : include
+AdminShopStaffList ..> RevokeStaff : include
+AdminShopStaffList ..> GrantStaff : include
+AdminShopList ..> AdminShopInfo : include
+AdminShopInfo ..> AdminProductEdit : include
+
+Admin --> AdminStaffList
+AdminStaffList ..> AdminStaffCreate
+AdminStaffList ..> AdminStaffRemove
+
+Admin --> AdminProductList
+AdminProductList ..> AdminAddProduct : include
+AdminProductList ..> AdminEditProduct : include
+AdminProductList ..> AdminRemoveProduct : include
+
+Admin --> AdminGetStat
+Admin --> AdminOrdersList
+
+
+@enduml

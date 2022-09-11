@@ -39,20 +39,8 @@ class DBCartProductDTO:
 
 
 @dataclass
-class DBCartProductExtDTO:
-    product: DBShopProductDTO
-    qty: int
-    price: float
-
-
-@dataclass
 class DBCartInfoDTO:
     products: list[DBCartProductDTO]
-
-
-@dataclass
-class DBCartInfoExtDTO:
-    products: list[DBCartProductExtDTO]
 
 
 @dataclass

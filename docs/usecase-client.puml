@@ -1,0 +1,59 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Клиент: as Cli
+
+rectangle "Функционал клиента" {
+    usecase "Просмотреть профиль" as CheckProfile
+    usecase "Изменить профиль" as UpdateProfile
+
+    usecase "Просмотреть список торговых точек" as ShopList
+    usecase "Выбрать торговую точку для заказа" as ChooseShop
+    usecase "Проверить наличие (цену) товаров" as ShopProductsInfo
+    usecase "Просмотреть информацию о торговой точке" as ShopInfo
+
+    usecase "Получить список товаров" as CliProductsListInfo
+    usecase "Получить информацию о товаре" as ShopProductInfo
+    usecase "Добавить товар в корзину" as AddProductToCart
+
+    usecase "Просмотреть корзину" as CheckCart
+    usecase "Удалить товар" as RemoveProductFromCart
+    usecase "Изменить кол-во единиц товара" as EditProductInCart
+    usecase "Оформить заказ" as ApplyOrder
+    usecase "Выбрать самовывоз" as TakeawayOrder
+    usecase "Выбрать доставку" as DeliveringOrder
+    usecase "Указать адрес доставки заказа" as ChooseAddressToDeliveryOrder
+
+    usecase "Получить список заказов" as OrdersList
+    usecase "Получить информацию о заказе" as OrderInfo
+}
+
+
+Cli --> ShopList
+ShopList ..> ShopInfo : include
+ShopList ..> ChooseShop : include
+ShopList ..> ShopProductsInfo : include
+
+Cli --> CliProductsListInfo
+CliProductsListInfo ..> AddProductToCart : include
+CliProductsListInfo ..> ShopProductInfo : include
+
+Cli --> OrdersList
+OrdersList ..> OrderInfo : include
+
+Cli --> CheckCart
+CheckCart ..> RemoveProductFromCart : include
+CheckCart ..> EditProductInCart : include
+CheckCart ..> ApplyOrder : include
+ApplyOrder ..> TakeawayOrder : include
+ApplyOrder ..> DeliveringOrder : include
+DeliveringOrder ..> ChooseAddressToDeliveryOrder : include
+
+Cli --> CheckProfile
+CheckProfile ..> UpdateProfile : include
+
+
+@enduml

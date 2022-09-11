@@ -1,0 +1,28 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Сотрудник: as Staff
+
+rectangle "Функционал сотрудника" {
+    usecase "Просмотреть список доступных торговых точек" as StaffShopList
+    usecase "Просмотреть информацию о выбранной торговой точке" as StaffShopInfo
+    usecase "Просмотреть ассортимент товаров торговой точки" as StaffShopProductsInfo
+    usecase "Получить базовый ассортимент товара" as StaffProductListInfo
+    usecase "Просмотреть описание товара" as StaffProductInfo
+    usecase "Редактировать цену/наличие товара" as StaffProductEdit
+}
+
+Staff --> StaffShopList
+StaffShopList ..> StaffShopInfo : include
+StaffShopList ..> StaffShopProductsInfo : include
+
+Staff --> StaffProductListInfo
+StaffProductListInfo ..> StaffProductInfo : include
+
+StaffShopProductsInfo ..> StaffProductEdit : include
+
+
+@enduml

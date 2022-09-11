@@ -117,6 +117,4 @@ class OrdersService(BaseService):
         await self._rmq_repo.send_accept(user.email, order_id)
         await self._cart_service.clear_cart(user.email)
 
-        # todo payment
-
         return PlaceOrderRespDTO(order_id=order_id)

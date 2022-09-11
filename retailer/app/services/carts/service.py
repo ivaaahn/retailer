@@ -51,7 +51,7 @@ class CartService(BaseService):
             ]
         )
 
-        res = []
+        res: list[CartProductDTO] = []
         for product, cart_product_info in zip(products, cart_raw.products):
             total_product_price = product.price * cart_product_info.qty
             res.append(

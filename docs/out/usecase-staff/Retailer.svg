@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="411px" preserveAspectRatio="none" style="width:1516px;height:411px;background:#FFFFFF;" version="1.1" viewBox="0 0 1516 411" width="1516px" zoomAndPan="magnify"><defs/><g><rect height="26.2969" style="stroke:#00000000;stroke-width:1.0;fill:none;" width="404" x="549" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="394" x="554" y="22.9951">Варианты использования приложения "Retailer"</text><!--MD5=[c44a7da80078f787e5c8cdc56a91de10]
+cluster Функционал сотрудника--><g id="cluster_Функционал сотрудника"><rect height="361" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;fill:none;" width="1377" x="133" y="44.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="203" x="720" y="59.292">Функционал сотрудника</text></g><g id="elem_StaffShopList"><ellipse cx="340.9449" cy="243.0859" fill="#F1F1F1" rx="191.9449" ry="40.789" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="357" x="162.4449" y="245.9325">Просмотреть список доступных торговых точек</text></g><g id="elem_StaffShopInfo"><ellipse cx="862.3175" cy="249.1604" fill="#F1F1F1" rx="222.3175" ry="46.8635" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="419" x="652.8175" y="252.0071">Просмотреть информацию о выбранной торговой точке</text></g><g id="elem_StaffShopProductsInfo"><ellipse cx="862.6483" cy="123.2265" fill="#F1F1F1" rx="205.1483" ry="43.4297" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="384" x="670.6483" y="126.0732">Просмотреть ассортимент товаров торговой точки</text></g><g id="elem_StaffProductListInfo"><ellipse cx="340.8827" cy="354.1734" fill="#F1F1F1" rx="159.8827" ry="34.3765" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="291" x="195.3827" y="357.0201">Получить базовый ассортимент товара</text></g><g id="elem_StaffProductInfo"><ellipse cx="862.7278" cy="360.1424" fill="#F1F1F1" rx="129.7278" ry="28.3456" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="228" x="748.7278" y="362.9891">Просмотреть описание товара</text></g><g id="elem_StaffProductEdit"><ellipse cx="1343.2099" cy="123.4389" fill="#F1F1F1" rx="151.2099" ry="32.642" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="273" x="1206.7099" y="126.2855">Редактировать цену/наличие товара</text></g><!--MD5=[75bcab72e22e3bde62d8cef4f1a817de]
+entity Staff--><g id="elem_Staff"><ellipse cx="46" cy="269.7969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><path d="M46,277.7969 L46,304.7969 M33,285.7969 L59,285.7969 M46,304.7969 L33,319.7969 M46,304.7969 L59,319.7969 " fill="none" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="6" y="334.292">Сотрудник</text></g><!--MD5=[8921a1c96290a28abd59605ab51e5628]
+link Staff to StaffShopList--><g id="link_Staff_StaffShopList"><path d="M86.21,291.8069 C113.89,286.5069 152.89,279.0569 192.03,271.5769 " fill="none" id="Staff-to-StaffShopList" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="197.3,270.5669,187.7075,268.3343,192.3896,271.509,189.2149,276.191,197.3,270.5669" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[967cfc80a5acc0716495fcd374619bed]
+link StaffShopList to StaffShopInfo--><g id="link_StaffShopList_StaffShopInfo"><path d="M532.86,245.4969 C566.1,245.8869 600.97,246.2869 635.06,246.6769 " fill="none" id="StaffShopList-to-StaffShopInfo" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="640.08,246.7369,631.1263,242.6343,635.0803,246.6797,631.0349,250.6338,640.08,246.7369" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="564" y="242.3638">include</text></g><!--MD5=[2b4ad20eb8d5ad500d20dc057731306c]
+link StaffShopList to StaffShopProductsInfo--><g id="link_StaffShopList_StaffShopProductsInfo"><path d="M472.09,213.2469 C546.93,195.9569 641.1,174.2069 718.08,156.4269 " fill="none" id="StaffShopList-to-StaffShopProductsInfo" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="723.12,155.2569,713.4547,153.3644,718.2459,156.3718,715.2385,161.163,723.12,155.2569" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="564" y="179.3638">include</text></g><!--MD5=[3c31282657f41e9e9250bc6f393b784d]
+link Staff to StaffProductListInfo--><g id="link_Staff_StaffProductListInfo"><path d="M86.21,306.6569 C119.24,312.8569 168.36,322.0769 214.62,330.7569 " fill="none" id="Staff-to-StaffProductListInfo" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="219.66,331.7069,211.5435,326.1282,214.7443,330.7923,210.0802,333.9932,219.66,331.7069" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[cfb768fc9209d54b69270f0ca48a4fb7]
+link StaffProductListInfo to StaffProductInfo--><g id="link_StaffProductListInfo_StaffProductInfo"><path d="M501.04,356.1369 C573.59,356.9669 658.53,357.9569 727.73,358.7469 " fill="none" id="StaffProductListInfo-to-StaffProductInfo" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="733.1,358.8169,724.1463,354.7143,728.1003,358.7597,724.0549,362.7138,733.1,358.8169" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="564" y="352.3638">include</text></g><!--MD5=[df13b129d00297dc47225d73e8d29278]
+link StaffShopProductsInfo to StaffProductEdit--><g id="link_StaffShopProductsInfo_StaffProductEdit"><path d="M1067.82,123.2969 C1107.68,123.2969 1148.87,123.2969 1186.83,123.2969 " fill="none" id="StaffShopProductsInfo-to-StaffProductEdit" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="1191.92,123.2969,1182.92,119.2969,1186.92,123.2969,1182.92,127.2969,1191.92,123.2969" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="45" x="1116" y="119.3638">include</text></g><!--MD5=[7d51a1a4a94ae4bd59b4d6a819e34501]
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Сотрудник: as Staff
+
+rectangle "Функционал сотрудника" {
+    usecase "Просмотреть список доступных торговых точек" as StaffShopList
+    usecase "Просмотреть информацию о выбранной торговой точке" as StaffShopInfo
+    usecase "Просмотреть ассортимент товаров торговой точки" as StaffShopProductsInfo
+    usecase "Получить базовый ассортимент товара" as StaffProductListInfo
+    usecase "Просмотреть описание товара" as StaffProductInfo
+    usecase "Редактировать цену/наличие товара" as StaffProductEdit
+}
+
+Staff - -> StaffShopList
+StaffShopList ..> StaffShopInfo : include
+StaffShopList ..> StaffShopProductsInfo : include
+
+Staff - -> StaffProductListInfo
+StaffProductListInfo ..> StaffProductInfo : include
+
+StaffShopProductsInfo ..> StaffProductEdit : include
+
+
+@enduml
+
+PlantUML version 1.2022.5(Sat Apr 30 13:55:52 MSK 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

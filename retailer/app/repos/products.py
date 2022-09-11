@@ -21,27 +21,7 @@ from app.models.shop_products import ShopProductsModel
 __all__ = ("ProductsRepo", "ProductsCacheRepo")
 
 
-@lru_cache
 class ProductsRepo(BasePgRepo):
-    async def reduce_qty(self, shop_id: int, cart: CartRespDTO):
-        shop_product_t = ShopProductsModel.__table__
-
-        stmts = [
-            (
-                update(shop_product_t)
-                .where(
-                    and_(
-                        shop_product_t.c.product_id == cart_item.product.id,
-                        shop_product_t.c.shop_id == shop_id,
-                    )
-                )
-                .values(qty=shop_product_t.c.qty - cart_item.qty)
-            )
-            for cart_item in cart.products
-        ]
-
-        await asyncio.gather(*[self._execute(stmt) for stmt in stmts])
-
     async def get(self, product_id: int, shop_id: int) -> DBShopProductDTO:
         pt = ProductModel.__table__
         spt = ShopProductsModel.__table__
