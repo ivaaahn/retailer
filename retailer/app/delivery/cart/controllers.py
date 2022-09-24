@@ -35,7 +35,7 @@ async def patch(
     qty: int = Query(..., title="Количество (0 - удалить из корзины)", gt=-1),
     user: UserRespDTO = Depends(get_current_active_user),
     cart_service: CartService = Depends(),
-):
+) -> CartRespDTO:
     await cart_service.update_cart(
         email=user.email,
         product_id=product_id,

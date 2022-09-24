@@ -99,7 +99,7 @@ class OrdersService(BaseService):
             raise NoProductsInCartError()
 
         try:
-            order_id = await self._orders_repo.create(
+            order_id: int = await self._orders_repo.create(
                 user_id=user.id,
                 shop_id=data.shop_id,
                 address_id=data.delivery_address_id,

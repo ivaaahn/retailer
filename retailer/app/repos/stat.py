@@ -2,6 +2,7 @@ from datetime import date
 from functools import lru_cache
 
 from sqlalchemy import text
+from sqlalchemy.engine import CursorResult
 
 from app.base.repo import BasePgRepo
 from app.dto.db.stats import DBStatOrdersDTO
@@ -9,13 +10,12 @@ from app.dto.db.stats import DBStatOrdersDTO
 __all__ = ("StatsRepo",)
 
 
-@lru_cache
 class StatsRepo(BasePgRepo):
     async def get_stats(
         self, count: int, date_from: date, date_to: date
     ) -> list[DBStatOrdersDTO]:
         stmt = text("select * from order_stats(:count, :date_from, :date_to);")
-        cursor = await self._execute(
+        cursor: CursorResult = await self._execute(
             stmt, {"count": count, "date_from": date_from, "date_to": date_to}
         )
 

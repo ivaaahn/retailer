@@ -7,22 +7,24 @@ left to right direction
 actor :Сотрудник: as Staff
 
 rectangle "Функционал сотрудника" {
+    usecase "Взаимодействие с торговыми точками" as Shop
     usecase "Просмотреть список доступных торговых точек" as StaffShopList
     usecase "Просмотреть информацию о выбранной торговой точке" as StaffShopInfo
     usecase "Просмотреть ассортимент товаров торговой точки" as StaffShopProductsInfo
+
+    usecase "Взаимодействие с товарами" as Product
     usecase "Получить базовый ассортимент товара" as StaffProductListInfo
     usecase "Просмотреть описание товара" as StaffProductInfo
     usecase "Редактировать цену/наличие товара" as StaffProductEdit
 }
 
-Staff --> StaffShopList
-StaffShopList ..> StaffShopInfo : include
-StaffShopList ..> StaffShopProductsInfo : include
+Staff --> Shop
+Shop ..> StaffShopList
+Shop ..> StaffShopInfo
+Shop ..> StaffShopProductsInfo
 
-Staff --> StaffProductListInfo
-StaffProductListInfo ..> StaffProductInfo : include
-
-StaffShopProductsInfo ..> StaffProductEdit : include
-
-
+Staff --> Product
+Product ..> StaffProductListInfo
+Product ..> StaffProductInfo
+Product ..> StaffProductEdit
 @enduml

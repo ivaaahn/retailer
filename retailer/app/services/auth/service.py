@@ -34,9 +34,10 @@ from app.repos import (
 )
 from .config import AuthConfig, get_config
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 __all__ = ("AuthService",)
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 class AuthService(BaseService):
@@ -76,13 +77,13 @@ class AuthService(BaseService):
             email=signup_session.email, seconds_left=signup_session.seconds_left
         )
 
-    async def login_user(self, email: str, pwd: str) -> TokenRespDTO:
-        user = await self._authenticate_user(email, pwd)
+    async def login_user(self, email: str, pswd: str) -> TokenRespDTO:
+        user: UserModel = await self._authenticate_user(email, pswd)
         if not user.is_active:
             raise InactiveAccountError
 
         access_token_expires = timedelta(minutes=self.cfg.access_token_exp_minutes)
-        access_token = self._create_access_token(
+        access_token: str = self._create_access_token(
             data={"sub": user.email},
             expires_delta=access_token_expires,
         )
@@ -179,7 +180,7 @@ class AuthService(BaseService):
 
     def _create_access_token(
         self, data: dict, expires_delta: timedelta = timedelta(minutes=15)
-    ):
+    ) -> str:
         to_encode = data.copy()
 
         expire = datetime.utcnow() + expires_delta

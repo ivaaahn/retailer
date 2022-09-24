@@ -1,5 +1,3 @@
-from typing import Optional
-
 from sqlalchemy import MetaData, text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 

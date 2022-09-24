@@ -1,16 +1,13 @@
-import asyncio
 import json
 from dataclasses import asdict
-from functools import lru_cache
 
 from fastapi import Depends
-from sqlalchemy import and_, func, update
+from sqlalchemy import and_, func
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo, BaseRedisRepo
 from app.delivery.products.deps import product_paging_params
 from app.delivery.products.errors import ProductNotFoundError
-from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import ProductListPagingParams
 from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
 from app.misc import make_shop_product_key

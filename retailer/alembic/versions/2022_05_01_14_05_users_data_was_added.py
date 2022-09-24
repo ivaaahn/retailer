@@ -9,7 +9,17 @@ import logging
 from dataclasses import asdict
 
 from alembic import op
-from sqlalchemy import column, table, Integer, Text, DateTime, Boolean, Date, String, text
+from sqlalchemy import (
+    column,
+    table,
+    Integer,
+    Text,
+    DateTime,
+    Boolean,
+    Date,
+    String,
+    text,
+)
 from scripts.faker.users import User, generate
 
 
@@ -39,12 +49,12 @@ def upgrade():
             users_table,
             [asdict(user) for user in users],
         )
-        op.get_bind().execute(text("SELECT SETVAL('users_id_seq', COALESCE(MAX(id), 1) ) FROM users;"))
+        op.get_bind().execute(
+            text("SELECT SETVAL('users_id_seq', COALESCE(MAX(id), 1) ) FROM users;")
+        )
     except Exception as err:
         logging.warning(f"Error with users' data insertion: {err}")
         raise
-
-
 
 
 def downgrade():

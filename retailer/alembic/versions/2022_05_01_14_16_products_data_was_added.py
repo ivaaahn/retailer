@@ -71,7 +71,11 @@ def upgrade():
             p_table,
             [asdict(p) for p in products],
         )
-        op.get_bind().execute(text("SELECT SETVAL('products_id_seq', COALESCE(MAX(id), 1) ) FROM products;"))
+        op.get_bind().execute(
+            text(
+                "SELECT SETVAL('products_id_seq', COALESCE(MAX(id), 1) ) FROM products;"
+            )
+        )
 
     except Exception as err:
         logging.warning(f"Error with products' or categories' data insertion: {err}")

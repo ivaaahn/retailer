@@ -35,7 +35,7 @@ async def login_user(
 ):
     return await auth_service.login_user(
         email=form_data.username,
-        pwd=form_data.password,
+        pswd=form_data.password,
     )
 
 

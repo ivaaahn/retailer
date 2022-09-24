@@ -1,0 +1,24 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Менеджер: as Admin
+
+
+rectangle "Функционал менеджера" {
+    usecase "Взаимодействие с товарами" as Product
+    usecase "Редактировать описание" as AdminEditProduct
+    usecase "Добавить товар" as AdminAddProduct
+	usecase "Редактировать цену/наличие товара" as AdminProductEdit
+    usecase "Удалить товар" as AdminRemoveProduct
+    usecase "Получить список товаров" as AdminProductList
+}
+Admin --> Product
+Product ..> AdminProductList
+Product ..> AdminAddProduct
+Product ..> AdminProductEdit
+Product ..> AdminRemoveProduct
+Product ..> AdminEditProduct
+@enduml

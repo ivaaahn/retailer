@@ -1,0 +1,34 @@
+@startuml "Retailer"
+
+title Варианты использования приложения "Retailer"
+
+left to right direction
+
+actor :Клиент: as Cli
+
+rectangle "Функционал клиента" {
+    usecase "Взаимодействие с корзиной" as Cart
+    usecase "Просмотреть корзину" as CheckCart
+    usecase "Удалить товар" as RemoveProductFromCart
+    usecase "Изменить кол-во единиц товара" as EditProductInCart
+
+    usecase "Взаимодействие с заказами" as Order
+    usecase "Получить список заказов" as OrdersList
+    usecase "Оформить заказ" as ApplyOrder
+    usecase "Получить информацию о заказе" as OrderInfo
+    usecase "Выбрать способ получения заказа" as TakeawayOrder
+    usecase "Указать адрес доставки заказа" as ChooseAddressToDeliveryOrder
+}
+
+Cli --> Cart
+Cart ..> CheckCart
+Cart ..> RemoveProductFromCart
+Cart ..> EditProductInCart
+
+Cli --> Order
+Order ..> OrdersList
+Order ..> ApplyOrder
+Order ..> OrderInfo
+Order ..> TakeawayOrder
+Order ..> ChooseAddressToDeliveryOrder
+@enduml
