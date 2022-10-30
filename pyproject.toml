@@ -44,9 +44,6 @@ black = "^22.3.0"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = [
-    "tests",
-]
 pythonpath = "retailer"
 filterwarnings = [
     "ignore::DeprecationWarning"
