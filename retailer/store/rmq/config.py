@@ -4,11 +4,12 @@ from config import RetailerConfig
 
 
 class RMQConfig(RetailerConfig):
-    host: str
-    port: int
-    user: str
-    password: str
-    queue_name: str
+    host: str = "fixme"
+    port: int = 8888
+    user: str = "fixme"
+    password: str = "fixme"
+    queue_name: str = "fixme"
+    on: bool = False
 
     class Config:
         env_prefix = "RMQ_"

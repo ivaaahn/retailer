@@ -1,104 +1,104 @@
-name: Deployment
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Setuping .env files
-        run: |
-          echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Build the Retailer App
-        uses: docker/build-push-action@v2
-        with:
-          file: ./deploy/api/Dockerfile
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:latest
-
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-20.04
-    needs: build
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Downing
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: ${{ secrets.DOWN_SCRIPT }}
-
-      - name: Copy nginx.conf template
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "deploy/web/templates/default.conf.template"
-          target: ${{ secrets.PATH_TO_ROOT }}/nginx
-          overwrite: true
-          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
-          strip_components: 2
-
-      - name: Copy redis.conf template
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "deploy/redis/redis.conf"
-          target: ${{ secrets.PATH_TO_ROOT }}/redis
-          overwrite: true
-          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
-          strip_components: 2
-
-      - name: Copy docker-compose
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "deploy/docker-compose.yml"
-          target: ${{ secrets.PATH_TO_ROOT }}
-          overwrite: true
-          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
-          strip_components: 1
-
-      - name: Deploying
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: ${{ secrets.DEPLOY_SCRIPT }}
+#name: Deployment
+#
+#on:
+#  push:
+#    branches: [ main ]
+#
+#jobs:
+#  build:
+#    name: Build
+#    runs-on: ubuntu-20.04
+#
+#    steps:
+#      - name: Check out the repo
+#        uses: actions/checkout@v3
+#
+#      - name: Setuping .env files
+#        run: |
+#          echo "${{ secrets.RETAILER_ENV_DEPLOY }}" > retailer/.env.deploy
+#
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Build the Retailer App
+#        uses: docker/build-push-action@v2
+#        with:
+#          file: ./deploy/api/Dockerfile
+#          context: .
+#          push: true
+#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/retailer:latest
+#
+#  deploy:
+#    name: Deploy
+#    runs-on: ubuntu-20.04
+#    needs: build
+#
+#    steps:
+#      - name: Check out the repo
+#        uses: actions/checkout@v3
+#
+#      - name: Login to DockerHub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKERHUB_USERNAME }}
+#          password: ${{ secrets.DOCKERHUB_TOKEN }}
+#
+#      - name: Downing
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          port: ${{ secrets.SSH_PORT }}
+#          script: ${{ secrets.DOWN_SCRIPT }}
+#
+#      - name: Copy nginx.conf template
+#        uses: appleboy/scp-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          port: ${{ secrets.SSH_PORT }}
+#          source: "deploy/web/templates/default.conf.template"
+#          target: ${{ secrets.PATH_TO_ROOT }}/nginx
+#          overwrite: true
+#          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
+#          strip_components: 2
+#
+#      - name: Copy redis.conf template
+#        uses: appleboy/scp-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          port: ${{ secrets.SSH_PORT }}
+#          source: "deploy/redis/redis.conf"
+#          target: ${{ secrets.PATH_TO_ROOT }}/redis
+#          overwrite: true
+#          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
+#          strip_components: 2
+#
+#      - name: Copy docker-compose
+#        uses: appleboy/scp-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          port: ${{ secrets.SSH_PORT }}
+#          source: "deploy/docker-compose.yml"
+#          target: ${{ secrets.PATH_TO_ROOT }}
+#          overwrite: true
+#          tar_tmp_path: ${{ secrets.PATH_TO_ROOT }}
+#          strip_components: 1
+#
+#      - name: Deploying
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USERNAME }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          port: ${{ secrets.SSH_PORT }}
+#          script: ${{ secrets.DEPLOY_SCRIPT }}

@@ -1,4 +1,5 @@
 import json
+from functools import lru_cache
 
 from aio_pika import Channel, Connection, Message, Queue, connect
 
@@ -19,6 +20,9 @@ class RMQAccessor(BaseAccessor[RMQConfig]):
         self._queue: Queue | None = None
 
     async def _connect(self):
+        if self.conf.on is False:
+            return
+
         self._connection = await connect(
             host=self.conf.host,
             port=self.conf.port,
@@ -41,4 +45,6 @@ class RMQAccessor(BaseAccessor[RMQConfig]):
         )
 
 
-rmq_accessor = RMQAccessor(get_config())
+@lru_cache
+def rmq_accessor() -> RMQAccessor:
+    return RMQAccessor(get_config())

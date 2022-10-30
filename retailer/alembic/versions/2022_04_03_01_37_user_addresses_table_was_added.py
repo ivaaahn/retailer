@@ -46,13 +46,13 @@ def upgrade():
         unique=False,
     )
 
-    permissions = (
-        text("grant select, insert, update, delete on user_addresses to defretailer;"),
-        text("grant select on user_addresses to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select, insert, update, delete on user_addresses to defretailer;"),
+    #     text("grant select on user_addresses to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
 
     # ### end Alembic commands ###
 

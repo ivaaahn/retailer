@@ -24,7 +24,7 @@ async def get(
 async def delete(
     cart_service: CartService = Depends(),
     user: UserRespDTO = Depends(get_current_active_user),
-) -> CartRespDTO:
+) -> int:
     return await cart_service.clear_cart(user.email)
 
 

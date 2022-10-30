@@ -8,6 +8,7 @@ from sqlalchemy.sql.functions import now as sa_now
 
 from app.base.repo import BasePgRepo
 from app.delivery.auth.errors import SessionNotFoundError, SignupSessionExpiredError
+from app.dto.db.signup_session import DBSignupSessionDTO
 from app.models.signup_sessions import SignupSessionModel
 
 
@@ -18,9 +19,9 @@ class SignupSessionRepo(BasePgRepo):
         )
 
         cursor = await self._execute(stmt)
-        return SignupSessionModel.from_cursor(cursor)
+        return DBSignupSessionDTO.from_db(cursor.first())
 
-    async def upsert(self, email: str, code: str, **kwargs) -> SignupSessionModel:
+    async def upsert(self, email: str, code: str, **kwargs) -> DBSignupSessionDTO:
         stmt = insert(SignupSessionModel).values(email=email, code=code, **kwargs)
         do_update_stmt = stmt.on_conflict_do_update(
             index_elements=["email"],
@@ -32,9 +33,9 @@ class SignupSessionRepo(BasePgRepo):
         ).returning(*SignupSessionModel.__table__.c)
 
         cursor = await self._execute(do_update_stmt)
-        return SignupSessionModel.from_cursor(cursor)
+        return DBSignupSessionDTO.from_db(cursor.first())
 
-    async def update_code(self, email: str, code: str) -> SignupSessionModel:
+    async def update_code(self, email: str, code: str) -> DBSignupSessionDTO:
         stmt = (
             update(SignupSessionModel)
             .where(SignupSessionModel.__table__.c.email == email)
@@ -46,9 +47,9 @@ class SignupSessionRepo(BasePgRepo):
         )
 
         cursor = await self._execute(stmt)
-        return SignupSessionModel.from_cursor(cursor)
+        return DBSignupSessionDTO.from_db(cursor.first())
 
-    async def update(self, email: str, **kwargs) -> SignupSessionModel | None:
+    async def update(self, email: str, **kwargs) -> DBSignupSessionDTO | None:
         stmt = (
             update(SignupSessionModel)
             .values(**kwargs)
@@ -57,11 +58,11 @@ class SignupSessionRepo(BasePgRepo):
         )
 
         cursor = await self._execute(stmt)
-        return SignupSessionModel.from_cursor(cursor)
+        return DBSignupSessionDTO.from_db(cursor.first())
 
-    async def waste_attempt(self, email: str) -> SignupSessionModel:
+    async def waste_attempt(self, email: str) -> DBSignupSessionDTO:
         try:
-            session = await self.update(
+            session: DBSignupSessionDTO = await self.update(
                 email=email,
                 attempts_left=SignupSessionModel.attempts_left - 1,
             )

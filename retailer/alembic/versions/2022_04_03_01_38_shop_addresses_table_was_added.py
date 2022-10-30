@@ -35,13 +35,13 @@ def upgrade():
         op.f("ix_shop_addresses_street"), "shop_addresses", ["street"], unique=False
     )
 
-    permissions = (
-        text("grant select on shop_addresses to defretailer;"),
-        text("grant all on shop_addresses to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select on shop_addresses to defretailer;"),
+    #     text("grant all on shop_addresses to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
 
 
 def downgrade():

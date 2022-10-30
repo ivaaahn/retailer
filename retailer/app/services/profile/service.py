@@ -5,7 +5,7 @@ from fastapi import Depends
 from app.base.services import BaseService
 from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
 from app.dto.api.user import UserAddressDTO, UserRespDTO
-from app.repos import UsersRepo
+from app.repos.users import UsersRepo
 
 __all__ = ("ProfileService",)
 
@@ -24,7 +24,7 @@ class ProfileService(BaseService):
             **new_data.dict(exclude_unset=True),
         )
 
-        return UserRespDTO(**updated.as_dict())
+        return UserRespDTO(**asdict(updated))
 
     async def add_address(
         self, user_id: int, new_addr: AddressAddDTO

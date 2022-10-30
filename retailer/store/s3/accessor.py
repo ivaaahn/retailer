@@ -1,4 +1,5 @@
 from enum import Enum
+from functools import lru_cache
 
 from aiobotocore.client import AioBaseClient
 from aiobotocore.session import get_session, AioSession
@@ -49,4 +50,6 @@ class S3Accessor(BaseAccessor[S3Config]):
         self._client = None
 
 
-s3_accessor = S3Accessor(get_config())
+@lru_cache
+def s3_accessor() -> S3Accessor:
+    return S3Accessor(get_config())

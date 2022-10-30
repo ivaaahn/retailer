@@ -49,15 +49,16 @@ def upgrade():
         op.f("ix_products_name"), "products", [sa.text("lower(name)")], unique=True
     )
 
-    permissions = (
-        text("grant select on product_categories to defretailer;"),
-        text("grant all on product_categories to adretailer;"),
-        text("grant select on products to defretailer;"),
-        text("grant all on products to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select on product_categories to defretailer;"),
+    #     text("grant all on product_categories to adretailer;"),
+    #     text("grant select on products to defretailer;"),
+    #     text("grant all on products to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
+    #
 
 
 def downgrade():

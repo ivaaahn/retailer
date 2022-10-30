@@ -1,17 +1,17 @@
-from functools import lru_cache
-
 from sqlalchemy import and_, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
 
 from app.base.repo import BasePgRepo
 from app.delivery.profile.errors import AddressesNotFoundError
-from app.dto.db.profile import DBAddressDTO, DBAddressListDTO
+from app.dto.db.profile import DBAddressListDTO
+from app.dto.db.user import DBUserDTO
 from app.models.user_addresses import UserAddressModel
 from app.models.users import UserModel
 
+__all__ = ("UsersRepo",)
 
-@lru_cache
+
 class UsersRepo(BasePgRepo):
     async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
         user_addr = UserAddressModel.__table__
@@ -26,20 +26,7 @@ class UsersRepo(BasePgRepo):
         if not cursor:
             raise AddressesNotFoundError(user_id)
 
-        return DBAddressListDTO(
-            [
-                DBAddressDTO(
-                    id=addr.id,
-                    city=addr.city,
-                    street=addr.street,
-                    house=addr.house,
-                    entrance=addr.entrance,
-                    floor=addr.floor,
-                    flat=addr.flat,
-                )
-                for addr in cursor
-            ]
-        )
+        return DBAddressListDTO.from_db(cursor)
 
     async def add_address(
         self,
@@ -67,7 +54,7 @@ class UsersRepo(BasePgRepo):
 
         return addr_id
 
-    async def update(self, email: str, **kwargs) -> UserModel | None:
+    async def update(self, email: str, **kwargs) -> DBUserDTO | None:
         stmt = (
             update(UserModel)
             .values(**kwargs)
@@ -76,10 +63,9 @@ class UsersRepo(BasePgRepo):
         )
 
         cursor = await self._execute(stmt)
+        return DBUserDTO.from_db(cursor.first())
 
-        return UserModel.from_cursor(cursor)
-
-    async def upsert(self, email: str, password: str, **kwargs) -> UserModel:
+    async def upsert(self, email: str, password: str, **kwargs) -> DBUserDTO:
         stmt = insert(UserModel).values(email=email, password=password, **kwargs)
 
         do_update_stmt = stmt.on_conflict_do_update(
@@ -90,9 +76,9 @@ class UsersRepo(BasePgRepo):
         ).returning(*UserModel.__table__.c)
 
         cursor = await self._execute(do_update_stmt)
-        return UserModel.from_cursor(cursor)
+        return DBUserDTO.from_db(cursor.first())
 
-    async def get(self, email: str, only_active: bool = True) -> UserModel | None:
+    async def get(self, email: str, only_active: bool = True) -> DBUserDTO | None:
         select_stmt = select(UserModel)
 
         if not only_active:
@@ -106,4 +92,4 @@ class UsersRepo(BasePgRepo):
             )
 
         cursor = await self._execute(stmt)
-        return UserModel.from_cursor(cursor)
+        return DBUserDTO.from_db(cursor.first())

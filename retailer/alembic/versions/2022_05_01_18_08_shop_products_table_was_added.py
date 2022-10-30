@@ -37,13 +37,13 @@ def upgrade():
         sa.PrimaryKeyConstraint("id", name=op.f("pk_shop_products")),
     )
 
-    permissions = (
-        text("grant select, update on shop_products to defretailer;"),
-        text("grant all on shop_products to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select, update on shop_products to defretailer;"),
+    #     text("grant all on shop_products to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
 
 
 def downgrade():

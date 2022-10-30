@@ -15,6 +15,7 @@ from app.repos.products import (
     ProductsRepo,
 )
 from app.services.products.config import get_config
+from app.services.products.interfaces import IProductsCacheRepo, IProductsRepo
 
 __all__ = ("ProductsService",)
 
@@ -22,8 +23,8 @@ __all__ = ("ProductsService",)
 class ProductsService(BaseService):
     def __init__(
         self,
-        products_repo: ProductsRepo = Depends(),
-        products_cache_repo: ProductsCacheRepo = Depends(),
+        products_repo: IProductsRepo = Depends(ProductsRepo),
+        products_cache_repo: IProductsCacheRepo = Depends(ProductsCacheRepo),
     ):
         super().__init__()
         self._products_repo = products_repo
@@ -62,11 +63,16 @@ class ProductsService(BaseService):
         else:
             shop_product = await self.__fetch_with_cache(product_id, shop_id)
 
-        shop_product.photo = self._make_s3_url(shop_product.photo)
+        s3_url = self._make_s3_url(shop_product.photo)
+
         if as_db_dto:
+            shop_product.photo = s3_url
             return shop_product
 
-        return ShopProductDTO(**asdict(shop_product))
+        res = ShopProductDTO(**asdict(shop_product))
+        res.photo = s3_url
+
+        return res
 
     async def get_list(
         self,

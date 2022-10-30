@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 from sqlalchemy import MetaData, text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
@@ -35,6 +37,8 @@ class PgAccessor(BaseAccessor[PgConfig]):
 
     async def _connect(self):
         conf = self._config
+        if not conf.on:
+            return
 
         self._engine = create_async_engine(
             url=conf.dsn,
@@ -52,4 +56,6 @@ class PgAccessor(BaseAccessor[PgConfig]):
         await self.engine.dispose()
 
 
-pg_accessor = PgAccessor(get_config())
+@lru_cache
+def pg_accessor() -> PgAccessor:
+    return PgAccessor(get_config())

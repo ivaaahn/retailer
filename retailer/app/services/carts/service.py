@@ -8,6 +8,7 @@ from app.dto.api.products import CartProductDTO
 from app.dto.db.products import DBCartProductDTO
 from app.repos.cart import CartsRepo
 from app.services import ProductsService
+from app.services.carts.interfaces import ICartsRepo
 
 __all__ = ("CartService",)
 
@@ -15,15 +16,15 @@ __all__ = ("CartService",)
 class CartService(BaseService):
     def __init__(
         self,
-        carts_repo: CartsRepo = Depends(),
+        carts_repo: ICartsRepo = Depends(CartsRepo),
         products_service: ProductsService = Depends(),
     ):
         super().__init__()
         self._carts_repo = carts_repo
         self._products_service = products_service
 
-    async def clear_cart(self, email: str):
-        await self._carts_repo.clear_cart(email)
+    async def clear_cart(self, email: str) -> int:
+        return await self._carts_repo.clear_cart(email)
 
     async def update_cart(self, email: str, product_id: int, qty: int):
         if qty == 0:
@@ -42,11 +43,7 @@ class CartService(BaseService):
         total_price = 0.0
         products = await asyncio.gather(
             *[
-                self._products_service.get(
-                    product_id=product_raw.product_id,
-                    shop_id=shop_id,
-                    as_db_dto=False,
-                )
+                self._products_service.get(product_raw.product_id, shop_id)
                 for product_raw in cart_raw.products
             ]
         )

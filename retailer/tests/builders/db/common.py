@@ -1,0 +1,2 @@
+class BaseBuilder:
+    pass

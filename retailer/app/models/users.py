@@ -1,4 +1,4 @@
-import enum
+from enum import Enum
 
 from sqlalchemy import Boolean, Column, Date, DateTime, Identity, Integer, Text
 from sqlalchemy.dialects.postgresql import ENUM
@@ -10,10 +10,10 @@ from app.base.models import BaseModel
 __all__ = ("UserModel",)
 
 
-class UserRolesEnum(str, enum.Enum):
-    client = "клиент"
-    staff = "сотрудник"
-    superuser = "администратор"
+class UserRolesEnum(str, Enum):
+    client = "client"
+    staff = "staff"
+    superuser = "superuser"
 
 
 class UserModel(BaseModel):

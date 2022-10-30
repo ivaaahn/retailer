@@ -4,9 +4,9 @@ from config import RetailerConfig
 
 
 class AuthConfig(RetailerConfig):
-    secret: str
-    alg: str
-    access_token_exp_minutes: int
+    secret: str = "fixme"
+    alg: str = "HS256"
+    access_token_exp_minutes: int = 1440
 
     class Config:
         env_prefix = "AUTH_"

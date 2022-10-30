@@ -1,3 +1,4 @@
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -13,22 +14,25 @@ class DBAddressDTO:
     flat: str | None
 
     @classmethod
-    def from_db(cls, db: Any | None) -> Optional["DBAddressDTO"]:
-        return (
-            cls(
-                id=db.id,
-                city=db.city,
-                street=db.street,
-                house=db.house,
-                entrance=db.entrance,
-                floor=db.floor,
-                flat=db.flat,
-            )
-            if db
-            else None
+    def from_db(cls, db: Mapping | None) -> Optional["DBAddressDTO"]:
+        if not db:
+            return None
+
+        return cls(
+            id=db["id"],
+            city=db["city"],
+            street=db["street"],
+            house=db["house"],
+            entrance=db["entrance"],
+            floor=db["floor"],
+            flat=db["flat"],
         )
 
 
 @dataclass
 class DBAddressListDTO:
     addresses: list[DBAddressDTO]
+
+    @classmethod
+    def from_db(cls, db: Iterable[Mapping]) -> "DBAddressListDTO":
+        return DBAddressListDTO([DBAddressDTO.from_db(item) for item in db])

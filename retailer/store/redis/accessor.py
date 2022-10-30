@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Optional
 
 from aioredis import from_url, Redis
@@ -38,4 +39,6 @@ class RedisAccessor(BaseAccessor[RedisConfig]):
         return self._redis
 
 
-redis_accessor = RedisAccessor(get_config())
+@lru_cache
+def redis_accessor() -> RedisAccessor:
+    return RedisAccessor(get_config())

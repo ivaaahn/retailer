@@ -41,7 +41,7 @@ class RMQInteractRepo(BaseRMQRepo):
             formatted_body=MessageBody(
                 title="Подтверждение оформления заказа",
                 data=f"Заказ №{order_id}",
-                description="Заказ оформлен и направлен в магазин. (Чаевые сюда - https://money.alfabank.ru/mr/U7He4RPZoM)",
+                description="Заказ оформлен и направлен в магазин",
             ),
         )
         await self._rmq.send(message.to_dict())

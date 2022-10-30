@@ -6,8 +6,8 @@ from config import RetailerConfig
 
 
 class RedisConfig(RetailerConfig):
-    dsn: RedisDsn
-    echo: bool
+    dsn: RedisDsn = "redis://FIXME@FIXME/FIXME"
+    echo: bool = False
 
     class Config:
         env_prefix = "REDIS_"

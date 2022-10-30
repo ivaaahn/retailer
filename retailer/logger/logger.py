@@ -45,8 +45,5 @@ class LoggerFactory:
         logger.addHandler(stream_handler)
 
 
-_factory = LoggerFactory(get_config())
-
-
 def get_logger(name: str) -> logging.Logger:
-    return _factory.create(name)
+    return LoggerFactory(get_config()).create(name)

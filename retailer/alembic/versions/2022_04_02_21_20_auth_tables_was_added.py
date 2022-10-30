@@ -70,15 +70,15 @@ def upgrade():
         sa.PrimaryKeyConstraint("email", name=op.f("pk_signup_session")),
     )
 
-    permissions = (
-        text("grant select, insert, update on users to defretailer;"),
-        text("grant all on users to adretailer;"),
-        text("grant select, insert, update on signup_session to defretailer"),
-        text("grant all on signup_session to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select, insert, update on users to defretailer;"),
+    #     text("grant all on users to adretailer;"),
+    #     text("grant select, insert, update on signup_session to defretailer"),
+    #     text("grant all on signup_session to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
 
 
 def downgrade():

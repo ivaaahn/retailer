@@ -34,19 +34,19 @@ def _generate_params() -> ReqParams:
     )
 
 
-
 async def make_async_request() -> float:
     params: ReqParams = _generate_params()
     start = time.perf_counter_ns()
 
     async with aiohttp.request(
-            method="GET",
-            url=URL.format(params.product_id),
-            params={"shop_id": str(params.shop_id)}
+        method="GET",
+        url=URL.format(params.product_id),
+        params={"shop_id": str(params.shop_id)},
     ) as resp:
         end = time.perf_counter_ns()
 
     return end - start
+
 
 def make_request() -> float:
     params: ReqParams = _generate_params()
@@ -71,7 +71,7 @@ def visualize(results: list[float], results_2: list[float]):
     # r = np.array(results[1:])
     # l = [x for x in r if r.mean() - 2*r.std() < x < r.mean() + 2*r.std()]
     # print(np.array(l).mean())
-    for xv, yv, zv in zip(range(1, len(results)+1), results, results_2):
+    for xv, yv, zv in zip(range(1, len(results) + 1), results, results_2):
         x.append(xv)
         y.append(yv)
         z.append(zv)
@@ -113,7 +113,6 @@ async def test_async(timeout: int = 10, threads: int = 8):
             break
     ms = [t * 1e-6 for t in res]
 
-
     print(f"{i * 8} requests per {timeout} seconds => {i * 8 / 10} average rps")
     visualize(ms)
 
@@ -137,9 +136,21 @@ if __name__ == "__main__":
 
     visualize(
         [
-            12775, 13937, 14247, 14321, 15174, 15290, 16198,
+            12775,
+            13937,
+            14247,
+            14321,
+            15174,
+            15290,
+            16198,
         ],
         [
-            13362, 13542, 13373, 13135, 12896, 13448, 13167,
-        ]
+            13362,
+            13542,
+            13373,
+            13135,
+            12896,
+            13448,
+            13167,
+        ],
     )

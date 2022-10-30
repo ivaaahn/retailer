@@ -4,7 +4,7 @@ from config import RetailerConfig
 
 
 class ProductsServiceConfig(RetailerConfig):
-    use_cache: bool
+    use_cache: bool = False
 
     class Config:
         env_prefix = "PRODUCTS_SERVICE_"

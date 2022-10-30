@@ -4,9 +4,9 @@ from .redis import redis_accessor
 
 
 def __accessors():
-    yield pg_accessor
-    yield redis_accessor
-    yield rmq_accessor
+    yield pg_accessor()
+    yield redis_accessor()
+    yield rmq_accessor()
 
 
 async def shutdown_store():

@@ -22,9 +22,10 @@ from app.dto.api.orders import (
 from app.dto.api.products import ShopProductDTO
 from app.dto.api.profile import AddressRespDTO
 from app.dto.api.user import UserRespDTO
-from app.repos import RMQInteractRepo
+from app.repos.rmq import RMQInteractRepo
 from app.repos.cart import CartsRepo
 from app.repos.orders import OrdersRepo
+from app.services.auth.interfaces import IRMQInteractRepo
 from app.services.carts import CartService
 
 
@@ -34,7 +35,7 @@ class OrdersService(BaseService):
         orders_repo: OrdersRepo = Depends(),
         cart_service: CartService = Depends(),
         carts_repo: CartsRepo = Depends(),
-        rmq_repo: RMQInteractRepo = Depends(),
+        rmq_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
         self._carts_repo = carts_repo

@@ -31,13 +31,13 @@ def upgrade():
         ),
     )
 
-    permissions = (
-        text("grant select on shops to defretailer;"),
-        text("grant all on shops to adretailer;"),
-    )
-
-    for perm in permissions:
-        op.get_bind().execute(perm)
+    # permissions = (
+    #     text("grant select on shops to defretailer;"),
+    #     text("grant all on shops to adretailer;"),
+    # )
+    #
+    # for perm in permissions:
+    #     op.get_bind().execute(perm)
 
 
 def downgrade():

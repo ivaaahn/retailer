@@ -6,9 +6,10 @@ from config import RetailerConfig
 
 
 class PgConfig(RetailerConfig):
-    dsn: PostgresDsn
-    dsn_alembic: PostgresDsn
-    echo: bool
+    dsn: PostgresDsn = "postgresql+asyncpg://FIXME:FIXME@FIXME:5432/FIXME"
+    dsn_alembic: PostgresDsn = "postgresql+asyncpg://FIXME:FIXME@FIXME:5432/FIXME"
+    echo: bool = False
+    on: bool = False
     echo_pool: bool | str = False
     pool_size: int = 8
 
