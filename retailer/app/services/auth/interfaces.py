@@ -7,23 +7,6 @@ from app.dto.db.user import DBUserDTO
 
 class IUserRepo(ABC):
     @abstractmethod
-    async def get_addresses_list(self, user_id: int) -> DBAddressListDTO:
-        raise NotImplementedError
-
-    @abstractmethod
-    async def add_address(
-        self,
-        user_id: int,
-        city: str,
-        street: str,
-        house: str,
-        entrance: int,
-        floor: int | None,
-        flat: str | None,
-    ) -> int:
-        raise NotImplementedError
-
-    @abstractmethod
     async def update(self, email: str, **kwargs) -> DBUserDTO | None:
         raise NotImplementedError
 

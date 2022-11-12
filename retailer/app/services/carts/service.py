@@ -30,9 +30,7 @@ class CartService(BaseService):
         if qty == 0:
             await self._carts_repo.remove(email, product_id)
         else:
-            await self._carts_repo.add_to_cart(
-                email=email, dto=DBCartProductDTO(product_id, qty)
-            )
+            await self._carts_repo.add_to_cart(email, DBCartProductDTO(product_id, qty))
 
     async def get(self, email: str, shop_id: int) -> CartRespDTO:
         cart_raw = await self._carts_repo.get(email)

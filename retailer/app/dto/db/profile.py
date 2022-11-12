@@ -1,6 +1,6 @@
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Optional
 
 
 @dataclass

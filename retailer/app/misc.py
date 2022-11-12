@@ -18,3 +18,7 @@ def parse_product_key(key: str) -> int:
 def parse_shop_product_key(key: str) -> tuple[int, int]:
     split = key.split(sep=":")
     return int(split[1]), int(split[2])
+
+
+def make_s3_url(path: str) -> str | None:
+    return f"/img/{path}" if path else None

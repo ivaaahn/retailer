@@ -7,8 +7,6 @@ from app.services.auth.interfaces import IUserRepo
 from store import PgAccessor
 from store.pg.config import PgConfig
 
-USERS_DB = {}
-
 
 class UsersRepoMock(IUserRepo, BasePgRepo):
     async def get(self, email: str, only_active: bool = True) -> UserModel | None:

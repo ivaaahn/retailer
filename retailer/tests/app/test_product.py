@@ -11,7 +11,7 @@ from app.dto.api.products import (
 from app.dto.db.products import DBShopProductListDTO
 from app.services import ProductsService
 from tests.builders.db.product import DBProductBuilder
-from tests.mocks.repo.products import ProductsCacheRepoMock, ProductsRepoMock
+from tests.mocks.repo.products import ProductsRepoMock
 
 
 class TestProduct:

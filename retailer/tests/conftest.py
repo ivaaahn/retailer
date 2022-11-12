@@ -11,3 +11,11 @@ def event_loop():
     loop = policy.new_event_loop()
     yield loop
     loop.close()
+
+
+@pytest.fixture
+def make_s3_url_mocked(mocker: MockerFixture) -> MagicMock:
+    return mocker.patch(
+        target="app.misc.make_s3_url",
+        return_value=DEFAULT_S3_URL,
+    )

@@ -1,4 +1,3 @@
-from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -9,15 +8,14 @@ from app.dto.api.signup import SignupRespDTO, TokenRespDTO
 from app.dto.db.signup_session import DBSignupSessionDTO
 from app.dto.db.user import DBUserDTO
 from app.services import AuthService
-from app.services.auth.config import AuthConfig
+from tests.builders.db.signup_session import DBSignupSessionBuilder
+from tests.builders.db.user import DBUserBuilder
 from tests.constants import (
     DEFAULT_DATETIME,
     DEFAULT_JWT_ACCESS_TOKEN,
     DEFAULT_PASSWORD,
 )
 from tests.mocks import RMQInteractionRepoMock
-from tests.builders.db.signup_session import DBSignupSessionBuilder
-from tests.builders.db.user import DBUserBuilder
 from tests.mocks.repo.signup_session import SignupSessionRepoMock
 from tests.mocks.repo.user import UsersRepoMock
 

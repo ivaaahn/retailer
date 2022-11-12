@@ -30,13 +30,13 @@ def default_product_s3_patched_to_build() -> DBProductBuilder:
 def default_products_list_built(
     default_product_to_build: DBProductBuilder,
 ) -> DBShopProductListDTO:
-    QTY = 2
+    qty = 2
     products = [
-        default_product_to_build.but().with_id(idx).build() for idx in range(1, QTY + 1)
+        default_product_to_build.but().with_id(idx).build() for idx in range(1, qty + 1)
     ]
 
     return DBShopProductListDTO(
-        total=QTY,
+        total=qty,
         products=products,
     )
 

@@ -2,6 +2,7 @@ from dataclasses import asdict
 
 from fastapi import Depends
 
+import app.misc
 from app.base.services import BaseService
 from app.delivery.products.errors import ProductNotFoundError
 from app.dto.api.products import (
@@ -10,10 +11,7 @@ from app.dto.api.products import (
     ShopProductsListDTO,
 )
 from app.dto.db.products import DBShopProductDTO
-from app.repos.products import (
-    ProductsCacheRepo,
-    ProductsRepo,
-)
+from app.repos.products import ProductsCacheRepo, ProductsRepo
 from app.services.products.config import get_config
 from app.services.products.interfaces import IProductsCacheRepo, IProductsRepo
 
@@ -30,10 +28,6 @@ class ProductsService(BaseService):
         self._products_repo = products_repo
         self._products_cache_repo = products_cache_repo
         self._config = get_config()
-
-    @staticmethod
-    def _make_s3_url(path: str) -> str:
-        return f"/img/{path}" if path else None
 
     async def __fetch_with_cache(
         self,
@@ -63,7 +57,7 @@ class ProductsService(BaseService):
         else:
             shop_product = await self.__fetch_with_cache(product_id, shop_id)
 
-        s3_url = self._make_s3_url(shop_product.photo)
+        s3_url = app.misc.make_s3_url(shop_product.photo)
 
         if as_db_dto:
             shop_product.photo = s3_url
@@ -85,7 +79,7 @@ class ProductsService(BaseService):
             products=[
                 ShopProductDTO(
                     id=product.id,
-                    photo=self._make_s3_url(product.photo),
+                    photo=app.misc.make_s3_url(product.photo),
                     name=product.name,
                     description=product.description,
                     price=product.price,

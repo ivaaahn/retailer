@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any, Optional
-
-from sqlalchemy import DateTime
 
 from app.dto.db.products import DBShopProductDTO
 from app.dto.db.profile import DBAddressDTO
@@ -13,7 +12,7 @@ class DBOrdersDTO:
     total_price: float
     receive_kind: str
     status: str
-    created_at: DateTime
+    created_at: datetime
     delivery_address: int
 
     @classmethod
@@ -34,7 +33,7 @@ class DBOrdersDTO:
 @dataclass
 class DBOrderProductsDTO(DBOrdersDTO):
     delivery_address: DBAddressDTO | None
-    products: list[DBShopProductDTO]
+    products: list[DBShopProductDTO] = field(default_factory=list)
 
 
 @dataclass

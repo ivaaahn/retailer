@@ -12,7 +12,7 @@ router = APIRouter(
 
 @router.get("/{shop_id}", response_model=ShopRespDTO)
 async def get_shop(shop_id: int, shop_service: ShopsService = Depends()) -> ShopRespDTO:
-    return await shop_service.get_shop(shop_id)
+    return await shop_service.get(shop_id)
 
 
 @router.get("", response_model=ShopListRespDTO)

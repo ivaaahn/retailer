@@ -1,17 +1,17 @@
-from unittest.mock import AsyncMock, MagicMock, call
+from unittest.mock import AsyncMock, call
 
 import pytest
 from pytest_mock import MockerFixture
 
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import ShopProductsListDTO
-from app.dto.db.products import DBCartInfoDTO
+from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
 from app.dto.db.user import DBUserDTO
 from app.services import ProductsService
 from app.services.carts import CartService
 from tests.builders.db.product import DBProductBuilder
 from tests.builders.db.user import DBUserBuilder
-from tests.mocks import ProductsCacheRepoMock, ProductsRepoMock
+from tests.mocks import ProductsRepoMock
 from tests.mocks.repo.carts import CartsRepoMock
 
 
@@ -38,7 +38,7 @@ class TestCart:
             attribute="get",
             return_value=repo_cart,
         )
-        # NB: call of nested(!) service method was mocked
+        # NB: call of nested(!) repo method was mocked
         products_repo_get_mocked: AsyncMock = mocker.patch.object(
             target=products_repo_mock,
             attribute="get",
@@ -98,7 +98,6 @@ class TestCart:
         self,
         mocker: MockerFixture,
         carts_repo_mock: CartsRepoMock,
-        products_service,
         default_user_to_build: DBUserBuilder,
         cart_service: CartService,
     ) -> None:
@@ -115,3 +114,44 @@ class TestCart:
 
         assert received == expected
         carts_repo_clear_mocked.assert_awaited_once_with(requester.email)
+
+    async def test_update_to_zero(
+        self,
+        mocker: MockerFixture,
+        carts_repo_mock: CartsRepoMock,
+        default_user_to_build: DBUserBuilder,
+        cart_service: CartService,
+    ) -> None:
+        requester: DBUserDTO = default_user_to_build.build()
+        product_id = 1
+
+        carts_repo_remove_mocked: AsyncMock = mocker.spy(
+            obj=carts_repo_mock,
+            name="remove",
+        )
+
+        await cart_service.update_cart(requester.email, product_id, 0)
+
+        carts_repo_remove_mocked.assert_awaited_once_with(requester.email, product_id)
+
+    async def test_update_to_non_zero(
+        self,
+        mocker: MockerFixture,
+        carts_repo_mock: CartsRepoMock,
+        default_user_to_build: DBUserBuilder,
+        cart_service: CartService,
+    ) -> None:
+        requester: DBUserDTO = default_user_to_build.build()
+        product_id = 1
+        new_qty = 1
+
+        carts_repo_add_to_cart_mocked: AsyncMock = mocker.spy(
+            obj=carts_repo_mock,
+            name="add_to_cart",
+        )
+
+        await cart_service.update_cart(requester.email, product_id, new_qty)
+
+        carts_repo_add_to_cart_mocked.assert_awaited_once_with(
+            requester.email, DBCartProductDTO(product_id, new_qty)
+        )

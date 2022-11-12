@@ -8,6 +8,7 @@ from app.models.users import UserRolesEnum
 
 @dataclass
 class DBUserDTO:
+    id: int
     email: str
     password: str
     created_at: datetime

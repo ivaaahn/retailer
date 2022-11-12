@@ -14,6 +14,7 @@ from tests.builders.db.common import BaseBuilder
 
 class DBUserBuilder(BaseBuilder):
     def __init__(self) -> None:
+        self._id = 1
         self._email = DEFAULT_MAIL
         self._password = DEFAULT_PASSWORD_HASH
         self._created_at = DEFAULT_DATETIME
@@ -60,6 +61,7 @@ class DBUserBuilder(BaseBuilder):
 
     def build(self) -> DBUserDTO:
         return DBUserDTO(
+            id=self._id,
             email=self._email,
             password=self._password,
             created_at=self._created_at,

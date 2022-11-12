@@ -6,15 +6,13 @@ from app.base.services import BaseService
 from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
 from app.dto.api.user import UserAddressDTO, UserRespDTO
 from app.repos.users import UsersRepo
+from .interface import IUsersRepo
 
 __all__ = ("ProfileService",)
 
 
 class ProfileService(BaseService):
-    def __init__(
-        self,
-        users_repo: UsersRepo = Depends(),
-    ):
+    def __init__(self, users_repo: IUsersRepo = Depends(UsersRepo)):
         super().__init__()
         self._users_repo = users_repo
 

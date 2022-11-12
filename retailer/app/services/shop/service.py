@@ -7,19 +7,17 @@ from app.delivery.shop.deps import shop_paging_params
 from app.delivery.shop.errors import ShopNotFoundError
 from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
 from app.repos.shop import ShopsRepo
+from app.services.shop.interface import IShopsRepo
 
 __all__ = ("ShopsService",)
 
 
 class ShopsService(BaseService):
-    def __init__(
-        self,
-        shops_repo: ShopsRepo = Depends(),
-    ):
+    def __init__(self, shops_repo: IShopsRepo = Depends(ShopsRepo)):
         super().__init__()
         self._shops_repo = shops_repo
 
-    async def get_shop(self, id: int) -> ShopRespDTO:
+    async def get(self, id: int) -> ShopRespDTO:
         received = await self._shops_repo.get_shop(id)
 
         if not received:

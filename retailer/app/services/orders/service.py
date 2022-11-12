@@ -3,6 +3,7 @@ from dataclasses import asdict
 from fastapi import Depends
 from sqlalchemy.exc import IntegrityError
 
+import app.misc
 from app.base.errors import DBErrEnum, DatabaseError, check_err
 from app.base.services import BaseService
 from app.delivery.orders.deps import order_paging_params
@@ -22,30 +23,25 @@ from app.dto.api.orders import (
 from app.dto.api.products import ShopProductDTO
 from app.dto.api.profile import AddressRespDTO
 from app.dto.api.user import UserRespDTO
-from app.repos.rmq import RMQInteractRepo
-from app.repos.cart import CartsRepo
+from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
 from app.repos.orders import OrdersRepo
+from app.repos.rmq import RMQInteractRepo
 from app.services.auth.interfaces import IRMQInteractRepo
 from app.services.carts import CartService
+from app.services.orders.interface import IOrdersRepo
 
 
 class OrdersService(BaseService):
     def __init__(
         self,
-        orders_repo: OrdersRepo = Depends(),
+        orders_repo: IOrdersRepo = Depends(OrdersRepo),
         cart_service: CartService = Depends(),
-        carts_repo: CartsRepo = Depends(),
         rmq_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
     ):
         super().__init__()
-        self._carts_repo = carts_repo
         self._orders_repo = orders_repo
         self._cart_service = cart_service
         self._rmq_repo = rmq_repo
-
-    @staticmethod
-    def _make_s3_url(path: str) -> str:
-        return f"/img/{path}" if path else None
 
     async def get(self, id: int) -> OrderRespDTO:
         order = await self._orders_repo.get(id)
@@ -59,15 +55,15 @@ class OrdersService(BaseService):
 
         return OrderRespDTO(
             id=order.id,
-            status=order.status,
+            status=OrderStatusEnum(order.status),
             created_at=order.created_at,
-            receive_kind=order.receive_kind,
+            receive_kind=OrderReceiveKindEnum(order.receive_kind),
             total_price=order.total_price,
             delivery_address=delivery_address,
             products=[
                 ShopProductDTO(
                     id=product.id,
-                    photo=self._make_s3_url(product.photo),
+                    photo=app.misc.make_s3_url(product.photo),
                     name=product.name,
                     description=product.description,
                     price=product.price,
@@ -90,9 +86,7 @@ class OrdersService(BaseService):
         return OrdersListRespDTO(**asdict(orders_list))
 
     async def place_order(
-        self,
-        data: PlaceOrderReqDTO,
-        user: UserRespDTO,
+        self, data: PlaceOrderReqDTO, user: UserRespDTO
     ) -> PlaceOrderRespDTO:
         cart: CartRespDTO = await self._cart_service.get(user.email, data.shop_id)
 

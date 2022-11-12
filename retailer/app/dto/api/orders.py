@@ -7,8 +7,7 @@ from pydantic import BaseModel, Field
 from app.base.deps import BasePagingParams
 from app.dto.api.products import ShopProductDTO
 from app.dto.api.profile import AddressRespDTO
-from app.dto.db.profile import DBAddressDTO
-from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
+from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
 
 
 class OrderListSortByEnum(str, Enum):
@@ -47,7 +46,7 @@ class PlaceOrderReqDTO(BaseModel):
         title="Способ получения", default=OrderReceiveKindEnum.takeaway
     )
     delivery_address_id: int | None = Field(
-        title="Адрес доставки (если выбрана доставка)"
+        title="Адрес доставки (если выбрана доставка)", default=None
     )
 
 
