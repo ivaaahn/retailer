@@ -1,15 +1,18 @@
 from unittest.mock import AsyncMock, MagicMock, call
 
 import pytest
-from pytest_mock import MockerFixture
-
 from app.dto.api.cart import CartRespDTO
-from app.dto.api.orders import OrderRespDTO, PlaceOrderReqDTO, PlaceOrderRespDTO
+from app.dto.api.orders import (
+    OrderRespDTO,
+    PlaceOrderReqDTO,
+    PlaceOrderRespDTO,
+)
 from app.dto.api.user import UserRespDTO
 from app.dto.db.products import DBCartInfoDTO
 from app.models.orders import OrderReceiveKindEnum
 from app.services.carts import CartService
 from app.services.orders.service import OrdersService
+from pytest_mock import MockerFixture
 from tests.builders.db.order import DBOrderProductsBuilder
 from tests.builders.db.product import DBProductBuilder
 from tests.mocks import CartsRepoMock, RMQInteractionRepoMock

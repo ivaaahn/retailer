@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.repo import BasePgRepo
 from app.dto.api.shop import ShopListPagingParams
 from app.dto.db.shops import DBShopDTO, DBShopListDTO
@@ -12,7 +11,9 @@ class ShopsRepoMock(IShopsRepo, BasePgRepo):
     async def get_shop(self, id: int) -> DBShopDTO | None:
         pass
 
-    async def get_list(self, paging_params: ShopListPagingParams) -> DBShopListDTO:
+    async def get_list(
+        self, paging_params: ShopListPagingParams
+    ) -> DBShopListDTO:
         pass
 
 

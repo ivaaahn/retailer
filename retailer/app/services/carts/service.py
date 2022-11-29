@@ -1,7 +1,5 @@
 import asyncio
 
-from fastapi import Depends
-
 from app.base.services import BaseService
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import CartProductDTO
@@ -9,6 +7,7 @@ from app.dto.db.products import DBCartProductDTO
 from app.repos.cart import CartsRepo
 from app.services import ProductsService
 from app.services.carts.interfaces import ICartsRepo
+from fastapi import Depends
 
 __all__ = ("CartService",)
 
@@ -30,7 +29,9 @@ class CartService(BaseService):
         if qty == 0:
             await self._carts_repo.remove(email, product_id)
         else:
-            await self._carts_repo.add_to_cart(email, DBCartProductDTO(product_id, qty))
+            await self._carts_repo.add_to_cart(
+                email, DBCartProductDTO(product_id, qty)
+            )
 
     async def get(self, email: str, shop_id: int) -> CartRespDTO:
         cart_raw = await self._carts_repo.get(email)

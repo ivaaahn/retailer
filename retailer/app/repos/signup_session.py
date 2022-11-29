@@ -1,15 +1,17 @@
 from typing import Optional
 
+from app.base.repo import BasePgRepo
+from app.delivery.auth.errors import (
+    SessionNotFoundError,
+    SignupSessionExpiredError,
+)
+from app.dto.db.signup_session import DBSignupSessionDTO
+from app.models.signup_sessions import SignupSessionModel
 from sqlalchemy import update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.sql.functions import now as sa_now
-
-from app.base.repo import BasePgRepo
-from app.delivery.auth.errors import SessionNotFoundError, SignupSessionExpiredError
-from app.dto.db.signup_session import DBSignupSessionDTO
-from app.models.signup_sessions import SignupSessionModel
 
 
 class SignupSessionRepo(BasePgRepo):
@@ -21,8 +23,12 @@ class SignupSessionRepo(BasePgRepo):
         cursor = await self._execute(stmt)
         return DBSignupSessionDTO.from_db(cursor.first())
 
-    async def upsert(self, email: str, code: str, **kwargs) -> DBSignupSessionDTO:
-        stmt = insert(SignupSessionModel).values(email=email, code=code, **kwargs)
+    async def upsert(
+        self, email: str, code: str, **kwargs
+    ) -> DBSignupSessionDTO:
+        stmt = insert(SignupSessionModel).values(
+            email=email, code=code, **kwargs
+        )
         do_update_stmt = stmt.on_conflict_do_update(
             index_elements=["email"],
             set_={

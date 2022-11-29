@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Identity, Integer, Text
-
 from app.base.models import BaseModel
+from sqlalchemy import Column, ForeignKey, Identity, Integer, Text
 
 __all__ = ("ProductModel",)
 
@@ -12,4 +11,6 @@ class ProductModel(BaseModel):
     name = Column(Text, nullable=False)
     photo = Column(Text, nullable=True)
     description = Column(Text, nullable=True)
-    category_id = Column(Integer, ForeignKey("product_categories.id"), nullable=False)
+    category_id = Column(
+        Integer, ForeignKey("product_categories.id"), nullable=False
+    )

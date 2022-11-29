@@ -3,8 +3,8 @@ from functools import lru_cache
 
 from aio_pika import Channel, Connection, Message, Queue, connect
 
-from .config import RMQConfig, get_config
 from ..base.accessor import BaseAccessor
+from .config import RMQConfig, get_config
 
 __all__ = ("RMQAccessor", "rmq_accessor")
 

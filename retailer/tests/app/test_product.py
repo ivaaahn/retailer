@@ -1,8 +1,6 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock, MagicMock, call
 
-from pytest_mock import MockerFixture
-
 from app.dto.api.products import (
     ProductListPagingParams,
     ShopProductDTO,
@@ -10,6 +8,7 @@ from app.dto.api.products import (
 )
 from app.dto.db.products import DBShopProductListDTO
 from app.services import ProductsService
+from pytest_mock import MockerFixture
 from tests.builders.db.product import DBProductBuilder
 from tests.mocks.repo.products import ProductsRepoMock
 
@@ -36,7 +35,9 @@ class TestProduct:
         )
         expected = ShopProductDTO(**asdict(product_s3_patched))
         received = await products_service.get(
-            product_id=repo_product.id, shop_id=self.TEST_SHOP_ID, use_cache=False
+            product_id=repo_product.id,
+            shop_id=self.TEST_SHOP_ID,
+            use_cache=False,
         )
 
         assert received == expected

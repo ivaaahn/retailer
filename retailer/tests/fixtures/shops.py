@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.deps import SortOrderEnum
 from app.dto.api.products import ProductListSortByEnum
 from app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
@@ -25,7 +24,8 @@ def default_shop_list_built(
 ) -> DBShopListDTO:
     QTY = 2
     shops = [
-        default_shop_to_build.but().with_id(idx).build() for idx in range(1, QTY + 1)
+        default_shop_to_build.but().with_id(idx).build()
+        for idx in range(1, QTY + 1)
     ]
 
     return DBShopListDTO(

@@ -3,12 +3,6 @@ import string
 from dataclasses import asdict
 from datetime import datetime, timedelta
 
-from fastapi import Depends
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from pydantic import EmailStr
-from sqlalchemy.exc import IntegrityError
-
 from app.base.errors import DBErrEnum, check_err
 from app.base.services import BaseService
 from app.delivery.auth.errors import (
@@ -32,13 +26,18 @@ from app.models.users import UserModel
 from app.repos.rmq import RMQInteractRepo
 from app.repos.signup_session import SignupSessionRepo
 from app.repos.users import UsersRepo
+from fastapi import Depends
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from pydantic import EmailStr
+from sqlalchemy.exc import IntegrityError
+
 from .config import AuthConfig, get_config
 from .interfaces import IRMQInteractRepo, ISignupSessionRepo, IUserRepo
 
 __all__ = ("AuthService",)
 
 from ...dto.db.signup_session import DBSignupSessionDTO
-
 from ...dto.db.user import DBUserDTO
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -73,12 +72,13 @@ class AuthService(BaseService):
         signup_session = await self._send_code(web_user.email)
 
         return SignupRespDTO(
-            email=EmailStr(web_user.email), seconds_left=signup_session.seconds_left
+            email=EmailStr(web_user.email),
+            seconds_left=signup_session.seconds_left,
         )
 
     async def verify_code(self, email: str, code: str) -> str:
-        session: DBSignupSessionDTO = await self._signup_session_repo.waste_attempt(
-            email
+        session: DBSignupSessionDTO = (
+            await self._signup_session_repo.waste_attempt(email)
         )
 
         if session.code != code:
@@ -92,7 +92,9 @@ class AuthService(BaseService):
         if not user.is_active:
             raise InactiveAccountError
 
-        access_token_expires = timedelta(minutes=self.cfg.access_token_exp_minutes)
+        access_token_expires = timedelta(
+            minutes=self.cfg.access_token_exp_minutes
+        )
         access_token: str = self._create_access_token(
             data={"sub": user.email},
             expires_delta=access_token_expires,
@@ -113,7 +115,9 @@ class AuthService(BaseService):
 
     async def get_current_user(self, token: str) -> UserRespDTO:
         try:
-            payload = jwt.decode(token, self.cfg.secret, algorithms=[self.cfg.alg])
+            payload = jwt.decode(
+                token, self.cfg.secret, algorithms=[self.cfg.alg]
+            )
         except JWTError:
             raise IncorrectCredsError
 
@@ -148,7 +152,9 @@ class AuthService(BaseService):
         code = await self._check_session_and_send_code(email)
 
         try:
-            signup_session = await self._signup_session_repo.update_code(email, code)
+            signup_session = await self._signup_session_repo.update_code(
+                email, code
+            )
         except IntegrityError as err:
             if check_err(err, DBErrEnum.foreign_key_violation):
                 raise UserNotFoundError(email)
@@ -156,7 +162,9 @@ class AuthService(BaseService):
 
         return signup_session
 
-    async def _check_session_expiration(self, email: str) -> DBSignupSessionDTO:
+    async def _check_session_expiration(
+        self, email: str
+    ) -> DBSignupSessionDTO:
         session = await self._signup_session_repo.get(email)
         if session and not session.send_code_timeout_expired:
             raise SignupSessionCreateTimeoutNotExpired(session.seconds_left)
@@ -194,4 +202,6 @@ class AuthService(BaseService):
         expire = datetime.utcnow() + expires_delta
         to_encode.update({"exp": expire})
 
-        return jwt.encode(claims=to_encode, key=self.cfg.secret, algorithm=self.cfg.alg)
+        return jwt.encode(
+            claims=to_encode, key=self.cfg.secret, algorithm=self.cfg.alg
+        )

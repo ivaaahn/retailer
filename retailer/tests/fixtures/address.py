@@ -1,5 +1,4 @@
 import pytest
-
 from app.dto.db.profile import DBAddressListDTO
 from tests.builders.db.address import AddressBuilder
 
@@ -15,7 +14,8 @@ def default_address_list_built(
 ) -> DBAddressListDTO:
     qty = 2
     addresses = [
-        default_address_to_build.but().with_id(idx).build() for idx in range(1, qty + 1)
+        default_address_to_build.but().with_id(idx).build()
+        for idx in range(1, qty + 1)
     ]
 
     return DBAddressListDTO(addresses=addresses)

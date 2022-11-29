@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.repo import BasePgRepo, BaseRedisRepo
 from app.dto.api.products import ProductListPagingParams
 from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from app.base.models import BaseModel
 from sqlalchemy import (
     CheckConstraint,
     Column,
@@ -10,8 +11,6 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.sql.functions import now
-
-from app.base.models import BaseModel
 
 __all__ = ("SignupSessionModel",)
 
@@ -27,8 +26,12 @@ class SignupSessionModel(BaseModel):
 
     email = Column(Text, ForeignKey("users.email"), primary_key=True)
     code = Column(String(8), nullable=False)
-    updated_at = Column(DateTime(timezone=True), nullable=False, server_default=now())
-    attempts_left = Column(Integer, server_default=str(ATTEMPTS), nullable=False)
+    updated_at = Column(
+        DateTime(timezone=True), nullable=False, server_default=now()
+    )
+    attempts_left = Column(
+        Integer, server_default=str(ATTEMPTS), nullable=False
+    )
 
     @property
     def send_code_timeout_expired(self) -> bool:
@@ -40,7 +43,11 @@ class SignupSessionModel(BaseModel):
 
     @property
     def time_left(self) -> timedelta:
-        return self.updated_at.replace(tzinfo=None) + self.TIMEOUT - datetime.utcnow()
+        return (
+            self.updated_at.replace(tzinfo=None)
+            + self.TIMEOUT
+            - datetime.utcnow()
+        )
 
     @property
     def seconds_left(self) -> int:

@@ -1,12 +1,15 @@
 import pytest
-from pydantic import EmailStr
-
 from app.dto.api.user import UserRespDTO
 from app.services import AuthService
 from app.services.auth.config import AuthConfig
+from pydantic import EmailStr
 from tests.builders.db.signup_session import DBSignupSessionBuilder
 from tests.builders.db.user import DBUserBuilder
-from tests.mocks import RMQInteractionRepoMock, SignupSessionRepoMock, UsersRepoMock
+from tests.mocks import (
+    RMQInteractionRepoMock,
+    SignupSessionRepoMock,
+    UsersRepoMock,
+)
 
 
 @pytest.fixture
@@ -15,12 +18,16 @@ def default_user_to_build() -> DBUserBuilder:
 
 
 @pytest.fixture
-def default_active_user_to_build(default_user_to_build: DBUserBuilder) -> DBUserBuilder:
+def default_active_user_to_build(
+    default_user_to_build: DBUserBuilder,
+) -> DBUserBuilder:
     return default_user_to_build.but().with_is_active(True)
 
 
 @pytest.fixture
-def default_active_user_api(default_active_user_to_build: DBUserBuilder) -> UserRespDTO:
+def default_active_user_api(
+    default_active_user_to_build: DBUserBuilder,
+) -> UserRespDTO:
     user = default_active_user_to_build.build()
     return UserRespDTO(
         id=1,

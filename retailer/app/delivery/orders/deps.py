@@ -1,9 +1,8 @@
 from dataclasses import asdict
 
-from fastapi import Depends, Query
-
 from app.base.deps import BasePagingParams, base_paging_params
 from app.dto.api.orders import OrderListPagingParams, OrderListSortByEnum
+from fastapi import Depends, Query
 
 
 def order_paging_params(

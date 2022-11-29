@@ -1,13 +1,12 @@
-from fastapi import Depends
-from sqlalchemy import func
-from sqlalchemy.future import select
-
 from app.base.repo import BasePgRepo
 from app.delivery.shop.deps import shop_paging_params
 from app.dto.api.shop import ShopListPagingParams
 from app.dto.db.shops import DBShopAddressDTO, DBShopDTO, DBShopListDTO
 from app.models.shop_addresses import ShopAddressModel
 from app.models.shops import ShopModel
+from fastapi import Depends
+from sqlalchemy import func
+from sqlalchemy.future import select
 
 __all__ = ("ShopsRepo",)
 
@@ -17,7 +16,9 @@ class ShopsRepo(BasePgRepo):
         sp = ShopModel.__table__
         adr = ShopAddressModel.__table__
 
-        stmt = select(sp.c.id, adr).where(sp.c.id == id).select_from(sp.join(adr))
+        stmt = (
+            select(sp.c.id, adr).where(sp.c.id == id).select_from(sp.join(adr))
+        )
         shop = await self.get_one(stmt)
 
         return DBShopDTO(

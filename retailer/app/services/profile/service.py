@@ -1,11 +1,15 @@
 from dataclasses import asdict
 
-from fastapi import Depends
-
 from app.base.services import BaseService
-from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
+from app.dto.api.profile import (
+    AddressAddDTO,
+    ProfileUpdateReqDTO,
+    UserAddressListDTO,
+)
 from app.dto.api.user import UserAddressDTO, UserRespDTO
 from app.repos.users import UsersRepo
+from fastapi import Depends
+
 from .interface import IUsersRepo
 
 __all__ = ("ProfileService",)
@@ -16,7 +20,9 @@ class ProfileService(BaseService):
         super().__init__()
         self._users_repo = users_repo
 
-    async def patch(self, email: str, new_data: ProfileUpdateReqDTO) -> UserRespDTO:
+    async def patch(
+        self, email: str, new_data: ProfileUpdateReqDTO
+    ) -> UserRespDTO:
         updated = await self._users_repo.update(
             email=email,
             **new_data.dict(exclude_unset=True),

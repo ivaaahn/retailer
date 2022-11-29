@@ -1,7 +1,7 @@
 from functools import lru_cache
 from typing import Optional
 
-from aioredis import from_url, Redis
+from aioredis import Redis, from_url
 
 from ..base.accessor import BaseAccessor
 from .config import RedisConfig, get_config

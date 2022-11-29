@@ -1,9 +1,11 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock
 
-from pytest_mock import MockerFixture
-
-from app.dto.api.profile import AddressAddDTO, ProfileUpdateReqDTO, UserAddressListDTO
+from app.dto.api.profile import (
+    AddressAddDTO,
+    ProfileUpdateReqDTO,
+    UserAddressListDTO,
+)
 from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
 from app.dto.api.user import UserAddressDTO, UserRespDTO
 from app.dto.db.products import DBShopProductListDTO
@@ -11,6 +13,7 @@ from app.dto.db.profile import DBAddressListDTO
 from app.dto.db.user import DBUserDTO
 from app.services import ProfileService
 from app.services.shop import ShopsService
+from pytest_mock import MockerFixture
 from tests.builders.db.address import AddressBuilder
 from tests.builders.db.shops import DBShopBuilder
 from tests.builders.db.user import DBUserBuilder
@@ -104,4 +107,6 @@ class TestProfile:
         received = await profile_service.get_addresses_list(requester.id)
 
         assert received == expected
-        users_repo_get_addresses_list_mocked.assert_awaited_once_with(requester.id)
+        users_repo_get_addresses_list_mocked.assert_awaited_once_with(
+            requester.id
+        )

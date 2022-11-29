@@ -2,10 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.orders import OrderListPagingParams
-from app.dto.db.orders import (
-    DBOrderProductsDTO,
-    DBOrderProductsListDTO,
-)
+from app.dto.db.orders import DBOrderProductsDTO, DBOrderProductsListDTO
 from app.models.orders import OrderReceiveKindEnum
 
 

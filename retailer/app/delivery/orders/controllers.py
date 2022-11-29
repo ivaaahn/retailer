@@ -1,5 +1,3 @@
-from fastapi import APIRouter, Depends
-
 from app.delivery.auth.deps import get_current_active_user
 from app.delivery.orders.deps import order_paging_params
 from app.dto.api.orders import (
@@ -11,6 +9,7 @@ from app.dto.api.orders import (
 )
 from app.dto.api.user import UserRespDTO
 from app.services.orders.service import OrdersService
+from fastapi import APIRouter, Depends
 
 router = APIRouter(
     prefix="/orders",

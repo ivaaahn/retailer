@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.repo import BaseRedisRepo
 from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
 from app.services.carts.interfaces import ICartsRepo

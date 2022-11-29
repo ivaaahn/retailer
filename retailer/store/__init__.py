@@ -1,6 +1,6 @@
-from .pg import pg_accessor, PgAccessor
-from .rmq import rmq_accessor
+from .pg import PgAccessor, pg_accessor
 from .redis import redis_accessor
+from .rmq import rmq_accessor
 
 
 def __accessors():

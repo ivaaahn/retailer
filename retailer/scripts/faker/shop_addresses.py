@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 from faker import Faker
-
 from scripts.faker.rw import write
 
 ABC = "АБВ"

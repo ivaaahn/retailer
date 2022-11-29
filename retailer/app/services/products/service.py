@@ -1,7 +1,5 @@
 from dataclasses import asdict
 
-from fastapi import Depends
-
 import app.misc
 from app.base.services import BaseService
 from app.delivery.products.errors import ProductNotFoundError
@@ -14,6 +12,7 @@ from app.dto.db.products import DBShopProductDTO
 from app.repos.products import ProductsCacheRepo, ProductsRepo
 from app.services.products.config import get_config
 from app.services.products.interfaces import IProductsCacheRepo, IProductsRepo
+from fastapi import Depends
 
 __all__ = ("ProductsService",)
 
@@ -35,10 +34,14 @@ class ProductsService(BaseService):
         shop_id: int,
     ) -> DBShopProductDTO:
         try:
-            shop_product = await self._products_cache_repo.get(product_id, shop_id)
+            shop_product = await self._products_cache_repo.get(
+                product_id, shop_id
+            )
         except ProductNotFoundError:
             shop_product = await self._products_repo.get(product_id, shop_id)
-            await self._products_cache_repo.save(product_id, shop_id, shop_product)
+            await self._products_cache_repo.save(
+                product_id, shop_id, shop_product
+            )
 
         return shop_product
 

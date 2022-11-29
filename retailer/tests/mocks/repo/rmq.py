@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.repo import BaseRMQRepo
 from app.services.auth.interfaces import IRMQInteractRepo
 from store.rmq import RMQAccessor

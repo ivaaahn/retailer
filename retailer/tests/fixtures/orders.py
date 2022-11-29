@@ -1,7 +1,6 @@
 from dataclasses import asdict
 
 import pytest
-
 from app.dto.api.orders import OrderRespDTO
 from app.dto.api.products import ShopProductsListDTO
 from app.dto.db.products import DBShopProductListDTO
@@ -16,7 +15,9 @@ from tests.mocks.repo.orders import OrdersRepoMock
 def default_order_to_build(
     default_products_list_built: DBShopProductListDTO,
 ) -> DBOrderProductsBuilder:
-    return DBOrderProductsBuilder().with_products(default_products_list_built.products)
+    return DBOrderProductsBuilder().with_products(
+        default_products_list_built.products
+    )
 
 
 @pytest.fixture

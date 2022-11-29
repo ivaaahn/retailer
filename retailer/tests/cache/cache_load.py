@@ -1,11 +1,10 @@
 import asyncio
 import json
-
-import aiohttp
 import random
 import time
 from dataclasses import dataclass
 
+import aiohttp
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
@@ -54,7 +53,9 @@ def make_request() -> float:
     # requests.get(URL.format(params.product_id), params={"shop_id": params.shop_id})
 
     start = time.perf_counter_ns()
-    requests.get(URL.format(params.product_id), params={"shop_id": params.shop_id})
+    requests.get(
+        URL.format(params.product_id), params={"shop_id": params.shop_id}
+    )
     end = time.perf_counter_ns()
 
     return end - start
@@ -99,7 +100,9 @@ async def test_async(timeout: int = 10, threads: int = 8):
     res: list[float] = []
     # counter: int = 0
 
-    baked = [[make_async_request() for _ in range(threads)] for _ in range(1000)]
+    baked = [
+        [make_async_request() for _ in range(threads)] for _ in range(1000)
+    ]
 
     start_time = time.time()
     i = 0
@@ -113,7 +116,9 @@ async def test_async(timeout: int = 10, threads: int = 8):
             break
     ms = [t * 1e-6 for t in res]
 
-    print(f"{i * 8} requests per {timeout} seconds => {i * 8 / 10} average rps")
+    print(
+        f"{i * 8} requests per {timeout} seconds => {i * 8 / 10} average rps"
+    )
     visualize(ms)
 
 

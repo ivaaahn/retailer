@@ -1,7 +1,6 @@
 from dataclasses import asdict
 
 import pytest
-
 from app.base.deps import SortOrderEnum
 from app.dto.api.products import (
     ProductListPagingParams,
@@ -32,7 +31,8 @@ def default_products_list_built(
 ) -> DBShopProductListDTO:
     qty = 2
     products = [
-        default_product_to_build.but().with_id(idx).build() for idx in range(1, qty + 1)
+        default_product_to_build.but().with_id(idx).build()
+        for idx in range(1, qty + 1)
     ]
 
     return DBShopProductListDTO(
@@ -57,7 +57,10 @@ def default_products_list_s3_patched_built(
 @pytest.fixture
 def default_paging_params() -> ProductListPagingParams:
     return ProductListPagingParams(
-        count=100, offset=0, order=SortOrderEnum.asc, sort_by=ProductListSortByEnum.id
+        count=100,
+        offset=0,
+        order=SortOrderEnum.asc,
+        sort_by=ProductListSortByEnum.id,
     )
 
 

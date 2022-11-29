@@ -2,9 +2,8 @@ from datetime import timedelta
 from unittest.mock import MagicMock
 
 import pytest
-from pytest_mock import MockerFixture
-
 from app.services.auth.config import AuthConfig
+from pytest_mock import MockerFixture
 from tests.builders.db.user import DBUserBuilder
 from tests.constants import (
     DEFAULT_CODE,

@@ -15,7 +15,9 @@ class IUserRepo(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get(self, email: str, only_active: bool = True) -> DBUserDTO | None:
+    async def get(
+        self, email: str, only_active: bool = True
+    ) -> DBUserDTO | None:
         raise NotImplementedError
 
 
@@ -25,7 +27,9 @@ class ISignupSessionRepo(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def upsert(self, email: str, code: str, **kwargs) -> DBSignupSessionDTO:
+    async def upsert(
+        self, email: str, code: str, **kwargs
+    ) -> DBSignupSessionDTO:
         raise NotImplementedError
 
     @abstractmethod

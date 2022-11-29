@@ -1,5 +1,4 @@
 import pytest
-
 from app.base.repo import BasePgRepo
 from app.dto.db.profile import DBAddressListDTO
 from app.models.users import UserModel
@@ -9,7 +8,9 @@ from store.pg.config import PgConfig
 
 
 class UsersRepoMock(IUserRepo, BasePgRepo):
-    async def get(self, email: str, only_active: bool = True) -> UserModel | None:
+    async def get(
+        self, email: str, only_active: bool = True
+    ) -> UserModel | None:
         pass
 
     async def upsert(self, email: str, password: str, **kwargs) -> UserModel:

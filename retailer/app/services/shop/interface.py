@@ -10,5 +10,7 @@ class IShopsRepo(ABC):
         pass
 
     @abstractmethod
-    async def get_list(self, paging_params: ShopListPagingParams) -> DBShopListDTO:
+    async def get_list(
+        self, paging_params: ShopListPagingParams
+    ) -> DBShopListDTO:
         pass

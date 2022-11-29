@@ -1,8 +1,7 @@
-from fastapi import APIRouter, Depends
-
 from app.delivery.shop.deps import shop_paging_params
 from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
 from app.services.shop import ShopsService
+from fastapi import APIRouter, Depends
 
 router = APIRouter(
     prefix="/shops",
@@ -11,7 +10,9 @@ router = APIRouter(
 
 
 @router.get("/{shop_id}", response_model=ShopRespDTO)
-async def get_shop(shop_id: int, shop_service: ShopsService = Depends()) -> ShopRespDTO:
+async def get_shop(
+    shop_id: int, shop_service: ShopsService = Depends()
+) -> ShopRespDTO:
     return await shop_service.get(shop_id)
 
 

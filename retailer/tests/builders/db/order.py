@@ -29,7 +29,9 @@ class DBOrderBuilder(BaseBuilder):
         self._total_price = value
         return self
 
-    def with_receive_kind(self, value: OrderReceiveKindEnum) -> "DBOrderBuilder":
+    def with_receive_kind(
+        self, value: OrderReceiveKindEnum
+    ) -> "DBOrderBuilder":
         self._receive_kind = value
         return self
 
@@ -64,11 +66,15 @@ class DBOrderProductsBuilder(DBOrderBuilder):
         )
         self._products: list[DBShopProductDTO] = []
 
-    def with_delivery_address(self, value: DBAddressDTO) -> "DBOrderProductsBuilder":
+    def with_delivery_address(
+        self, value: DBAddressDTO
+    ) -> "DBOrderProductsBuilder":
         self._delivery_address = value
         return self
 
-    def with_products(self, value: list[DBShopProductDTO]) -> "DBOrderProductsBuilder":
+    def with_products(
+        self, value: list[DBShopProductDTO]
+    ) -> "DBOrderProductsBuilder":
         self._products = value
         return self
 

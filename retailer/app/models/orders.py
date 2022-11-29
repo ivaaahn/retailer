@@ -1,11 +1,10 @@
 from enum import Enum
 from typing import Optional
 
+from app.base.models import BaseModel
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Identity, Integer
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql.functions import now
-
-from app.base.models import BaseModel
 
 __all__ = (
     "OrderModel",
@@ -45,10 +44,16 @@ class OrderModel(BaseModel):
         server_default=OrderStatusEnum.collecting.value,
         nullable=False,
     )
-    address_id = Column(Integer, ForeignKey("user_addresses.id"), nullable=True)
-    created_at = Column(DateTime(timezone=True), nullable=False, server_default=now())
+    address_id = Column(
+        Integer, ForeignKey("user_addresses.id"), nullable=True
+    )
+    created_at = Column(
+        DateTime(timezone=True), nullable=False, server_default=now()
+    )
 
-    def __init__(self, user: dict | None = None, shop: dict | None = None, **kwargs):
+    def __init__(
+        self, user: dict | None = None, shop: dict | None = None, **kwargs
+    ):
         super().__init__(**kwargs)
         self._user = user
         self._shop = shop

@@ -1,11 +1,10 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock
 
-from pytest_mock import MockerFixture
-
 from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
 from app.dto.db.products import DBShopProductListDTO
 from app.services.shop import ShopsService
+from pytest_mock import MockerFixture
 from tests.builders.db.shops import DBShopBuilder
 from tests.mocks import ShopsRepoMock
 from tests.mocks.repo.products import ProductsRepoMock

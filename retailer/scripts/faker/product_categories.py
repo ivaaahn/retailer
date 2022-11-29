@@ -9,7 +9,6 @@ from typing import Any, Coroutine, NamedTuple
 import aiofiles
 import aiohttp
 from bs4 import BeautifulSoup, BeautifulSoup as bs, PageElement
-
 from scripts.faker.rw import write
 
 COUNT = 10
@@ -81,7 +80,9 @@ async def _parse_product_photo(url: str, name: str) -> str | None:
             print(name, " page: ", resp.status)
             product_soup = _parse_html(await resp.text())
             try:
-                img_url_tail = product_soup.find(id="fixmixed")["data-image-src"]
+                img_url_tail = product_soup.find(id="fixmixed")[
+                    "data-image-src"
+                ]
             except TypeError:
                 print("!!!!!!!!!TYPEERROR!!!!!!!!!!!!!!")
                 print(name)
@@ -119,7 +120,8 @@ def _parse_categories_names(soup: BeautifulSoup) -> list[str]:
 def _parse_product_table(product_table: PageElement) -> list[ProductTemp]:
     return [
         ProductTemp(
-            name=item["title"], task=_parse_product_photo(item["href"], item["title"])
+            name=item["title"],
+            task=_parse_product_photo(item["href"], item["title"]),
         )
         for item in product_table.find_all("a", class_="vertical_pseudo")
     ]
@@ -128,13 +130,18 @@ def _parse_product_table(product_table: PageElement) -> list[ProductTemp]:
 async def _parse_products_photo(
     categories: list[CategoryTemp],
 ) -> list[tuple[str, ...]]:
-    all_coros = [[p.task for p in category.products] for category in categories]
+    all_coros = [
+        [p.task for p in category.products] for category in categories
+    ]
     return [
-        await gather(*category_products_coros) for category_products_coros in all_coros
+        await gather(*category_products_coros)
+        for category_products_coros in all_coros
     ]
 
 
-async def _parse_products(soup: BeautifulSoup) -> tuple[list[Category], list[Product]]:
+async def _parse_products(
+    soup: BeautifulSoup,
+) -> tuple[list[Category], list[Product]]:
     global C_INDEX
     categories_names: list[str] = _parse_categories_names(soup)
 
@@ -167,7 +174,9 @@ async def _parse_products(soup: BeautifulSoup) -> tuple[list[Category], list[Pro
         ):
             res_products.append(
                 Product(
-                    name=product.name, category_id=category.id, photo=product_photo_path
+                    name=product.name,
+                    category_id=category.id,
+                    photo=product_photo_path,
                 )
             )
     return res_categories, res_products

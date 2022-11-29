@@ -36,7 +36,13 @@ class CustomFormatter(logging.Formatter):
         color = self.lvl2color[record.levelno]
 
         fmt = (
-            color[0] + self.lvl + ":" + self.reset + color[1] + self.other + self.reset
+            color[0]
+            + self.lvl
+            + ":"
+            + self.reset
+            + color[1]
+            + self.other
+            + self.reset
         )
 
         formatter = logging.Formatter(fmt)

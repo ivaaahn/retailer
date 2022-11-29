@@ -1,7 +1,6 @@
 from sqlalchemy import inspect as sa_inspect
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.orm import as_declarative
-
 from store.pg.sa import metadata
 
 

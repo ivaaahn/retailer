@@ -1,5 +1,4 @@
 import pytest
-
 from app.services import ProfileService
 from tests.mocks import UsersRepoMock
 

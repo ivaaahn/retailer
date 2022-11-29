@@ -1,14 +1,13 @@
 from unittest.mock import AsyncMock, call
 
 import pytest
-from pytest_mock import MockerFixture
-
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import ShopProductsListDTO
 from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
 from app.dto.db.user import DBUserDTO
 from app.services import ProductsService
 from app.services.carts import CartService
+from pytest_mock import MockerFixture
 from tests.builders.db.product import DBProductBuilder
 from tests.builders.db.user import DBUserBuilder
 from tests.mocks import ProductsRepoMock
@@ -132,7 +131,9 @@ class TestCart:
 
         await cart_service.update_cart(requester.email, product_id, 0)
 
-        carts_repo_remove_mocked.assert_awaited_once_with(requester.email, product_id)
+        carts_repo_remove_mocked.assert_awaited_once_with(
+            requester.email, product_id
+        )
 
     async def test_update_to_non_zero(
         self,

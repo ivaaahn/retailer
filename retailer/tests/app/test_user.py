@@ -1,13 +1,12 @@
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from pydantic import EmailStr
-from pytest_mock import MockerFixture
-
 from app.dto.api.signup import SignupRespDTO, TokenRespDTO
 from app.dto.db.signup_session import DBSignupSessionDTO
 from app.dto.db.user import DBUserDTO
 from app.services import AuthService
+from pydantic import EmailStr
+from pytest_mock import MockerFixture
 from tests.builders.db.signup_session import DBSignupSessionBuilder
 from tests.builders.db.user import DBUserBuilder
 from tests.constants import (
@@ -105,7 +104,9 @@ class TestUser:
 
         assert received == expected
         ss_repo_waste_attempt_mocked.assert_awaited_once_with(email)
-        users_repo_update_mocked.assert_awaited_once_with(email, is_active=True)
+        users_repo_update_mocked.assert_awaited_once_with(
+            email, is_active=True
+        )
 
     @pytest.mark.freeze_time(DEFAULT_DATETIME)
     @pytest.mark.usefixtures("patch_auth_service")
@@ -139,9 +140,15 @@ class TestUser:
         )
 
         assert received == expected
-        users_repo_get_mocked.assert_awaited_once_with(email, only_active=False)
+        users_repo_get_mocked.assert_awaited_once_with(
+            email, only_active=False
+        )
         users_repo_update_mocked.assert_awaited_once_with(
             email, last_login=DEFAULT_DATETIME
         )
-        auth_verify_pass_mocked.assert_called_once_with(DEFAULT_PASSWORD, pass_hash)
-        jwt_encode_mocked.assert_called_once_with(**jwt_encode_call_args_default)
+        auth_verify_pass_mocked.assert_called_once_with(
+            DEFAULT_PASSWORD, pass_hash
+        )
+        jwt_encode_mocked.assert_called_once_with(
+            **jwt_encode_call_args_default
+        )

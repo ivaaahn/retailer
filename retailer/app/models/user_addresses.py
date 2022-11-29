@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Identity, Integer, Text
-
 from app.base.models import BaseModel
+from sqlalchemy import Column, ForeignKey, Identity, Integer, Text
 
 __all__ = ("UserAddressModel",)
 
