@@ -1,0 +1,32 @@
+image: python:3.10
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
+variables:
+  python_version: 3.10
+  poetry_version: 1.2.2
+
+before_script:
+  - pip install poetry==${poetry_version}
+  - poetry config virtualenvs.create false
+
+stages:
+  - lint
+  - test
+
+run_linters:
+  stage: lint
+  tags:
+    - local
+    - docker
+  before_script:
+    - poetry install --only lint
+  script:
+    - poetry run black --check --diff .
+    - poetry run isort --check --diff .
+
+#    - poetry config virtualenvs.in-project true
