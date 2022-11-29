@@ -15,6 +15,7 @@ image: python:${PY_VERSION}
 stages:
   - lint
   - test
+  - build
 
 #cache:
 #  key:
@@ -26,7 +27,7 @@ stages:
 #    - .venv
 #    - .cache/pip
 
-run_linters:
+linters:
   stage: lint
   tags:
     - local
@@ -39,7 +40,7 @@ run_linters:
     - poetry run black --check --diff .
     - poetry run isort --check --diff .
 
-run_unit_tests:
+unit_tests:
   stage: test
   tags:
     - local
@@ -55,5 +56,24 @@ run_unit_tests:
     reports:
       junit: pytest-junit.xml
 
+build_image:
+  stage: build
+  tags:
+    - local
+    - shell
+  script:
+    - docker build -f deploy/test/Dockerfile -t git.iu7.bmstu.ru:5050/ida19u463/retailer:1.0 .
+
+push_image:
+  stage: build
+  needs:
+    - build_image
+  tags:
+    - local
+    - shell
+  before_script:
+    - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} git.iu7.bmstu.ru:5050
+  script:
+    - docker push git.iu7.bmstu.ru:5050/ida19u463/retailer:1.0
 
 
