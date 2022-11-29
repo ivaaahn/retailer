@@ -1,17 +1,17 @@
-from fastapi import Depends, APIRouter
-from fastapi.security import OAuth2PasswordRequestForm
-
 from app.dto.api.signup import (
+    ResendCodeReqDTO,
+    ResendCodeRespDTO,
     SignupReqDTO,
     SignupRespDTO,
     TokenRespDTO,
     VerifyCodeReqDTO,
     VerifyCodeRespSchema,
-    ResendCodeRespDTO,
-    ResendCodeReqDTO,
 )
 from app.dto.api.user import UserRespDTO
 from app.services import AuthService
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+
 from .deps import get_current_active_user
 
 router = APIRouter(
@@ -21,7 +21,9 @@ router = APIRouter(
 
 
 @router.post("/signup", response_model=SignupRespDTO)
-async def signup_user(body: SignupReqDTO, auth_service: AuthService = Depends()):
+async def signup_user(
+    body: SignupReqDTO, auth_service: AuthService = Depends()
+):
     return await auth_service.signup_user(
         email=body.email,
         pwd=body.password,
@@ -40,11 +42,15 @@ async def login_user(
 
 
 @router.get("/me", response_model=UserRespDTO)
-async def current_user(curr_user: UserRespDTO = Depends(get_current_active_user)):
+async def current_user(
+    curr_user: UserRespDTO = Depends(get_current_active_user),
+):
     return curr_user
 
 
-@router.post("/verify_code", status_code=200, response_model=VerifyCodeRespSchema)
+@router.post(
+    "/verify_code", status_code=200, response_model=VerifyCodeRespSchema
+)
 async def verify_code(
     body: VerifyCodeReqDTO,
     auth_service: AuthService = Depends(),

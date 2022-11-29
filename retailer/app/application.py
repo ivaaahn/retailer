@@ -1,7 +1,6 @@
+from app.urls import setup_routes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from app.urls import setup_routes
 from store import setup_store, shutdown_store
 
 app = FastAPI(

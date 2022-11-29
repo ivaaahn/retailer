@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Identity, Integer
-
 from app.base.models import BaseModel
+from sqlalchemy import Column, ForeignKey, Identity, Integer
 
 __all__ = ("StaffModel",)
 

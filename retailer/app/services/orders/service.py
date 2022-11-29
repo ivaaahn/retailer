@@ -1,9 +1,6 @@
 from dataclasses import asdict
 
-from fastapi import Depends
-from sqlalchemy.exc import IntegrityError
-
-from app.base.errors import DBErrEnum, DatabaseError, check_err
+from app.base.errors import DatabaseError, DBErrEnum, check_err
 from app.base.services import BaseService
 from app.delivery.orders.deps import order_paging_params
 from app.delivery.orders.errors import (
@@ -26,6 +23,8 @@ from app.repos import RMQInteractRepo
 from app.repos.cart import CartsRepo
 from app.repos.orders import OrdersRepo
 from app.services.carts import CartService
+from fastapi import Depends
+from sqlalchemy.exc import IntegrityError
 
 
 class OrdersService(BaseService):
@@ -93,7 +92,9 @@ class OrdersService(BaseService):
         data: PlaceOrderReqDTO,
         user: UserRespDTO,
     ) -> PlaceOrderRespDTO:
-        cart: CartRespDTO = await self._cart_service.get(user.email, data.shop_id)
+        cart: CartRespDTO = await self._cart_service.get(
+            user.email, data.shop_id
+        )
 
         if not cart.products:
             raise NoProductsInCartError()

@@ -5,7 +5,6 @@ from random import choice
 
 from faker import Faker
 from passlib.context import CryptContext
-
 from scripts.faker.rw import write
 
 COUNT = 1_000
@@ -53,7 +52,8 @@ def _generate_users(count: int) -> list[User]:
             password_hashed = pwd_context.hash(password)
         else:
             password_hashed = "".join(
-                choice(string.ascii_uppercase + string.digits) for _ in range(30)
+                choice(string.ascii_uppercase + string.digits)
+                for _ in range(30)
             )
 
         result.append(

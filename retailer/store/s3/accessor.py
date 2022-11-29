@@ -1,7 +1,7 @@
 from enum import Enum
 
 from aiobotocore.client import AioBaseClient
-from aiobotocore.session import get_session, AioSession
+from aiobotocore.session import AioSession, get_session
 
 from ..base.accessor import BaseAccessor
 from .config import S3Config, get_config

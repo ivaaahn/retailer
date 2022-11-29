@@ -3,9 +3,9 @@ from typing import Optional
 from sqlalchemy import MetaData, text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
+from ..base.accessor import BaseAccessor
 from . import sa
 from .config import PgConfig, get_config
-from ..base.accessor import BaseAccessor
 
 __all__ = (
     "PgAccessor",

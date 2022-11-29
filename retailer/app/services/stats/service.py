@@ -1,12 +1,11 @@
 from datetime import date
 from functools import lru_cache
 
-from fastapi import Depends
-
 from app.base.errors import DatabaseError
 from app.base.services import BaseService
 from app.dto.api.stats import StatEntityDTO, StatRespDTO
 from app.repos.stat import StatsRepo
+from fastapi import Depends
 
 __all__ = ("StatsService",)
 
@@ -20,7 +19,9 @@ class StatsService(BaseService):
         super().__init__()
         self._stats_repo = stats_repo
 
-    async def get_stat(self, count: int, date_from: date, date_to: date) -> StatRespDTO:
+    async def get_stat(
+        self, count: int, date_from: date, date_to: date
+    ) -> StatRespDTO:
         try:
             res = await self._stats_repo.get_stats(count, date_from, date_to)
         except Exception as err:

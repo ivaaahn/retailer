@@ -1,14 +1,13 @@
 import logging
 from asyncio import gather
 
+from app.base.deps import SortOrderEnum
 from fastapi import Depends
+from logger.logger import get_logger
 from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from sqlalchemy.orm import Query
-
-from app.base.deps import SortOrderEnum
-from logger.logger import get_logger
 from store import redis_accessor
 from store.pg import PgAccessor, pg_accessor
 from store.redis import RedisAccessor
@@ -103,19 +102,31 @@ class BasePgRepo(BaseRepo):
         return res
 
     async def execute_with_pk(
-        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+        self,
+        statement,
+        parameters=None,
+        conn: AsyncConnection | None = None,
+        **kwargs,
     ) -> int:
         cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.inserted_primary_key[0]
 
     async def get_one(
-        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+        self,
+        statement,
+        parameters=None,
+        conn: AsyncConnection | None = None,
+        **kwargs,
     ):
         cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.first()
 
     async def get_scalar(
-        self, statement, parameters=None, conn: AsyncConnection | None = None, **kwargs
+        self,
+        statement,
+        parameters=None,
+        conn: AsyncConnection | None = None,
+        **kwargs,
     ):
         cursor = await self._execute(statement, parameters, conn, **kwargs)
         return cursor.scalar()

@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from sqlalchemy import DateTime
-
 from app.dto.db.products import DBShopProductDTO
 from app.dto.db.profile import DBAddressDTO
+from sqlalchemy import DateTime
 
 
 @dataclass

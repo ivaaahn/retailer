@@ -1,9 +1,8 @@
 from datetime import date
 
-from fastapi import APIRouter, Depends, Query
-
 from app.dto.api.stats import StatRespDTO
 from app.services.stats.service import StatsService
+from fastapi import APIRouter, Depends, Query
 
 router = APIRouter(
     prefix="/stats",

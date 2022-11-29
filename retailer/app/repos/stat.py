@@ -1,10 +1,9 @@
 from datetime import date
 from functools import lru_cache
 
-from sqlalchemy import text
-
 from app.base.repo import BasePgRepo
 from app.dto.db.stats import DBStatOrdersDTO
+from sqlalchemy import text
 
 __all__ = ("StatsRepo",)
 

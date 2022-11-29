@@ -1,8 +1,7 @@
 from functools import lru_cache
 
-from pydantic import RedisDsn
-
 from config import RetailerConfig
+from pydantic import RedisDsn
 
 
 class RedisConfig(RetailerConfig):

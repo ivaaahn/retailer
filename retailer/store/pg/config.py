@@ -1,8 +1,7 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn
-
 from config import RetailerConfig
+from pydantic import PostgresDsn
 
 
 class PgConfig(RetailerConfig):

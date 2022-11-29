@@ -1,10 +1,6 @@
 import asyncio
 from asyncio import gather
 
-from fastapi import Depends
-from sqlalchemy import and_, func, insert, update
-from sqlalchemy.future import select
-
 from app.base.repo import BasePgRepo
 from app.delivery.orders.errors import OrderNotFoundError
 from app.dto.api.cart import CartRespDTO
@@ -24,6 +20,9 @@ from app.models.products import ProductModel
 from app.models.shop_products import ShopProductsModel
 from app.models.user_addresses import UserAddressModel
 from app.repos.products import ProductsRepo
+from fastapi import Depends
+from sqlalchemy import and_, func, insert, update
+from sqlalchemy.future import select
 from store import PgAccessor, pg_accessor
 
 __all__ = ("OrdersRepo",)
@@ -55,7 +54,8 @@ class OrdersRepo(BasePgRepo):
             created_at=order_cursor.created_at,
             delivery_address=DBAddressDTO.from_db(address_scalar),
             products=[
-                DBShopProductDTO.from_db(product_db) for product_db in products_cursor
+                DBShopProductDTO.from_db(product_db)
+                for product_db in products_cursor
             ],
         )
 
@@ -70,7 +70,9 @@ class OrdersRepo(BasePgRepo):
         )
 
         return DBOrderProductsListDTO(
-            orders=[DBOrdersDTO.from_db(order_db) for order_db in orders_cursor],
+            orders=[
+                DBOrdersDTO.from_db(order_db) for order_db in orders_cursor
+            ],
             total=total,
         )
 
@@ -103,7 +105,10 @@ class OrdersRepo(BasePgRepo):
                     parameters=self._cart2order_data(order_id, cart),
                     conn=conn,
                 ),
-                *[execute(stmt, conn=conn) for stmt in reduce_products_qty_stmt],
+                *[
+                    execute(stmt, conn=conn)
+                    for stmt in reduce_products_qty_stmt
+                ],
             ]
             await asyncio.gather(*queries)
 
@@ -127,7 +132,9 @@ class OrdersRepo(BasePgRepo):
         return (
             select(product_t, order_product_t, product_category_t)
             .where(order_product_t.c.id == order_id)
-            .select_from(order_product_t.join(product_t).join(product_category_t))
+            .select_from(
+                order_product_t.join(product_t).join(product_category_t)
+            )
         )
 
     @staticmethod
@@ -157,7 +164,9 @@ class OrdersRepo(BasePgRepo):
         )
 
     @staticmethod
-    def _reduce_product_qty_stmt(shop_id: int, products: list[CartProductDTO]) -> list:
+    def _reduce_product_qty_stmt(
+        shop_id: int, products: list[CartProductDTO]
+    ) -> list:
         shop_product_t = ShopProductsModel.__table__
 
         return [
@@ -186,7 +195,9 @@ class OrdersRepo(BasePgRepo):
             for cart_item in cart.products
         ]
 
-    def _select_orders_stmt(self, user_id: int, paging_params: OrderListPagingParams):
+    def _select_orders_stmt(
+        self, user_id: int, paging_params: OrderListPagingParams
+    ):
         order_t = OrderModel.__table__
         base_stmt = select(order_t).where(order_t.c.user_id == user_id)
 

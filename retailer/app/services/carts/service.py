@@ -1,13 +1,12 @@
 import asyncio
 
-from fastapi import Depends
-
 from app.base.services import BaseService
 from app.dto.api.cart import CartRespDTO
 from app.dto.api.products import CartProductDTO
 from app.dto.db.products import DBCartProductDTO
 from app.repos.cart import CartsRepo
 from app.services import ProductsService
+from fastapi import Depends
 
 __all__ = ("CartService",)
 

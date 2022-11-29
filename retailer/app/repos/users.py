@@ -1,14 +1,13 @@
 from functools import lru_cache
 
-from sqlalchemy import and_, update
-from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.future import select
-
 from app.base.repo import BasePgRepo
 from app.delivery.profile.errors import AddressesNotFoundError
 from app.dto.db.profile import DBAddressDTO, DBAddressListDTO
 from app.models.user_addresses import UserAddressModel
 from app.models.users import UserModel
+from sqlalchemy import and_, update
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.future import select
 
 
 @lru_cache
@@ -80,7 +79,9 @@ class UsersRepo(BasePgRepo):
         return UserModel.from_cursor(cursor)
 
     async def upsert(self, email: str, password: str, **kwargs) -> UserModel:
-        stmt = insert(UserModel).values(email=email, password=password, **kwargs)
+        stmt = insert(UserModel).values(
+            email=email, password=password, **kwargs
+        )
 
         do_update_stmt = stmt.on_conflict_do_update(
             index_elements=["email"],
@@ -92,7 +93,9 @@ class UsersRepo(BasePgRepo):
         cursor = await self._execute(do_update_stmt)
         return UserModel.from_cursor(cursor)
 
-    async def get(self, email: str, only_active: bool = True) -> UserModel | None:
+    async def get(
+        self, email: str, only_active: bool = True
+    ) -> UserModel | None:
         select_stmt = select(UserModel)
 
         if not only_active:

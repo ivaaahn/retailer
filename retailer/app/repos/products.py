@@ -3,10 +3,6 @@ import json
 from dataclasses import asdict
 from functools import lru_cache
 
-from fastapi import Depends
-from sqlalchemy import and_, func, update
-from sqlalchemy.future import select
-
 from app.base.repo import BasePgRepo, BaseRedisRepo
 from app.delivery.products.deps import product_paging_params
 from app.delivery.products.errors import ProductNotFoundError
@@ -17,6 +13,9 @@ from app.misc import make_shop_product_key
 from app.models.product_categories import ProductCategoryModel
 from app.models.products import ProductModel
 from app.models.shop_products import ShopProductsModel
+from fastapi import Depends
+from sqlalchemy import and_, func, update
+from sqlalchemy.future import select
 
 __all__ = ("ProductsRepo", "ProductsCacheRepo")
 
@@ -71,7 +70,9 @@ class ProductsRepo(BasePgRepo):
     async def get_list(
         self,
         shop_id: int,
-        paging_params: ProductListPagingParams = Depends(product_paging_params),
+        paging_params: ProductListPagingParams = Depends(
+            product_paging_params
+        ),
     ) -> DBShopProductListDTO:
         pt = ProductModel.__table__
         spt = ShopProductsModel.__table__

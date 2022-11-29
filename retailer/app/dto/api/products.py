@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, Field
-
 from app.base.deps import BasePagingParams
+from pydantic import BaseModel, Field
 
 
 class ProductListSortByEnum(str, Enum):

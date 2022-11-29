@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Identity, Integer, Text
-
 from app.base.models import BaseModel
+from sqlalchemy import Column, Identity, Integer, Text
 
 __all__ = ("ShopAddressModel",)
 
