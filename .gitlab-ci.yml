@@ -10,10 +10,6 @@ variables:
 
 image: python:${python_version}
 
-before_script:
-  - pip install poetry==${poetry_version}
-  - poetry config virtualenvs.create false
-
 stages:
   - lint
   - test
@@ -24,6 +20,8 @@ run_linters:
     - local
     - docker
   before_script:
+    - pip install poetry==${poetry_version}
+    - poetry config virtualenvs.create false
     - poetry install --only lint
   script:
     - poetry run black --check --diff .
