@@ -4,6 +4,7 @@ from typing import Any, Optional
 
 from app.dto.db.products import DBShopProductDTO
 from app.dto.db.profile import DBAddressDTO
+from sqlalchemy import DateTime
 
 
 @dataclass
