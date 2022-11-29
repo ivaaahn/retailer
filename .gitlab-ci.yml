@@ -57,19 +57,17 @@ unit_tests:
       junit: pytest-junit.xml
 
 build_image:
-  image: docker
   tags:
     - local
-    - docker
+    - shell
   stage: build
   script:
     - docker build -f deploy/test/Dockerfile -t git.iu7.bmstu.ru:5050/ida19u463/retailer:1.0 .
 
 push_image:
-  image: docker
   tags:
     - local
-    - docker
+    - shell
   stage: build
   needs:
     - build_image
