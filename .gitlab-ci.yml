@@ -22,7 +22,7 @@ run_linters:
   before_script:
     - pip install poetry==${poetry_version}
     - poetry config virtualenvs.in-project true
-    - poetry install --only lint
+    - poetry install --only linters
   script:
     - poetry run black --check --diff .
     - poetry run isort --check --diff .
