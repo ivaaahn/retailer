@@ -5,14 +5,26 @@ workflow:
     - when: always
 
 variables:
-  python_version: "3.10"
-  poetry_version: "1.2.2"
+  PY_VERSION: "3.10"
+  POETRY_VERSION: "1.2.2"
+#  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
-image: python:${python_version}
+
+image: python:${PY_VERSION}
 
 stages:
   - lint
   - test
+
+#cache:
+#  key:
+#    files:
+#      - poetry.lock
+#      - .gitlab-ci.yml
+#    prefix: ${CI_JOB_NAME}
+#  paths:
+#    - .venv
+#    - .cache/pip
 
 run_linters:
   stage: lint
@@ -20,9 +32,21 @@ run_linters:
     - local
     - docker
   before_script:
-    - pip install poetry==${poetry_version}
+    - pip install poetry==${POETRY_VERSION}
     - poetry config virtualenvs.in-project true
     - poetry install --only linters
   script:
     - poetry run black --check --diff .
     - poetry run isort --check --diff .
+
+run_unit_tests:
+  stage: test
+  tags:
+    - local
+    - docker
+  before_script:
+    - pip install poetry==${POETRY_VERSION}
+    - poetry config virtualenvs.in-project true
+    - poetry install --without linters --without dev
+  script:
+    - poetry run pytest --color=yes
