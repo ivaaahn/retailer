@@ -28,6 +28,7 @@ stages:
 #    - .cache/pip
 
 linters:
+  when: manual
   stage: lint
   tags:
     - local
@@ -41,6 +42,7 @@ linters:
     - poetry run isort --check --diff .
 
 unit_tests:
+  when: manual
   stage: test
   tags:
     - local
