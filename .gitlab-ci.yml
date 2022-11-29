@@ -64,7 +64,7 @@ build_image:
     - shell
   stage: build
   script:
-    - docker build -f deploy/test/Dockerfile -t ${CI_REGISTRY_IMAGE}:1.0 .
+    - docker build -f deploy/test/Dockerfile -t ${CI_REGISTRY_IMAGE}/api:1.0 .
 
 push_image:
   tags:
