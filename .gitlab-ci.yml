@@ -49,4 +49,11 @@ run_unit_tests:
     - poetry config virtualenvs.in-project true
     - poetry install --without linters --without dev
   script:
-    - poetry run pytest -vv --color=yes
+    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml"
+  artifacts:
+    when: always
+    reports:
+      junit: pytest-junit.xml
+
+
+

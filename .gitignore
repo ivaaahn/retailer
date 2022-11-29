@@ -134,3 +134,5 @@ dmypy.json
 /deploy/down.sh
 /deploy/deploy.sh
 reports/
+allure_results/
+pytest-junit.xml
