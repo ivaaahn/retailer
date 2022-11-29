@@ -21,7 +21,7 @@ run_linters:
     - docker
   before_script:
     - pip install poetry==${poetry_version}
-    - poetry config virtualenvs.create false
+    - poetry config virtualenvs.in-project true
     - poetry install --only lint
   script:
     - poetry run black --check --diff .
