@@ -7,6 +7,8 @@ workflow:
 variables:
   PY_VERSION: "3.10"
   POETRY_VERSION: "1.2.2"
+  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/api
+  IMAGE_TAG: "1.0"
 #  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 
@@ -64,7 +66,7 @@ build_image:
     - shell
   stage: build
   script:
-    - docker build -f deploy/test/Dockerfile -t ${CI_REGISTRY_IMAGE}/api:1.0 .
+    - docker build -f deploy/test/Dockerfile -t ${IMAGE_NAME}:${IMAGE_TAG} .
 
 push_image:
   tags:
@@ -76,6 +78,6 @@ push_image:
   before_script:
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
   script:
-    - docker push ${CI_REGISTRY_IMAGE}/api:1.0
+    - docker push ${IMAGE_NAME}:${IMAGE_TAG}
 
 
