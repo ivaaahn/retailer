@@ -8,7 +8,8 @@ variables:
   PY_VERSION: "3.10"
   POETRY_VERSION: "1.2.2"
   IMAGE_NAME: ${CI_REGISTRY_IMAGE}/main
-#  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PIP_CACHE_KEY: "pip-cache"
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 
 image: python:${PY_VERSION}
@@ -32,6 +33,13 @@ stages:
 linters:
   stage: lint
   when: manual
+  cache:
+    - key: ${PIP_CACHE_KEY}
+      paths:
+        - ${PIP_CACHE_DIR}
+    - key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+      paths:
+        - .venv
   tags:
     - local
     - docker
@@ -46,6 +54,16 @@ linters:
 unit_tests:
   stage: unit_tests
   when: manual
+  cache:
+    - key: ${PIP_CACHE_KEY}
+      paths:
+        - ${PIP_CACHE_DIR}
+      policy: pull
+    - key:
+        files:
+          - poetry.lock
+      paths:
+        - .venv
   tags:
     - local
     - docker
@@ -67,7 +85,7 @@ build_image:
     - shell
   before_script:
     - export APP_VERSION=$(grep -E -o "(version = \")(.*)\"" pyproject.toml | cut -d\" -f2)
-    - echo "APP_VERSION=${APP_VERSION}" > pipeline.env
+    - echo "APP_VERSION=${APP_VERSION}" >> pipeline.env
   script:
     - docker build -f deploy/test/Dockerfile -t ${IMAGE_NAME}:${APP_VERSION} .
   artifacts:
