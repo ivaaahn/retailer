@@ -7,7 +7,7 @@ workflow:
 variables:
   PY_VERSION: "3.10"
   POETRY_VERSION: "1.2.2"
-  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/api
+  IMAGE_NAME: ${CI_REGISTRY_IMAGE}/main
   IMAGE_TAG: "1.0"
 #  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
