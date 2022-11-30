@@ -66,7 +66,7 @@ build_image:
     - local
     - shell
   before_script:
-    - export APP_VERSION=v$(grep -E -o "(version = \")(.*)\"" pyproject.toml | cut -d\" -f2)
+    - export APP_VERSION=$(grep -E -o "(version = \")(.*)\"" pyproject.toml | cut -d\" -f2)
     - echo ${APP_VERSION} > __version__
   script:
     - docker build -f deploy/test/Dockerfile -t ${IMAGE_NAME}:${APP_VERSION} .
