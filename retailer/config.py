@@ -14,4 +14,3 @@ dotenv_files = {
 class RetailerConfig(BaseSettings):
     class Config:
         env_file = dotenv_files[RUN_MODE]
-
