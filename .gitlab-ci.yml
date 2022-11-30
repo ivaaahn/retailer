@@ -8,7 +8,6 @@ variables:
   PY_VERSION: "3.10"
   POETRY_VERSION: "1.2.2"
   IMAGE_NAME: ${CI_REGISTRY_IMAGE}/main
-  IMAGE_TAG: "1.0"
 #  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 
@@ -16,8 +15,9 @@ image: python:${PY_VERSION}
 
 stages:
   - lint
-  - test
+  - unit_test
   - build
+  - integration_test
 
 #cache:
 #  key:
@@ -54,30 +54,56 @@ unit_tests:
     - poetry config virtualenvs.in-project true
     - poetry install --without linters --without dev
   script:
-    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml"
+    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/unit
   artifacts:
     when: always
     reports:
       junit: pytest-junit.xml
 
 build_image:
+  stage: build
   tags:
     - local
     - shell
-  stage: build
+  before_script:
+    - export APP_VERSION=v$(grep -E -o "(version = \")(.*)\"" pyproject.toml | cut -d\" -f2)
+    - echo ${APP_VERSION} > __version__
   script:
-    - docker build -f deploy/test/Dockerfile -t ${IMAGE_NAME}:${IMAGE_TAG} .
+    - docker build -f deploy/test/Dockerfile -t ${IMAGE_NAME}:${APP_VERSION} .
+  artifacts:
+    paths:
+      - __version__
 
 push_image:
+  stage: build
   tags:
     - local
     - shell
-  stage: build
   needs:
     - build_image
+  dependencies:
+    - build_image
   before_script:
+    - APP_VERSION=$(cat __version__)
     - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
   script:
-    - docker push ${IMAGE_NAME}:${IMAGE_TAG}
+    - docker push ${IMAGE_NAME}:${APP_VERSION}
+
+#integration_tests:
+#  when: manual
+#  stage: integration_test
+#  tags:
+#    - local
+#    - docker
+#  before_script:
+#    - pip install poetry==${POETRY_VERSION}
+#    - poetry config virtualenvs.in-project true
+#    - poetry install --without linters --without dev
+#  script:
+#    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/unit
+#  artifacts:
+#    when: always
+#    reports:
+#      junit: pytest-junit.xml
 
 

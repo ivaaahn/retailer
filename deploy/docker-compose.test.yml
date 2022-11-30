@@ -1,0 +1,84 @@
+version: "3"
+
+
+services:
+  app:
+    image: git.iu7.bmstu.ru:5050/retailer/retailer/main:1.0
+    container_name: retailer-app
+    environment:
+      WAIT_HOSTS: redis:6379, rabbit:5672
+      WAIT_TIMEOUT: 900
+      WAIT_SLEEP_INTERVAL: 5
+#    user: "${UID_GID}"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbit
+      - redis
+#    extra_hosts:
+#      - "pg:10.128.0.19"
+    restart: unless-stopped
+#    networks:
+#      - net
+
+  pymailer:
+    image: git.iu7.bmstu.ru:5050/retailer/aio-pymailer/main:1.0
+    container_name: retailer-mailer
+    depends_on:
+      - rabbit
+    restart: unless-stopped
+  #    networks:
+  #      - net
+
+  pg:
+    image: postgres:alpine
+    container_name: retailer-pg
+    expose:
+      - 5432
+    environment:
+      POSTGRES_DB: retailer
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+#      PGDATA: "/data/lib/postgresql/data/pgdata"
+#    volumes:
+#      - pg_data_volume:/data/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: retailer-redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    expose:
+      - 6379
+    volumes:
+#      - redis_data_volume:/var/lib/redis
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+#    networks:
+#      - net
+
+  rabbit:
+    image: rabbitmq:3-management-alpine
+    container_name: retailer-rabbitmq
+    expose:
+      - 5672
+      - 15672
+    volumes:
+      - ./rabbitmq/etc:/etc/rabbitmq/
+#      - rabbit_data_volume:/data/lib/rabbitmq/
+#      - rabbit_logs_volume:/data/log/rabbitmq/
+    restart: unless-stopped
+#    networks:
+#      - net
+
+#volumes:
+#  redis_data_volume:
+#  rabbit_data_volume:
+#  rabbit_logs_volume:
+
+#networks:
+#  net:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.21.0.0/16

@@ -42,5 +42,5 @@ COPY ./retailer /app
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait /wait.sh
 RUN chmod +x /wait.sh && chmod +x ./run.sh
 
-ENV DEPLOY_MODE="true"
+ENV RUN_MODE="test"
 CMD /wait.sh && ./run.sh
