@@ -15,9 +15,9 @@ image: python:${PY_VERSION}
 
 stages:
   - lint
-  - unit_test
+  - unit_tests
   - build
-  - integration_test
+#  - integration_test
 
 #cache:
 #  key:
@@ -30,8 +30,8 @@ stages:
 #    - .cache/pip
 
 linters:
-  when: manual
   stage: lint
+  when: manual
   tags:
     - local
     - docker
@@ -44,8 +44,8 @@ linters:
     - poetry run isort --check --diff .
 
 unit_tests:
+  stage: unit_tests
   when: manual
-  stage: test
   tags:
     - local
     - docker
