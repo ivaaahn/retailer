@@ -18,7 +18,7 @@ stages:
   - lint
   - unit_tests
   - build
-#  - integration_test
+  - integration_tests
 
 #cache:
 #  key:
@@ -110,7 +110,7 @@ push_image:
 
 integration_tests:
   when: manual
-  stage: integration_test
+  stage: integration_tests
   tags:
     - local
     - docker
