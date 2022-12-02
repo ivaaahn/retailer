@@ -82,6 +82,7 @@ unit_tests:
       junit: pytest-junit.xml
 
 build_image:
+  when: manual
   stage: build
   tags:
     - local
@@ -97,6 +98,7 @@ build_image:
         - pipeline.env
 
 push_image:
+  when: manual
   stage: build
   tags:
     - local
@@ -118,6 +120,7 @@ integration_tests:
     POSTGRES_DB: retailer
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
+    RUN_MODE: tests_ci
 
   services:
     - name: git.iu7.bmstu.ru:5050/retailer/aio-pymailer/main:1.0
@@ -127,7 +130,7 @@ integration_tests:
     - name: redis:alpine
       alias: redis
     - name: rabbitmq:3-alpine
-      alias: rabbitmq
+      alias: rabbit
 
   before_script:
     - pip install poetry==${POETRY_VERSION}
