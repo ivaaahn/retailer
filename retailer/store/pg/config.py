@@ -6,9 +6,6 @@ from pydantic import PostgresDsn
 
 class PgConfig(RetailerConfig):
     dsn: PostgresDsn = "postgresql+asyncpg://FIXME:FIXME@FIXME:5432/FIXME"
-    dsn_alembic: PostgresDsn = (
-        "postgresql+asyncpg://FIXME:FIXME@FIXME:5432/FIXME"
-    )
     echo: bool = False
     on: bool = False
     echo_pool: bool | str = False

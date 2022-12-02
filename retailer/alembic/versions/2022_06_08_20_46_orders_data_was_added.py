@@ -40,43 +40,45 @@ vals_s, name_s = (
 
 
 def upgrade():
-    orders_table = table(
-        "orders",
-        column("id", Integer),
-        column("user_id", Integer),
-        column("shop_id", Integer),
-        column("total_price", Float),
-        column("receive_kind", ENUM(*vals_rk, name=name_rk)),
-        column("status", ENUM(*vals_s, name=name_s)),
-        column("address_id", Integer),
-        column("created_at", DateTime),
-    )
-
-    order_products_table = table(
-        "order_products",
-        column("id", Integer),
-        column("product_id", Integer),
-        column("order_id", Integer),
-        column("qty", Integer),
-        column("price", Float),
-    )
-
-    orders, products = generate()
-
-    try:
-        op.bulk_insert(orders_table, orders)
-        op.bulk_insert(order_products_table, products)
-        op.get_bind().execute(
-            text("SELECT SETVAL('orders_id_seq', COALESCE(MAX(id), 1) ) FROM orders;")
-        )
-        op.get_bind().execute(
-            text(
-                "SELECT SETVAL('order_products_id_seq', COALESCE(MAX(id), 1) ) FROM order_products;"
-            )
-        )
-    except Exception as err:
-        logging.warning(f"Error with orders' data insertion: {err}")
-        raise
+    pass
+    #
+    # orders_table = table(
+    #     "orders",
+    #     column("id", Integer),
+    #     column("user_id", Integer),
+    #     column("shop_id", Integer),
+    #     column("total_price", Float),
+    #     column("receive_kind", ENUM(*vals_rk, name=name_rk)),
+    #     column("status", ENUM(*vals_s, name=name_s)),
+    #     column("address_id", Integer),
+    #     column("created_at", DateTime),
+    # )
+    #
+    # order_products_table = table(
+    #     "order_products",
+    #     column("id", Integer),
+    #     column("product_id", Integer),
+    #     column("order_id", Integer),
+    #     column("qty", Integer),
+    #     column("price", Float),
+    # )
+    #
+    # orders, products = generate()
+    #
+    # try:
+    #     op.bulk_insert(orders_table, orders)
+    #     op.bulk_insert(order_products_table, products)
+    #     op.get_bind().execute(
+    #         text("SELECT SETVAL('orders_id_seq', COALESCE(MAX(id), 1) ) FROM orders;")
+    #     )
+    #     op.get_bind().execute(
+    #         text(
+    #             "SELECT SETVAL('order_products_id_seq', COALESCE(MAX(id), 1) ) FROM order_products;"
+    #         )
+    #     )
+    # except Exception as err:
+    #     logging.warning(f"Error with orders' data insertion: {err}")
+    #     raise
 
 
 def downgrade():

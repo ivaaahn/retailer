@@ -20,35 +20,37 @@ depends_on = None
 
 
 def upgrade():
-    addresses_table = table(
-        "user_addresses",
-        column("id", Integer),
-        column("user_id", Integer),
-        column("city", Text),
-        column("street", Text),
-        column("house", Text),
-        column("entrance", Integer),
-        column("floor", Integer),
-        column("flat", Text),
-    )
+    pass
 
-    addresses: list[UserAddress] = generate_addresses()
-
-    try:
-        op.bulk_insert(
-            addresses_table,
-            [asdict(address) for address in addresses],
-        )
-        op.get_bind().execute(
-            text(
-                "SELECT SETVAL('user_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM user_addresses;"
-            )
-        )
-
-    except Exception as err:
-        logging.warning(f"Error with user addresses' data insertion: {err}")
-        raise
-
+    # addresses_table = table(
+    #     "user_addresses",
+    #     column("id", Integer),
+    #     column("user_id", Integer),
+    #     column("city", Text),
+    #     column("street", Text),
+    #     column("house", Text),
+    #     column("entrance", Integer),
+    #     column("floor", Integer),
+    #     column("flat", Text),
+    # )
+    #
+    # addresses: list[UserAddress] = generate_addresses()
+    #
+    # try:
+    #     op.bulk_insert(
+    #         addresses_table,
+    #         [asdict(address) for address in addresses],
+    #     )
+    #     op.get_bind().execute(
+    #         text(
+    #             "SELECT SETVAL('user_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM user_addresses;"
+    #         )
+    #     )
+    #
+    # except Exception as err:
+    #     logging.warning(f"Error with user addresses' data insertion: {err}")
+    #     raise
+    #
 
 def downgrade():
     pass

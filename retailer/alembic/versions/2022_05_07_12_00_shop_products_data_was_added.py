@@ -20,31 +20,33 @@ depends_on = None
 
 
 def upgrade():
-    shop_products_table = table(
-        "shop_products",
-        column("id", Integer),
-        column("shop_id", Integer),
-        column("product_id", Integer),
-        column("price", Float),
-        column("qty", Integer),
-    )
-
-    shop_products: list[ShopProduct] = generate()
-
-    try:
-        op.bulk_insert(
-            shop_products_table,
-            [asdict(shop_product) for shop_product in shop_products],
-        )
-        op.get_bind().execute(
-            text(
-                "SELECT SETVAL('shop_products_id_seq', COALESCE(MAX(id), 1) ) FROM shop_products;"
-            )
-        )
-
-    except Exception as err:
-        logging.warning(f"Error with shop_products' data insertion: {err}")
-        raise
+    pass
+    #
+    # shop_products_table = table(
+    #     "shop_products",
+    #     column("id", Integer),
+    #     column("shop_id", Integer),
+    #     column("product_id", Integer),
+    #     column("price", Float),
+    #     column("qty", Integer),
+    # )
+    #
+    # shop_products: list[ShopProduct] = generate()
+    #
+    # try:
+    #     op.bulk_insert(
+    #         shop_products_table,
+    #         [asdict(shop_product) for shop_product in shop_products],
+    #     )
+    #     op.get_bind().execute(
+    #         text(
+    #             "SELECT SETVAL('shop_products_id_seq', COALESCE(MAX(id), 1) ) FROM shop_products;"
+    #         )
+    #     )
+    #
+    # except Exception as err:
+    #     logging.warning(f"Error with shop_products' data insertion: {err}")
+    #     raise
 
 
 def downgrade():

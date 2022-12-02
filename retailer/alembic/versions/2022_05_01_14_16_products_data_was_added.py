@@ -32,55 +32,57 @@ depends_on = None
 
 
 def upgrade():
-    pc_table = table(
-        "product_categories",
-        column("id", Integer),
-        column("name", Text),
-    )
-
-    p_table = table(
-        "products",
-        column("id", Integer),
-        column("name", Text),
-        column("photo", Text),
-        column("description", Text),
-        column("category_id", Integer),
-    )
-
-    categories_raw, products_raw = read(f"{SCRIPTS_FILE}/{CATEGORIES_FILE}"), read(
-        f"{SCRIPTS_FILE}/{PRODUCTS_FILE}"
-    )
-
-    categories = [Category(id=int(c["id"]), name=c["name"]) for c in categories_raw]
-    products = [
-        Product(
-            name=p["name"],
-            category_id=int(p["category_id"]),
-            photo=p["photo"],
-            description="",
-        )
-        for p in products_raw
-    ]
-
-    try:
-        op.bulk_insert(
-            pc_table,
-            [asdict(c) for c in categories],
-        )
-        op.bulk_insert(
-            p_table,
-            [asdict(p) for p in products],
-        )
-        op.get_bind().execute(
-            text(
-                "SELECT SETVAL('products_id_seq', COALESCE(MAX(id), 1) ) FROM products;"
-            )
-        )
-
-    except Exception as err:
-        logging.warning(f"Error with products' or categories' data insertion: {err}")
-        raise
-
+    pass
+    #
+    # pc_table = table(
+    #     "product_categories",
+    #     column("id", Integer),
+    #     column("name", Text),
+    # )
+    #
+    # p_table = table(
+    #     "products",
+    #     column("id", Integer),
+    #     column("name", Text),
+    #     column("photo", Text),
+    #     column("description", Text),
+    #     column("category_id", Integer),
+    # )
+    #
+    # categories_raw, products_raw = read(f"{SCRIPTS_FILE}/{CATEGORIES_FILE}"), read(
+    #     f"{SCRIPTS_FILE}/{PRODUCTS_FILE}"
+    # )
+    #
+    # categories = [Category(id=int(c["id"]), name=c["name"]) for c in categories_raw]
+    # products = [
+    #     Product(
+    #         name=p["name"],
+    #         category_id=int(p["category_id"]),
+    #         photo=p["photo"],
+    #         description="",
+    #     )
+    #     for p in products_raw
+    # ]
+    #
+    # try:
+    #     op.bulk_insert(
+    #         pc_table,
+    #         [asdict(c) for c in categories],
+    #     )
+    #     op.bulk_insert(
+    #         p_table,
+    #         [asdict(p) for p in products],
+    #     )
+    #     op.get_bind().execute(
+    #         text(
+    #             "SELECT SETVAL('products_id_seq', COALESCE(MAX(id), 1) ) FROM products;"
+    #         )
+    #     )
+    #
+    # except Exception as err:
+    #     logging.warning(f"Error with products' or categories' data insertion: {err}")
+    #     raise
+    #
 
 def downgrade():
     pass

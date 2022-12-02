@@ -45,7 +45,7 @@ services:
     restart: unless-stopped
 
   redis:
-    image: redis:alpine
+    image: postgres:alpine
     container_name: retailer-redis
     command: redis-server /usr/local/etc/redis/redis.conf
     expose:

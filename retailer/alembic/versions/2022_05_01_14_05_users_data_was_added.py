@@ -31,30 +31,31 @@ depends_on = None
 
 
 def upgrade():
-    users_table = table(
-        "users",
-        column("id", Integer),
-        column("email", Text),
-        column("password", Text),
-        column("created_at", DateTime),
-        column("is_active", Boolean),
-        column("name", Text),
-        column("birthday", Date),
-    )
-
-    users: list[User] = generate()
-
-    try:
-        op.bulk_insert(
-            users_table,
-            [asdict(user) for user in users],
-        )
-        op.get_bind().execute(
-            text("SELECT SETVAL('users_id_seq', COALESCE(MAX(id), 1) ) FROM users;")
-        )
-    except Exception as err:
-        logging.warning(f"Error with users' data insertion: {err}")
-        raise
+    pass
+    # users_table = table(
+    #     "users",
+    #     column("id", Integer),
+    #     column("email", Text),
+    #     column("password", Text),
+    #     column("created_at", DateTime),
+    #     column("is_active", Boolean),
+    #     column("name", Text),
+    #     column("birthday", Date),
+    # )
+    #
+    # users: list[User] = generate()
+    #
+    # try:
+    #     op.bulk_insert(
+    #         users_table,
+    #         [asdict(user) for user in users],
+    #     )
+    #     op.get_bind().execute(
+    #         text("SELECT SETVAL('users_id_seq', COALESCE(MAX(id), 1) ) FROM users;")
+    #     )
+    # except Exception as err:
+    #     logging.warning(f"Error with users' data insertion: {err}")
+    #     raise
 
 
 def downgrade():

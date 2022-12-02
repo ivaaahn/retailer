@@ -108,21 +108,36 @@ push_image:
   script:
     - docker push ${IMAGE_NAME}:${APP_VERSION}
 
-#integration_tests:
-#  when: manual
-#  stage: integration_test
-#  tags:
-#    - local
-#    - docker
-#  before_script:
-#    - pip install poetry==${POETRY_VERSION}
-#    - poetry config virtualenvs.in-project true
-#    - poetry install --without linters --without dev
-#  script:
-#    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/unit
-#  artifacts:
-#    when: always
-#    reports:
-#      junit: pytest-junit.xml
+integration_tests:
+  when: manual
+  stage: integration_test
+  tags:
+    - local
+    - docker
+  variables:
+    POSTGRES_DB: retailer
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+
+  services:
+    - name: git.iu7.bmstu.ru:5050/retailer/aio-pymailer/main:1.0
+      alias: pymailer
+    - name: postgres:alpine
+      alias: pg
+    - name: redis:alpine
+      alias: redis
+    - name: rabbitmq:3-alpine
+      alias: rabbitmq
+
+  before_script:
+    - pip install poetry==${POETRY_VERSION}
+    - poetry config virtualenvs.in-project true
+    - poetry install --without linters --without dev
+  script:
+    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/integration
+  artifacts:
+    when: always
+    reports:
+      junit: pytest-junit.xml
 
 

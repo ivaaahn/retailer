@@ -24,47 +24,49 @@ depends_on = None
 
 
 def upgrade():
-    shop_addresses_table = table(
-        "shop_addresses",
-        column("id", Integer),
-        column("city", Text),
-        column("street", Text),
-        column("house", Text),
-        column("floor", Integer),
-    )
-
-    shop_addresses: list[ShopAddress] = generate_addresses()
-
-    shops_table = table(
-        "shops",
-        column("id", Integer),
-        column("address_id", Integer),
-    )
-
-    shops: list[Shop] = generate_shops()
-
-    try:
-        op.bulk_insert(
-            shop_addresses_table,
-            [asdict(address) for address in shop_addresses],
-        )
-        op.bulk_insert(
-            shops_table,
-            [asdict(shop) for shop in shops],
-        )
-        op.get_bind().execute(
-            text("SELECT SETVAL('shops_id_seq', COALESCE(MAX(id), 1) ) FROM shops;")
-        )
-        op.get_bind().execute(
-            text(
-                "SELECT SETVAL('shop_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM shop_addresses;"
-            )
-        )
-
-    except Exception as err:
-        logging.warning(f"Error with shop' data insertion: {err}")
-        raise
-
-
+    pass
+    #
+    # shop_addresses_table = table(
+    #     "shop_addresses",
+    #     column("id", Integer),
+    #     column("city", Text),
+    #     column("street", Text),
+    #     column("house", Text),
+    #     column("floor", Integer),
+    # )
+    #
+    # shop_addresses: list[ShopAddress] = generate_addresses()
+    #
+    # shops_table = table(
+    #     "shops",
+    #     column("id", Integer),
+    #     column("address_id", Integer),
+    # )
+    #
+    # shops: list[Shop] = generate_shops()
+    #
+    # try:
+    #     op.bulk_insert(
+    #         shop_addresses_table,
+    #         [asdict(address) for address in shop_addresses],
+    #     )
+    #     op.bulk_insert(
+    #         shops_table,
+    #         [asdict(shop) for shop in shops],
+    #     )
+    #     op.get_bind().execute(
+    #         text("SELECT SETVAL('shops_id_seq', COALESCE(MAX(id), 1) ) FROM shops;")
+    #     )
+    #     op.get_bind().execute(
+    #         text(
+    #             "SELECT SETVAL('shop_addresses_id_seq', COALESCE(MAX(id), 1) ) FROM shop_addresses;"
+    #         )
+    #     )
+    #
+    # except Exception as err:
+    #     logging.warning(f"Error with shop' data insertion: {err}")
+    #     raise
+    #
+    #
 def downgrade():
     pass

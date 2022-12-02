@@ -1,13 +1,22 @@
 import os
+from enum import Enum
 
 from pydantic import BaseSettings
 
-RUN_MODE = os.environ.get("RUN_MODE", "local")
 
-dotenv_files = {
-    "deploy": ".env.deploy",
-    "test": ".env.test",
-    "local": ".env.local",
+class EnvKinds(str, Enum):
+    PROD = "prod"
+    LOCAL = "local"
+    TESTS_CI = "tests_ci"
+    TESTS_LOCAL = "tests_local"
+
+
+RUN_MODE = EnvKinds(os.environ.get("RUN_MODE", "local"))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+dotenv_files: dict[EnvKinds, str] = {
+    kind: os.path.join(BASE_DIR, "etc", f".env.{kind}") for kind in EnvKinds
 }
 
 

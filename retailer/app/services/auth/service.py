@@ -46,10 +46,10 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class AuthService(BaseService):
     def __init__(
         self,
+        config: AuthConfig | None = Depends(lambda: None),
         users_repo: IUserRepo = Depends(UsersRepo),
         signup_session_repo: ISignupSessionRepo = Depends(SignupSessionRepo),
         rmq_interact_repo: IRMQInteractRepo = Depends(RMQInteractRepo),
-        config: AuthConfig | None = None,
     ):
         super().__init__()
         self._config = config or get_config()
