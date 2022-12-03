@@ -1,14 +1,11 @@
-import time
-
-import pytest
-from app.application import app
-from app.models.signup_sessions import SignupSessionModel
-from app.models.users import UserModel
 from fastapi.testclient import TestClient
-from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncConnection
 from sqlalchemy.future import select
-from store import rmq_accessor
+
+from retailer.app.application import app
+from retailer.app.models.signup_sessions import SignupSessionModel
+from retailer.app.models.users import UserModel
+from retailer.store import rmq_accessor
 
 
 class TestUserSignup:
@@ -23,13 +20,12 @@ class TestUserSignup:
                 self.URI,
                 json={"email": email, "password": password},
             )
-            time.sleep(10)
 
         rmq = rmq_accessor()
         await rmq.connect()
         messages_count = await rmq.get_messages_count()
         await rmq.delete_queue()
-        assert messages_count == 0
+        assert messages_count == 1
 
         data = res.json()
         received_email = data["email"]

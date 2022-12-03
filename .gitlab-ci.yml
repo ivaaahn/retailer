@@ -123,8 +123,6 @@ integration_tests:
     RUN_MODE: tests_ci
 
   services:
-    - name: git.iu7.bmstu.ru:5050/retailer/aio-pymailer/main:1.0
-      alias: pymailer
     - name: postgres:alpine
       alias: pg
     - name: redis:alpine
@@ -136,6 +134,7 @@ integration_tests:
     - pip install poetry==${POETRY_VERSION}
     - poetry config virtualenvs.in-project true
     - poetry install --without linters --without dev
+    - alembic upgrade head
   script:
     - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/integration
   artifacts:
