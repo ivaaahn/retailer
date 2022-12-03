@@ -154,6 +154,6 @@ integration_tests:
   artifacts:
     when: always
     reports:
-      junit: pytest-junit.xml
+      junit: ./retailer/pytest-junit.xml
 
 
