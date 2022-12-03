@@ -122,6 +122,17 @@ integration_tests:
     POSTGRES_PASSWORD: test
     RUN_MODE: tests_ci
 
+  cache:
+    - key: ${PIP_CACHE_KEY}
+      paths:
+        - ${PIP_CACHE_DIR}
+      policy: pull
+    - key:
+        files:
+          - poetry.lock
+      paths:
+        - .venv
+
   services:
     - name: postgres:alpine
       alias: pg
@@ -134,7 +145,7 @@ integration_tests:
     - pip install poetry==${POETRY_VERSION}
     - poetry config virtualenvs.in-project true
     - poetry install --without linters --without dev
-    - python -m alembic upgrade head
+    - bash -c alembic upgrade head
   script:
     - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/integration
   artifacts:
