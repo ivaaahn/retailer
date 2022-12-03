@@ -145,8 +145,8 @@ integration_tests:
     - pip install poetry==${POETRY_VERSION}
     - poetry config virtualenvs.in-project true
     - poetry install --without linters --without dev
-    - bash -c alembic upgrade head
   script:
+    - alembic upgrade head
     - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./retailer/tests/app/integration
   artifacts:
     when: always
