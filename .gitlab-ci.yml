@@ -20,19 +20,8 @@ stages:
   - build
   - integration_tests
 
-#cache:
-#  key:
-#    files:
-#      - poetry.lock
-#      - .gitlab-ci.yml
-#    prefix: ${CI_JOB_NAME}
-#  paths:
-#    - .venv
-#    - .cache/pip
-
 linters:
   stage: lint
-  when: manual
   variables:
     VENV_CACHE_KEY: "$CI_JOB_STAGE-$CI_COMMIT_REF_SLUG"
   tags:
@@ -56,7 +45,6 @@ linters:
 
 unit_tests:
   stage: unit_tests
-  when: manual
   tags:
     - local
     - docker
@@ -82,7 +70,6 @@ unit_tests:
       junit: pytest-junit.xml
 
 build_image:
-  when: manual
   stage: build
   tags:
     - local
@@ -98,7 +85,6 @@ build_image:
         - pipeline.env
 
 push_image:
-  when: manual
   stage: build
   tags:
     - local
@@ -111,7 +97,6 @@ push_image:
     - docker push ${IMAGE_NAME}:${APP_VERSION}
 
 integration_tests:
-  when: manual
   stage: integration_tests
   tags:
     - local
