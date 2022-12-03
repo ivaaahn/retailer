@@ -1,9 +1,10 @@
 import pytest
-from app.base.repo import BaseRedisRepo
-from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
-from app.services.carts.interfaces import ICartsRepo
-from store.redis import RedisAccessor
-from store.redis.config import RedisConfig
+
+from retailer.app.base.repo import BaseRedisRepo
+from retailer.app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
+from retailer.app.services.carts.interfaces import ICartsRepo
+from retailer.store.redis import RedisAccessor
+from retailer.store.redis.config import RedisConfig
 
 
 class CartsRepoMock(ICartsRepo, BaseRedisRepo):

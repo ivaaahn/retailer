@@ -1,29 +1,30 @@
 import asyncio
 from asyncio import gather
 
-from app.base.repo import BasePgRepo
-from app.delivery.orders.errors import OrderNotFoundError
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.orders import OrderListPagingParams
-from app.dto.api.products import CartProductDTO
-from app.dto.db.orders import (
+from fastapi import Depends
+from sqlalchemy import and_, func, insert, update
+from sqlalchemy.future import select
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.delivery.orders.errors import OrderNotFoundError
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.orders import OrderListPagingParams
+from retailer.app.dto.api.products import CartProductDTO
+from retailer.app.dto.db.orders import (
     DBOrderProductsDTO,
     DBOrderProductsListDTO,
     DBOrdersDTO,
 )
-from app.dto.db.products import DBShopProductDTO
-from app.dto.db.profile import DBAddressDTO
-from app.models.order_products import OrderProductsModel
-from app.models.orders import OrderModel, OrderReceiveKindEnum
-from app.models.product_categories import ProductCategoryModel
-from app.models.products import ProductModel
-from app.models.shop_products import ShopProductsModel
-from app.models.user_addresses import UserAddressModel
-from app.repos.products import ProductsRepo
-from fastapi import Depends
-from sqlalchemy import and_, func, insert, update
-from sqlalchemy.future import select
-from store import PgAccessor, pg_accessor
+from retailer.app.dto.db.products import DBShopProductDTO
+from retailer.app.dto.db.profile import DBAddressDTO
+from retailer.app.models.order_products import OrderProductsModel
+from retailer.app.models.orders import OrderModel, OrderReceiveKindEnum
+from retailer.app.models.product_categories import ProductCategoryModel
+from retailer.app.models.products import ProductModel
+from retailer.app.models.shop_products import ShopProductsModel
+from retailer.app.models.user_addresses import UserAddressModel
+from retailer.app.repos.products import ProductsRepo
+from retailer.store import PgAccessor, pg_accessor
 
 __all__ = ("OrdersRepo",)
 

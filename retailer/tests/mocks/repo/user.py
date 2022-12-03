@@ -1,10 +1,11 @@
 import pytest
-from app.base.repo import BasePgRepo
-from app.dto.db.profile import DBAddressListDTO
-from app.models.users import UserModel
-from app.services.auth.interfaces import IUserRepo
-from store import PgAccessor
-from store.pg.config import PgConfig
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.dto.db.profile import DBAddressListDTO
+from retailer.app.models.users import UserModel
+from retailer.app.services.auth.interfaces import IUserRepo
+from retailer.store import PgAccessor
+from retailer.store.pg.config import PgConfig
 
 
 class UsersRepoMock(IUserRepo, BasePgRepo):

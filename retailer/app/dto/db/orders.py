@@ -2,9 +2,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Optional
 
-from app.dto.db.products import DBShopProductDTO
-from app.dto.db.profile import DBAddressDTO
-from sqlalchemy import DateTime
+from retailer.app.dto.db.products import DBShopProductDTO
+from retailer.app.dto.db.profile import DBAddressDTO
 
 
 @dataclass

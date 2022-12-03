@@ -1,33 +1,34 @@
 from dataclasses import asdict
 
-import app.misc
-from app.base.errors import DatabaseError, DBErrEnum, check_err
-from app.base.services import BaseService
-from app.delivery.orders.deps import order_paging_params
-from app.delivery.orders.errors import (
+from fastapi import Depends
+from sqlalchemy.exc import IntegrityError
+
+import retailer.app.misc
+from retailer.app.base.errors import DatabaseError, DBErrEnum, check_err
+from retailer.app.base.services import BaseService
+from retailer.app.delivery.orders.deps import order_paging_params
+from retailer.app.delivery.orders.errors import (
     NoProductsInCartError,
     OrderNotFoundError,
     ProductTemporarilyUnavailable,
 )
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.orders import (
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.orders import (
     OrderListPagingParams,
     OrderRespDTO,
     OrdersListRespDTO,
     PlaceOrderReqDTO,
     PlaceOrderRespDTO,
 )
-from app.dto.api.products import ShopProductDTO
-from app.dto.api.profile import AddressRespDTO
-from app.dto.api.user import UserRespDTO
-from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
-from app.repos.orders import OrdersRepo
-from app.repos.rmq import RMQInteractRepo
-from app.services.auth.interfaces import IRMQInteractRepo
-from app.services.carts import CartService
-from app.services.orders.interface import IOrdersRepo
-from fastapi import Depends
-from sqlalchemy.exc import IntegrityError
+from retailer.app.dto.api.products import ShopProductDTO
+from retailer.app.dto.api.profile import AddressRespDTO
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
+from retailer.app.repos.orders import OrdersRepo
+from retailer.app.repos.rmq import RMQInteractRepo
+from retailer.app.services.auth.interfaces import IRMQInteractRepo
+from retailer.app.services.carts import CartService
+from retailer.app.services.orders.interface import IOrdersRepo
 
 
 class OrdersService(BaseService):
@@ -62,7 +63,7 @@ class OrdersService(BaseService):
             products=[
                 ShopProductDTO(
                     id=product.id,
-                    photo=app.misc.make_s3_url(product.photo),
+                    photo=retailer.app.misc.make_s3_url(product.photo),
                     name=product.name,
                     description=product.description,
                     price=product.price,

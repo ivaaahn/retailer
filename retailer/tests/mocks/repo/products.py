@@ -1,12 +1,16 @@
 import pytest
-from app.base.repo import BasePgRepo, BaseRedisRepo
-from app.dto.api.products import ProductListPagingParams
-from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
-from app.services.products.interfaces import IProductsCacheRepo, IProductsRepo
-from store import PgAccessor
-from store.pg.config import PgConfig
-from store.redis import RedisAccessor
-from store.redis.config import RedisConfig
+
+from retailer.app.base.repo import BasePgRepo, BaseRedisRepo
+from retailer.app.dto.api.products import ProductListPagingParams
+from retailer.app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
+from retailer.app.services.products.interfaces import (
+    IProductsCacheRepo,
+    IProductsRepo,
+)
+from retailer.store import PgAccessor
+from retailer.store.pg.config import PgConfig
+from retailer.store.redis import RedisAccessor
+from retailer.store.redis.config import RedisConfig
 
 
 class ProductsRepoMock(IProductsRepo, BasePgRepo):

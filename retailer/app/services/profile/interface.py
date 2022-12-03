@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from app.dto.db.profile import DBAddressListDTO
-from app.dto.db.user import DBUserDTO
+from retailer.app.dto.db.profile import DBAddressListDTO
+from retailer.app.dto.db.user import DBUserDTO
 
 
 class IUsersRepo(ABC):

@@ -1,5 +1,6 @@
-from app.delivery.urls import setup_routes as setup_api_routes
 from fastapi import FastAPI
+
+from retailer.app.delivery.urls import setup_routes as setup_api_routes
 
 __all__ = ("setup_routes",)
 

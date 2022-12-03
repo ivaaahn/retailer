@@ -1,12 +1,13 @@
-from app.base.repo import BasePgRepo
-from app.delivery.profile.errors import AddressesNotFoundError
-from app.dto.db.profile import DBAddressListDTO
-from app.dto.db.user import DBUserDTO
-from app.models.user_addresses import UserAddressModel
-from app.models.users import UserModel
 from sqlalchemy import and_, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.future import select
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.delivery.profile.errors import AddressesNotFoundError
+from retailer.app.dto.db.profile import DBAddressListDTO
+from retailer.app.dto.db.user import DBUserDTO
+from retailer.app.models.user_addresses import UserAddressModel
+from retailer.app.models.users import UserModel
 
 __all__ = ("UsersRepo",)
 

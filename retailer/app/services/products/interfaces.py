@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from app.dto.api.products import ProductListPagingParams
-from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
+from retailer.app.dto.api.products import ProductListPagingParams
+from retailer.app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
 
 
 class IProductsRepo(ABC):

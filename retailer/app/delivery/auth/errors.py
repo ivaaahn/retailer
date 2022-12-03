@@ -1,4 +1,4 @@
-from app.base.errors import (
+from retailer.app.base.errors import (
     ConflictError,
     ForbiddenError,
     NotFoundError,

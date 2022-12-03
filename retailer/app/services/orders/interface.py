@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
 
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.orders import OrderListPagingParams
-from app.dto.db.orders import DBOrderProductsDTO, DBOrderProductsListDTO
-from app.models.orders import OrderReceiveKindEnum
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.orders import OrderListPagingParams
+from retailer.app.dto.db.orders import (
+    DBOrderProductsDTO,
+    DBOrderProductsListDTO,
+)
+from retailer.app.models.orders import OrderReceiveKindEnum
 
 
 class IOrdersRepo(ABC):

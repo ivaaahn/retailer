@@ -1,9 +1,9 @@
 import copy
 from datetime import datetime
 
-from app.dto.db.signup_session import DBSignupSessionDTO
-from tests.builders.db.common import BaseBuilder
-from tests.constants import (
+from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.tests.builders.db.common import BaseBuilder
+from retailer.tests.constants import (
     DEFAULT_ATTEMPTS_LEFT,
     DEFAULT_CODE,
     DEFAULT_DATETIME,

@@ -1,4 +1,7 @@
-from app.dto.api.signup import (
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+
+from retailer.app.dto.api.signup import (
     ResendCodeReqDTO,
     ResendCodeRespDTO,
     SignupReqDTO,
@@ -7,10 +10,8 @@ from app.dto.api.signup import (
     VerifyCodeReqDTO,
     VerifyCodeRespSchema,
 )
-from app.dto.api.user import UserRespDTO
-from app.services import AuthService
-from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordRequestForm
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.services import AuthService
 
 from .deps import get_current_active_user
 

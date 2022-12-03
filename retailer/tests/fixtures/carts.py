@@ -1,14 +1,15 @@
 import pytest
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.products import CartProductDTO, ShopProductsListDTO
-from app.dto.db.products import (
+
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.products import CartProductDTO, ShopProductsListDTO
+from retailer.app.dto.db.products import (
     DBCartInfoDTO,
     DBCartProductDTO,
     DBShopProductListDTO,
 )
-from app.services import ProductsService
-from app.services.carts import CartService
-from tests.mocks import CartsRepoMock
+from retailer.app.services import ProductsService
+from retailer.app.services.carts import CartService
+from retailer.tests.mocks import CartsRepoMock
 
 
 @pytest.fixture

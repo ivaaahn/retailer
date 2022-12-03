@@ -2,11 +2,12 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
-from app.base.deps import BasePagingParams
-from app.dto.api.products import ShopProductDTO
-from app.dto.api.profile import AddressRespDTO
-from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
 from pydantic import BaseModel, Field
+
+from retailer.app.base.deps import BasePagingParams
+from retailer.app.dto.api.products import ShopProductDTO
+from retailer.app.dto.api.profile import AddressRespDTO
+from retailer.app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
 
 
 class OrderListSortByEnum(str, Enum):

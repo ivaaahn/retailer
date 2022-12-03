@@ -1,18 +1,19 @@
 import logging
 from asyncio import gather
 
-from app.base.deps import SortOrderEnum
 from fastapi import Depends
 from logger.logger import get_logger
 from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from sqlalchemy.orm import Query
-from store import redis_accessor
-from store.pg import PgAccessor, pg_accessor
-from store.redis import RedisAccessor
-from store.rmq import RMQAccessor, rmq_accessor
-from store.s3 import S3Accessor, s3_accessor
+
+from retailer.app.base.deps import SortOrderEnum
+from retailer.store import redis_accessor
+from retailer.store.pg import PgAccessor, pg_accessor
+from retailer.store.redis import RedisAccessor
+from retailer.store.rmq import RMQAccessor, rmq_accessor
+from retailer.store.s3 import S3Accessor, s3_accessor
 
 
 class BaseRepo:

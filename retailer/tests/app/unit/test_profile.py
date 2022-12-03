@@ -1,25 +1,19 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock
 
-from app.dto.api.profile import (
+from pytest_mock import MockerFixture
+
+from retailer.app.dto.api.profile import (
     AddressAddDTO,
     ProfileUpdateReqDTO,
     UserAddressListDTO,
 )
-from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
-from app.dto.api.user import UserAddressDTO, UserRespDTO
-from app.dto.db.products import DBShopProductListDTO
-from app.dto.db.profile import DBAddressListDTO
-from app.dto.db.user import DBUserDTO
-from app.services import ProfileService
-from app.services.shop import ShopsService
-from pytest_mock import MockerFixture
-from tests.builders.db.address import AddressBuilder
-from tests.builders.db.shops import DBShopBuilder
-from tests.builders.db.user import DBUserBuilder
-from tests.constants import DEFAULT_DATETIME
-from tests.mocks import ShopsRepoMock, UsersRepoMock
-from tests.mocks.repo.products import ProductsRepoMock
+from retailer.app.dto.api.user import UserAddressDTO, UserRespDTO
+from retailer.app.dto.db.profile import DBAddressListDTO
+from retailer.app.services import ProfileService
+from retailer.tests.builders.db.address import AddressBuilder
+from retailer.tests.builders.db.user import DBUserBuilder
+from retailer.tests.mocks import UsersRepoMock
 
 
 class TestProfile:

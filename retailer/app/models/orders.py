@@ -1,10 +1,10 @@
 from enum import Enum
-from typing import Optional
 
-from app.base.models import BaseModel
 from sqlalchemy import Column, DateTime, Float, ForeignKey, Identity, Integer
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql.functions import now
+
+from retailer.app.base.models import BaseModel
 
 __all__ = (
     "OrderModel",

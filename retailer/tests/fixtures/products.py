@@ -1,18 +1,19 @@
 from dataclasses import asdict
 
 import pytest
-from app.base.deps import SortOrderEnum
-from app.dto.api.products import (
+
+from retailer.app.base.deps import SortOrderEnum
+from retailer.app.dto.api.products import (
     ProductListPagingParams,
     ProductListSortByEnum,
     ShopProductDTO,
     ShopProductsListDTO,
 )
-from app.dto.db.products import DBShopProductListDTO
-from app.services import ProductsService
-from tests.builders.db.product import DBProductBuilder
-from tests.constants import DEFAULT_S3_URL
-from tests.mocks import ProductsCacheRepoMock, ProductsRepoMock
+from retailer.app.dto.db.products import DBShopProductListDTO
+from retailer.app.services import ProductsService
+from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.constants import DEFAULT_S3_URL
+from retailer.tests.mocks import ProductsCacheRepoMock, ProductsRepoMock
 
 
 @pytest.fixture

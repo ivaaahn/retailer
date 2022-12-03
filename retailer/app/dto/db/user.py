@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from app.models.users import UserRolesEnum
+from retailer.app.models.users import UserRolesEnum
 
 
 @dataclass

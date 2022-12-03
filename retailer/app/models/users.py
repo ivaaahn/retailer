@@ -1,10 +1,11 @@
 from enum import Enum
 
-from app.base.models import BaseModel
 from sqlalchemy import Boolean, Column, Date, DateTime, Identity, Integer, Text
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.sql import expression
 from sqlalchemy.sql.functions import now
+
+from retailer.app.base.models import BaseModel
 
 __all__ = ("UserModel",)
 

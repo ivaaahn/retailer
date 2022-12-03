@@ -1,7 +1,8 @@
-from app.urls import setup_routes
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from store import setup_store, shutdown_store
+
+from retailer.app.urls import setup_routes
+from retailer.store import setup_store, shutdown_store
 
 app = FastAPI(
     title="RetailerAPI",

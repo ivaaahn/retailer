@@ -1,6 +1,10 @@
-from app.base.repo import BaseRedisRepo
-from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
-from app.misc import make_cart_key, make_product_key, parse_product_key
+from retailer.app.base.repo import BaseRedisRepo
+from retailer.app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
+from retailer.app.misc import (
+    make_cart_key,
+    make_product_key,
+    parse_product_key,
+)
 
 
 class CartsRepo(BaseRedisRepo):

@@ -1,5 +1,6 @@
-from app.base.models import BaseModel
 from sqlalchemy import Column, ForeignKey, Identity, Integer
+
+from retailer.app.base.models import BaseModel
 
 __all__ = ("StaffModel",)
 

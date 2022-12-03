@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass
 
-from app.base.repo import BaseRMQRepo
+from retailer.app.base.repo import BaseRMQRepo
 
 
 @dataclass(frozen=True, slots=True)

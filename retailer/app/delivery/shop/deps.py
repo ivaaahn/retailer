@@ -1,8 +1,9 @@
 from dataclasses import asdict
 
-from app.base.deps import BasePagingParams, base_paging_params
-from app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
 from fastapi import Depends, Query
+
+from retailer.app.base.deps import BasePagingParams, base_paging_params
+from retailer.app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
 
 
 def shop_paging_params(

@@ -1,5 +1,6 @@
-from app.base.models import BaseModel
 from sqlalchemy import Column, Identity, Index, Integer, Text, func
+
+from retailer.app.base.models import BaseModel
 
 __all__ = ("ProductCategoryModel",)
 

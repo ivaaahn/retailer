@@ -3,9 +3,15 @@ import string
 from dataclasses import asdict
 from datetime import datetime, timedelta
 
-from app.base.errors import DBErrEnum, check_err
-from app.base.services import BaseService
-from app.delivery.auth.errors import (
+from fastapi import Depends
+from jose import JWTError, jwt
+from passlib.context import CryptContext
+from pydantic import EmailStr
+from sqlalchemy.exc import IntegrityError
+
+from retailer.app.base.errors import DBErrEnum, check_err
+from retailer.app.base.services import BaseService
+from retailer.app.delivery.auth.errors import (
     InactiveAccountError,
     IncorrectCodeError,
     IncorrectCredsError,
@@ -14,23 +20,16 @@ from app.delivery.auth.errors import (
     UserAlreadyExistsError,
     UserNotFoundError,
 )
-from app.dto.api.signup import (
+from retailer.app.dto.api.signup import (
     ResendCodeRespDTO,
     SignupRespDTO,
     TokenDataDTO,
     TokenRespDTO,
 )
-from app.dto.api.user import UserRespDTO
-from app.models.signup_sessions import SignupSessionModel
-from app.models.users import UserModel
-from app.repos.rmq import RMQInteractRepo
-from app.repos.signup_session import SignupSessionRepo
-from app.repos.users import UsersRepo
-from fastapi import Depends
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from pydantic import EmailStr
-from sqlalchemy.exc import IntegrityError
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.repos.rmq import RMQInteractRepo
+from retailer.app.repos.signup_session import SignupSessionRepo
+from retailer.app.repos.users import UsersRepo
 
 from .config import AuthConfig, get_config
 from .interfaces import IRMQInteractRepo, ISignupSessionRepo, IUserRepo

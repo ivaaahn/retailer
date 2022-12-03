@@ -1,11 +1,12 @@
 from datetime import date
 
-from app.base.errors import ForbiddenError
-from app.delivery.auth.deps import get_current_active_user
-from app.dto.api.stats import StatRespDTO
-from app.dto.api.user import UserRespDTO
-from app.services.stats.service import StatsService
 from fastapi import APIRouter, Depends, Query
+
+from retailer.app.base.errors import ForbiddenError
+from retailer.app.delivery.auth.deps import get_current_active_user
+from retailer.app.dto.api.stats import StatRespDTO
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.services.stats.service import StatsService
 
 router = APIRouter(
     prefix="/stats",

@@ -10,7 +10,7 @@ from alembic import op
 from sqlalchemy import text
 from sqlalchemy.dialects.postgresql import ENUM
 
-from app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
+from retailer.app.models.orders import OrderStatusEnum, OrderReceiveKindEnum
 
 revision = "6f1856998bb3"
 down_revision = "9ace568f3e17"

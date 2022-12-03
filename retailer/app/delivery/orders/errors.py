@@ -1,4 +1,4 @@
-from app.base.errors import BadRequestError, NotFoundError
+from retailer.app.base.errors import BadRequestError, NotFoundError
 
 
 class OrderNotFoundError(NotFoundError):

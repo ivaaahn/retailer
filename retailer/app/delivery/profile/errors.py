@@ -1,4 +1,4 @@
-from app.base.errors import NotFoundError
+from retailer.app.base.errors import NotFoundError
 
 
 class AddressesNotFoundError(NotFoundError):

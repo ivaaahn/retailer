@@ -1,7 +1,7 @@
 import copy
 
-from app.dto.db.shops import DBShopAddressDTO, DBShopDTO
-from tests.builders.db.common import BaseBuilder
+from retailer.app.dto.db.shops import DBShopAddressDTO, DBShopDTO
+from retailer.tests.builders.db.common import BaseBuilder
 
 
 class DBShopBuilder(BaseBuilder):

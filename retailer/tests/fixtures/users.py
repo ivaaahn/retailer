@@ -1,11 +1,12 @@
 import pytest
-from app.dto.api.user import UserRespDTO
-from app.services import AuthService
-from app.services.auth.config import AuthConfig
 from pydantic import EmailStr
-from tests.builders.db.signup_session import DBSignupSessionBuilder
-from tests.builders.db.user import DBUserBuilder
-from tests.mocks import (
+
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.services import AuthService
+from retailer.app.services.auth.config import AuthConfig
+from retailer.tests.builders.db.signup_session import DBSignupSessionBuilder
+from retailer.tests.builders.db.user import DBUserBuilder
+from retailer.tests.mocks import (
     RMQInteractionRepoMock,
     SignupSessionRepoMock,
     UsersRepoMock,

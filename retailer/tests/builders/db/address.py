@@ -1,7 +1,7 @@
 import copy
 
-from app.dto.db.profile import DBAddressDTO
-from tests.builders.db.common import BaseBuilder
+from retailer.app.dto.db.profile import DBAddressDTO
+from retailer.tests.builders.db.common import BaseBuilder
 
 
 class AddressBuilder(BaseBuilder):

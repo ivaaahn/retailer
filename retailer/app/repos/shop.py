@@ -1,12 +1,17 @@
-from app.base.repo import BasePgRepo
-from app.delivery.shop.deps import shop_paging_params
-from app.dto.api.shop import ShopListPagingParams
-from app.dto.db.shops import DBShopAddressDTO, DBShopDTO, DBShopListDTO
-from app.models.shop_addresses import ShopAddressModel
-from app.models.shops import ShopModel
 from fastapi import Depends
 from sqlalchemy import func
 from sqlalchemy.future import select
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.delivery.shop.deps import shop_paging_params
+from retailer.app.dto.api.shop import ShopListPagingParams
+from retailer.app.dto.db.shops import (
+    DBShopAddressDTO,
+    DBShopDTO,
+    DBShopListDTO,
+)
+from retailer.app.models.shop_addresses import ShopAddressModel
+from retailer.app.models.shops import ShopModel
 
 __all__ = ("ShopsRepo",)
 

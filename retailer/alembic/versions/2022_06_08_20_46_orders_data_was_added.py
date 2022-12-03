@@ -5,19 +5,10 @@ Revises: 4be3768caf79
 Create Date: 2022-05-22 17:18:30.400804
 
 """
-import logging
-from dataclasses import asdict
-
-from alembic import op
-import sqlalchemy as sa
-
 
 # revision identifiers, used by Alembic.
-from sqlalchemy import DateTime, Float, Integer, String, column, table, text
-from sqlalchemy.dialects.postgresql import ENUM
 
-from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
-from scripts.faker.orders import Order, generate
+from retailer.app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
 
 revision = "5be3768caf79"
 down_revision = "4be3768caf79"

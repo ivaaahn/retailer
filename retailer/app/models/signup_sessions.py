@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
 
-from app.base.models import BaseModel
 from sqlalchemy import (
     CheckConstraint,
     Column,
@@ -11,6 +10,8 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.sql.functions import now
+
+from retailer.app.base.models import BaseModel
 
 __all__ = ("SignupSessionModel",)
 

@@ -1,11 +1,11 @@
 import pytest
-from app.base.deps import SortOrderEnum
-from app.dto.api.products import ProductListSortByEnum
-from app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
-from app.dto.db.shops import DBShopListDTO
-from app.services.shop import ShopsService
-from tests.builders.db.shops import DBShopBuilder
-from tests.mocks import ShopsRepoMock
+
+from retailer.app.base.deps import SortOrderEnum
+from retailer.app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
+from retailer.app.dto.db.shops import DBShopListDTO
+from retailer.app.services.shop import ShopsService
+from retailer.tests.builders.db.shops import DBShopBuilder
+from retailer.tests.mocks import ShopsRepoMock
 
 
 @pytest.fixture

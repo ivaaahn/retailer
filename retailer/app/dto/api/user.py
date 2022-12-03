@@ -1,8 +1,9 @@
 from datetime import date, datetime
 from typing import Optional
 
-from app.models.users import UserRolesEnum
 from pydantic import BaseModel, EmailStr, Field
+
+from retailer.app.models.users import UserRolesEnum
 
 
 class EmailMixin(BaseModel):

@@ -1,12 +1,16 @@
 import pytest
-from app.base.repo import BasePgRepo
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.orders import OrderListPagingParams
-from app.dto.db.orders import DBOrderProductsDTO, DBOrderProductsListDTO
-from app.models.orders import OrderReceiveKindEnum
-from app.services.orders.interface import IOrdersRepo
-from store import PgAccessor
-from store.pg.config import PgConfig
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.orders import OrderListPagingParams
+from retailer.app.dto.db.orders import (
+    DBOrderProductsDTO,
+    DBOrderProductsListDTO,
+)
+from retailer.app.models.orders import OrderReceiveKindEnum
+from retailer.app.services.orders.interface import IOrdersRepo
+from retailer.store import PgAccessor
+from retailer.store.pg.config import PgConfig
 
 
 class OrdersRepoMock(IOrdersRepo, BasePgRepo):

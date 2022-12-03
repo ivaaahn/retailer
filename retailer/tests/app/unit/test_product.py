@@ -1,16 +1,17 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock, MagicMock, call
 
-from app.dto.api.products import (
+from pytest_mock import MockerFixture
+
+from retailer.app.dto.api.products import (
     ProductListPagingParams,
     ShopProductDTO,
     ShopProductsListDTO,
 )
-from app.dto.db.products import DBShopProductListDTO
-from app.services import ProductsService
-from pytest_mock import MockerFixture
-from tests.builders.db.product import DBProductBuilder
-from tests.mocks.repo.products import ProductsRepoMock
+from retailer.app.dto.db.products import DBShopProductListDTO
+from retailer.app.services import ProductsService
+from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.mocks.repo.products import ProductsRepoMock
 
 
 class TestProduct:

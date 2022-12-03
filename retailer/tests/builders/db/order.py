@@ -1,12 +1,12 @@
 import copy
 from datetime import datetime
 
-from app.dto.db.orders import DBOrderProductsDTO, DBOrdersDTO
-from app.dto.db.products import DBShopProductDTO
-from app.dto.db.profile import DBAddressDTO
-from app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
-from tests.builders.db.common import BaseBuilder
-from tests.constants import DEFAULT_DATETIME
+from retailer.app.dto.db.orders import DBOrderProductsDTO, DBOrdersDTO
+from retailer.app.dto.db.products import DBShopProductDTO
+from retailer.app.dto.db.profile import DBAddressDTO
+from retailer.app.models.orders import OrderReceiveKindEnum, OrderStatusEnum
+from retailer.tests.builders.db.common import BaseBuilder
+from retailer.tests.constants import DEFAULT_DATETIME
 
 
 class DBOrderBuilder(BaseBuilder):

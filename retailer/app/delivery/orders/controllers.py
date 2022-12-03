@@ -1,15 +1,16 @@
-from app.delivery.auth.deps import get_current_active_user
-from app.delivery.orders.deps import order_paging_params
-from app.dto.api.orders import (
+from fastapi import APIRouter, Depends
+
+from retailer.app.delivery.auth.deps import get_current_active_user
+from retailer.app.delivery.orders.deps import order_paging_params
+from retailer.app.dto.api.orders import (
     OrderListPagingParams,
     OrderRespDTO,
     OrdersListRespDTO,
     PlaceOrderReqDTO,
     PlaceOrderRespDTO,
 )
-from app.dto.api.user import UserRespDTO
-from app.services.orders.service import OrdersService
-from fastapi import APIRouter, Depends
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.services.orders.service import OrdersService
 
 router = APIRouter(
     prefix="/orders",

@@ -1,14 +1,15 @@
 from dataclasses import asdict
 
-from app.base.services import BaseService
-from app.dto.api.profile import (
+from fastapi import Depends
+
+from retailer.app.base.services import BaseService
+from retailer.app.dto.api.profile import (
     AddressAddDTO,
     ProfileUpdateReqDTO,
     UserAddressListDTO,
 )
-from app.dto.api.user import UserAddressDTO, UserRespDTO
-from app.repos.users import UsersRepo
-from fastapi import Depends
+from retailer.app.dto.api.user import UserAddressDTO, UserRespDTO
+from retailer.app.repos.users import UsersRepo
 
 from .interface import IUsersRepo
 

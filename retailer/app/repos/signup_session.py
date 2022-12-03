@@ -1,17 +1,16 @@
-from typing import Optional
-
-from app.base.repo import BasePgRepo
-from app.delivery.auth.errors import (
-    SessionNotFoundError,
-    SignupSessionExpiredError,
-)
-from app.dto.db.signup_session import DBSignupSessionDTO
-from app.models.signup_sessions import SignupSessionModel
 from sqlalchemy import update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.sql.functions import now as sa_now
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.delivery.auth.errors import (
+    SessionNotFoundError,
+    SignupSessionExpiredError,
+)
+from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.app.models.signup_sessions import SignupSessionModel
 
 
 class SignupSessionRepo(BasePgRepo):

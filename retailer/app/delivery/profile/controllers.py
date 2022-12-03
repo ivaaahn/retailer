@@ -1,12 +1,13 @@
-from app.delivery.auth.deps import get_current_active_user
-from app.dto.api.profile import (
+from fastapi import APIRouter, Depends
+
+from retailer.app.delivery.auth.deps import get_current_active_user
+from retailer.app.dto.api.profile import (
     AddressAddDTO,
     ProfileUpdateReqDTO,
     UserAddressListDTO,
 )
-from app.dto.api.user import UserAddressDTO, UserRespDTO
-from app.services.profile import ProfileService
-from fastapi import APIRouter, Depends
+from retailer.app.dto.api.user import UserAddressDTO, UserRespDTO
+from retailer.app.services.profile import ProfileService
 
 router = APIRouter(
     prefix="/profile",

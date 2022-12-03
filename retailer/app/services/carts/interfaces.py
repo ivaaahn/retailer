@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
+from retailer.app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
 
 
 class ICartsRepo(ABC):

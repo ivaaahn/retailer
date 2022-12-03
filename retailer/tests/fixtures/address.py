@@ -1,6 +1,7 @@
 import pytest
-from app.dto.db.profile import DBAddressListDTO
-from tests.builders.db.address import AddressBuilder
+
+from retailer.app.dto.db.profile import DBAddressListDTO
+from retailer.tests.builders.db.address import AddressBuilder
 
 
 @pytest.fixture

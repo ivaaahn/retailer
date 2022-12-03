@@ -5,19 +5,19 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.models.order_products import *  # noqa
-from app.models.orders import *  # noqa
-from app.models.product_categories import *  # noqa
-from app.models.products import *  # noqa
-from app.models.shop_addresses import *  # noqa
-from app.models.shop_products import *  # noqa
-from app.models.shops import *  # noqa
-from app.models.signup_sessions import *  # noqa
-from app.models.staff import *  # noqa
-from app.models.user_addresses import *  # noqa
-from app.models.users import *  # noqa
-from store.pg.config import get_config
-from store.pg.sa import metadata
+from retailer.app.models.order_products import *  # noqa
+from retailer.app.models.orders import *  # noqa
+from retailer.app.models.product_categories import *  # noqa
+from retailer.app.models.products import *  # noqa
+from retailer.app.models.shop_addresses import *  # noqa
+from retailer.app.models.shop_products import *  # noqa
+from retailer.app.models.shops import *  # noqa
+from retailer.app.models.signup_sessions import *  # noqa
+from retailer.app.models.staff import *  # noqa
+from retailer.app.models.user_addresses import *  # noqa
+from retailer.app.models.users import *  # noqa
+from retailer.store.pg.config import get_config
+from retailer.store.pg.sa import metadata
 
 pg_config = get_config()
 

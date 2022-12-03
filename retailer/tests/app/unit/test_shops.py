@@ -1,13 +1,18 @@
 from dataclasses import asdict
 from unittest.mock import AsyncMock
 
-from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
-from app.dto.db.products import DBShopProductListDTO
-from app.services.shop import ShopsService
 from pytest_mock import MockerFixture
-from tests.builders.db.shops import DBShopBuilder
-from tests.mocks import ShopsRepoMock
-from tests.mocks.repo.products import ProductsRepoMock
+
+from retailer.app.dto.api.shop import (
+    ShopListPagingParams,
+    ShopListRespDTO,
+    ShopRespDTO,
+)
+from retailer.app.dto.db.products import DBShopProductListDTO
+from retailer.app.services.shop import ShopsService
+from retailer.tests.builders.db.shops import DBShopBuilder
+from retailer.tests.mocks import ShopsRepoMock
+from retailer.tests.mocks.repo.products import ProductsRepoMock
 
 
 class TestShops:

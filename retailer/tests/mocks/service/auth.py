@@ -2,10 +2,11 @@ from datetime import timedelta
 from unittest.mock import MagicMock
 
 import pytest
-from app.services.auth.config import AuthConfig
 from pytest_mock import MockerFixture
-from tests.builders.db.user import DBUserBuilder
-from tests.constants import (
+
+from retailer.app.services.auth.config import AuthConfig
+from retailer.tests.builders.db.user import DBUserBuilder
+from retailer.tests.constants import (
     DEFAULT_CODE,
     DEFAULT_DATETIME,
     DEFAULT_JWT_ACCESS_TOKEN,
@@ -44,7 +45,7 @@ def jwt_encode_call_args_default(
 @pytest.fixture
 def auth_get_password_hash_mocked(mocker: MockerFixture) -> MagicMock:
     return mocker.patch(
-        "app.services.auth.service.pwd_context.hash",
+        "retailer.app.services.auth.service.pwd_context.hash",
         return_value=DEFAULT_PASSWORD_HASH,
     )
 
@@ -52,7 +53,7 @@ def auth_get_password_hash_mocked(mocker: MockerFixture) -> MagicMock:
 @pytest.fixture
 def auth_verify_pass_mocked(mocker: MockerFixture) -> MagicMock:
     return mocker.patch(
-        "app.services.auth.service.pwd_context.verify",
+        "retailer.app.services.auth.service.pwd_context.verify",
         return_value=True,
     )
 
@@ -64,6 +65,6 @@ def patch_auth_service(
     auth_verify_pass_mocked: MagicMock,
 ) -> None:
     mocker.patch(
-        "app.services.AuthService._generate_code",
+        "retailer.app.services.AuthService._generate_code",
         return_value=DEFAULT_CODE,
     )

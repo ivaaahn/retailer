@@ -1,10 +1,10 @@
 import copy
 from datetime import datetime
 
-from app.dto.db.user import DBUserDTO
-from app.models.users import UserRolesEnum
-from tests.builders.db.common import BaseBuilder
-from tests.constants import (
+from retailer.app.dto.db.user import DBUserDTO
+from retailer.app.models.users import UserRolesEnum
+from retailer.tests.builders.db.common import BaseBuilder
+from retailer.tests.constants import (
     DEFAULT_DATETIME,
     DEFAULT_MAIL,
     DEFAULT_NAME,

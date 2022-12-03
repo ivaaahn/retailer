@@ -1,11 +1,12 @@
 from datetime import date
 from functools import lru_cache
 
-from app.base.errors import DatabaseError
-from app.base.services import BaseService
-from app.dto.api.stats import StatEntityDTO, StatRespDTO
-from app.repos.stat import StatsRepo
 from fastapi import Depends
+
+from retailer.app.base.errors import DatabaseError
+from retailer.app.base.services import BaseService
+from retailer.app.dto.api.stats import StatEntityDTO, StatRespDTO
+from retailer.app.repos.stat import StatsRepo
 
 __all__ = ("StatsService",)
 

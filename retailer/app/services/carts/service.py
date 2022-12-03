@@ -1,13 +1,14 @@
 import asyncio
 
-from app.base.services import BaseService
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.products import CartProductDTO
-from app.dto.db.products import DBCartProductDTO
-from app.repos.cart import CartsRepo
-from app.services import ProductsService
-from app.services.carts.interfaces import ICartsRepo
 from fastapi import Depends
+
+from retailer.app.base.services import BaseService
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.products import CartProductDTO
+from retailer.app.dto.db.products import DBCartProductDTO
+from retailer.app.repos.cart import CartsRepo
+from retailer.app.services import ProductsService
+from retailer.app.services.carts.interfaces import ICartsRepo
 
 __all__ = ("CartService",)
 

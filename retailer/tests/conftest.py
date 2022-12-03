@@ -1,7 +1,8 @@
 import asyncio
 
 from sqlalchemy import text
-from store import pg_accessor
+
+from retailer.store import pg_accessor
 
 from .fixtures import *  # noqa
 from .mocks import *
@@ -54,6 +55,6 @@ async def clear_db():
 @pytest.fixture
 def make_s3_url_mocked(mocker: MockerFixture) -> MagicMock:
     return mocker.patch(
-        target="app.misc.make_s3_url",
+        target="retailer.app.misc.make_s3_url",
         return_value=DEFAULT_S3_URL,
     )

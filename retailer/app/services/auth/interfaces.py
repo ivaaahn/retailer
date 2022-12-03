@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 
-from app.dto.db.profile import DBAddressListDTO
-from app.dto.db.signup_session import DBSignupSessionDTO
-from app.dto.db.user import DBUserDTO
+from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.app.dto.db.user import DBUserDTO
 
 
 class IUserRepo(ABC):

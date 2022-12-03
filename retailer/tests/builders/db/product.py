@@ -1,7 +1,7 @@
 import copy
 
-from app.dto.db.products import DBShopProductDTO
-from tests.builders.db.common import BaseBuilder
+from retailer.app.dto.db.products import DBShopProductDTO
+from retailer.tests.builders.db.common import BaseBuilder
 
 
 class DBProductBuilder(BaseBuilder):

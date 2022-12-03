@@ -1,17 +1,18 @@
 from unittest.mock import AsyncMock, call
 
 import pytest
-from app.dto.api.cart import CartRespDTO
-from app.dto.api.products import ShopProductsListDTO
-from app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
-from app.dto.db.user import DBUserDTO
-from app.services import ProductsService
-from app.services.carts import CartService
 from pytest_mock import MockerFixture
-from tests.builders.db.product import DBProductBuilder
-from tests.builders.db.user import DBUserBuilder
-from tests.mocks import ProductsRepoMock
-from tests.mocks.repo.carts import CartsRepoMock
+
+from retailer.app.dto.api.cart import CartRespDTO
+from retailer.app.dto.api.products import ShopProductsListDTO
+from retailer.app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
+from retailer.app.dto.db.user import DBUserDTO
+from retailer.app.services import ProductsService
+from retailer.app.services.carts import CartService
+from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.builders.db.user import DBUserBuilder
+from retailer.tests.mocks import ProductsRepoMock
+from retailer.tests.mocks.repo.carts import CartsRepoMock
 
 
 class TestCart:

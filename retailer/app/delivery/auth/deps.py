@@ -1,7 +1,8 @@
-from app.dto.api.user import UserRespDTO
-from app.services import AuthService
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
+
+from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.services import AuthService
 
 from .errors import InactiveAccountError
 

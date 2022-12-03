@@ -1,18 +1,19 @@
 import json
 from dataclasses import asdict
 
-from app.base.repo import BasePgRepo, BaseRedisRepo
-from app.delivery.products.deps import product_paging_params
-from app.delivery.products.errors import ProductNotFoundError
-from app.dto.api.products import ProductListPagingParams
-from app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
-from app.misc import make_shop_product_key
-from app.models.product_categories import ProductCategoryModel
-from app.models.products import ProductModel
-from app.models.shop_products import ShopProductsModel
 from fastapi import Depends
 from sqlalchemy import and_, func
 from sqlalchemy.future import select
+
+from retailer.app.base.repo import BasePgRepo, BaseRedisRepo
+from retailer.app.delivery.products.deps import product_paging_params
+from retailer.app.delivery.products.errors import ProductNotFoundError
+from retailer.app.dto.api.products import ProductListPagingParams
+from retailer.app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
+from retailer.app.misc import make_shop_product_key
+from retailer.app.models.product_categories import ProductCategoryModel
+from retailer.app.models.products import ProductModel
+from retailer.app.models.shop_products import ShopProductsModel
 
 __all__ = ("ProductsRepo", "ProductsCacheRepo")
 

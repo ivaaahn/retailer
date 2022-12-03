@@ -1,22 +1,23 @@
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-from app.dto.api.signup import SignupRespDTO, TokenRespDTO
-from app.dto.db.signup_session import DBSignupSessionDTO
-from app.dto.db.user import DBUserDTO
-from app.services import AuthService
 from pydantic import EmailStr
 from pytest_mock import MockerFixture
-from tests.builders.db.signup_session import DBSignupSessionBuilder
-from tests.builders.db.user import DBUserBuilder
-from tests.constants import (
+
+from retailer.app.dto.api.signup import SignupRespDTO, TokenRespDTO
+from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.app.dto.db.user import DBUserDTO
+from retailer.app.services import AuthService
+from retailer.tests.builders.db.signup_session import DBSignupSessionBuilder
+from retailer.tests.builders.db.user import DBUserBuilder
+from retailer.tests.constants import (
     DEFAULT_DATETIME,
     DEFAULT_JWT_ACCESS_TOKEN,
     DEFAULT_PASSWORD,
 )
-from tests.mocks import RMQInteractionRepoMock
-from tests.mocks.repo.signup_session import SignupSessionRepoMock
-from tests.mocks.repo.user import UsersRepoMock
+from retailer.tests.mocks import RMQInteractionRepoMock
+from retailer.tests.mocks.repo.signup_session import SignupSessionRepoMock
+from retailer.tests.mocks.repo.user import UsersRepoMock
 
 
 class TestUser:

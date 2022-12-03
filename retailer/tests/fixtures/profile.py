@@ -1,6 +1,7 @@
 import pytest
-from app.services import ProfileService
-from tests.mocks import UsersRepoMock
+
+from retailer.app.services import ProfileService
+from retailer.tests.mocks import UsersRepoMock
 
 
 @pytest.fixture

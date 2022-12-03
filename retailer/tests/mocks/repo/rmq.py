@@ -1,8 +1,9 @@
 import pytest
-from app.base.repo import BaseRMQRepo
-from app.services.auth.interfaces import IRMQInteractRepo
-from store.rmq import RMQAccessor
-from store.rmq.config import RMQConfig
+
+from retailer.app.base.repo import BaseRMQRepo
+from retailer.app.services.auth.interfaces import IRMQInteractRepo
+from retailer.store.rmq import RMQAccessor
+from retailer.store.rmq.config import RMQConfig
 
 
 class RMQInteractionRepoMock(IRMQInteractRepo, BaseRMQRepo):

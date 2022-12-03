@@ -1,9 +1,10 @@
 import pytest
-from app.base.repo import BasePgRepo
-from app.models.signup_sessions import SignupSessionModel
-from app.services.auth.interfaces import ISignupSessionRepo
-from store import PgAccessor
-from store.pg.config import PgConfig
+
+from retailer.app.base.repo import BasePgRepo
+from retailer.app.models.signup_sessions import SignupSessionModel
+from retailer.app.services.auth.interfaces import ISignupSessionRepo
+from retailer.store import PgAccessor
+from retailer.store.pg.config import PgConfig
 
 
 class SignupSessionRepoMock(ISignupSessionRepo, BasePgRepo):

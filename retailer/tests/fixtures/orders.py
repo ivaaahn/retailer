@@ -1,14 +1,15 @@
 from dataclasses import asdict
 
 import pytest
-from app.dto.api.orders import OrderRespDTO
-from app.dto.api.products import ShopProductsListDTO
-from app.dto.db.products import DBShopProductListDTO
-from app.services.carts import CartService
-from app.services.orders.service import OrdersService
-from tests.builders.db.order import DBOrderProductsBuilder
-from tests.mocks import RMQInteractionRepoMock
-from tests.mocks.repo.orders import OrdersRepoMock
+
+from retailer.app.dto.api.orders import OrderRespDTO
+from retailer.app.dto.api.products import ShopProductsListDTO
+from retailer.app.dto.db.products import DBShopProductListDTO
+from retailer.app.services.carts import CartService
+from retailer.app.services.orders.service import OrdersService
+from retailer.tests.builders.db.order import DBOrderProductsBuilder
+from retailer.tests.mocks import RMQInteractionRepoMock
+from retailer.tests.mocks.repo.orders import OrdersRepoMock
 
 
 @pytest.fixture

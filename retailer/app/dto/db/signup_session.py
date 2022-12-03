@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Optional
 
-from app.models.signup_sessions import SignupSessionModel
+from retailer.app.models.signup_sessions import SignupSessionModel
 
 
 @dataclass

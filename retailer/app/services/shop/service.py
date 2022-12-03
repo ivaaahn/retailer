@@ -1,12 +1,17 @@
 from dataclasses import asdict
 
-from app.base.services import BaseService
-from app.delivery.shop.deps import shop_paging_params
-from app.delivery.shop.errors import ShopNotFoundError
-from app.dto.api.shop import ShopListPagingParams, ShopListRespDTO, ShopRespDTO
-from app.repos.shop import ShopsRepo
-from app.services.shop.interface import IShopsRepo
 from fastapi import Depends
+
+from retailer.app.base.services import BaseService
+from retailer.app.delivery.shop.deps import shop_paging_params
+from retailer.app.delivery.shop.errors import ShopNotFoundError
+from retailer.app.dto.api.shop import (
+    ShopListPagingParams,
+    ShopListRespDTO,
+    ShopRespDTO,
+)
+from retailer.app.repos.shop import ShopsRepo
+from retailer.app.services.shop.interface import IShopsRepo
 
 __all__ = ("ShopsService",)
 
