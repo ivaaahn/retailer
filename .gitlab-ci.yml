@@ -117,7 +117,7 @@ integration_tests:
     - local
     - docker
   variables:
-    POSTGRES_DB: retailer
+    POSTGRES_DB: test
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
     CONFIG_PATH: etc/.env.tests_ci
