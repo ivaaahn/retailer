@@ -120,7 +120,7 @@ integration_tests:
     POSTGRES_DB: retailer
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-    RUN_MODE: tests_ci
+    CONFIG_PATH: etc/.env.tests_ci
 
   cache:
     - key: ${PIP_CACHE_KEY}
