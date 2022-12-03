@@ -120,8 +120,8 @@ integration_tests:
     POSTGRES_DB: test
     POSTGRES_USER: test
     POSTGRES_PASSWORD: test
-    RABBITMQ_DEFAULT_USER: guest
-    RABBITMQ_DEFAULT_PASS: guest
+    RABBITMQ_DEFAULT_USER: user
+    RABBITMQ_DEFAULT_PASS: user
     CONFIG_PATH: etc/.env.tests_ci
 
   cache:
