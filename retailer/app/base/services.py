@@ -1,6 +1,6 @@
 import logging
 
-from logger.logger import get_logger
+from retailer.logger import get_logger
 
 
 class BaseService:

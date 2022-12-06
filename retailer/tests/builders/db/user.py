@@ -1,8 +1,12 @@
 import copy
+from dataclasses import asdict
 from datetime import datetime
 
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncConnection
+
 from retailer.app.dto.db.user import DBUserDTO
-from retailer.app.models.users import UserRolesEnum
+from retailer.app.models.users import UserModel, UserRolesEnum
 from retailer.tests.builders.db.common import BaseBuilder
 from retailer.tests.constants import (
     DEFAULT_DATETIME,
@@ -10,6 +14,16 @@ from retailer.tests.constants import (
     DEFAULT_NAME,
     DEFAULT_PASSWORD_HASH,
 )
+
+
+async def save_user(conn: AsyncConnection, user: DBUserDTO) -> int:
+    user_map = asdict(user)
+    user_map.pop("id")
+
+    stmt = insert(UserModel).values(**user_map)
+    cursor = await conn.execute(stmt)
+
+    return cursor.inserted_primary_key[0]
 
 
 class DBUserBuilder(BaseBuilder):

@@ -1,7 +1,6 @@
 from functools import lru_cache
-from typing import Optional
 
-from config import RetailerConfig
+from retailer.config import RetailerConfig
 
 
 class S3Config(RetailerConfig):

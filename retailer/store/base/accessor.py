@@ -1,7 +1,7 @@
 from logging import Logger
 from typing import Generic, TypeVar
 
-from logger import get_logger
+from retailer.logger import get_logger
 
 _Config = TypeVar("_Config")
 

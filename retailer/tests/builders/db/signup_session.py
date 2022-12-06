@@ -1,7 +1,12 @@
 import copy
+from dataclasses import asdict
 from datetime import datetime
 
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncConnection
+
 from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.app.models.signup_sessions import SignupSessionModel
 from retailer.tests.builders.db.common import BaseBuilder
 from retailer.tests.constants import (
     DEFAULT_ATTEMPTS_LEFT,
@@ -9,6 +14,17 @@ from retailer.tests.constants import (
     DEFAULT_DATETIME,
     DEFAULT_MAIL,
 )
+
+
+async def save_signup_session(
+    conn: AsyncConnection, session: DBSignupSessionDTO
+) -> int:
+    session_map = asdict(session)
+
+    stmt = insert(SignupSessionModel).values(**session_map)
+    cursor = await conn.execute(stmt)
+
+    return cursor.inserted_primary_key[0]
 
 
 class DBSignupSessionBuilder(BaseBuilder):

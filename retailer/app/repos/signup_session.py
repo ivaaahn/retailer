@@ -66,6 +66,7 @@ class SignupSessionRepo(BasePgRepo):
         return DBSignupSessionDTO.from_db(cursor.first())
 
     async def waste_attempt(self, email: str) -> DBSignupSessionDTO:
+        data = await self._execute(select(SignupSessionModel))
         try:
             session: DBSignupSessionDTO = await self.update(
                 email=email,

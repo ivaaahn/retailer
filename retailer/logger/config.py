@@ -1,4 +1,4 @@
-from config import RetailerConfig
+from retailer.config import RetailerConfig
 
 
 class LoggerConfig(RetailerConfig):

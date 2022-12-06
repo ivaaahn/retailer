@@ -2,13 +2,13 @@ import logging
 from asyncio import gather
 
 from fastapi import Depends
-from logger.logger import get_logger
 from sqlalchemy import asc, desc
 from sqlalchemy.engine import CursorResult
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from sqlalchemy.orm import Query
 
 from retailer.app.base.deps import SortOrderEnum
+from retailer.logger.logger import get_logger
 from retailer.store import redis_accessor
 from retailer.store.pg import PgAccessor, pg_accessor
 from retailer.store.redis import RedisAccessor

@@ -1,9 +1,12 @@
 import asyncio
 
+from asgi_lifespan import LifespanManager
+from httpx import AsyncClient
 from sqlalchemy import text
 
 from retailer.store import pg_accessor
 
+from ..app.application import app
 from .fixtures import *  # noqa
 from .mocks import *
 
@@ -26,14 +29,23 @@ def event_loop():
     loop.close()
 
 
+@pytest.fixture
+async def cli() -> AsyncClient:
+    async with AsyncClient(
+        app=app, base_url="http://test"
+    ) as client, LifespanManager(app):
+        yield client
+
+
 @pytest.fixture(scope="session")
 async def db():
     accessor = pg_accessor()
     await accessor.connect()
-    ctx = accessor.engine.begin()
-    conn = await ctx.start()
-    yield conn
-    await ctx.transaction.rollback()
+    # conn = await accessor.engine.connect()
+    # ctx = accessor.engine.begin()
+    # conn = await ctx.start()
+    yield accessor.engine
+    # await ctx.transaction.rollback()
     await clear_db()
 
 

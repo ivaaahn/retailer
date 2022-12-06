@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from config import RetailerConfig
+from retailer.config import RetailerConfig
 
 
 class ProductsServiceConfig(RetailerConfig):
