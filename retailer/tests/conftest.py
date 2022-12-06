@@ -3,6 +3,7 @@ import asyncio
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncEngine
 
 from retailer.store import pg_accessor
 
@@ -32,27 +33,21 @@ def event_loop():
 @pytest.fixture
 async def cli() -> AsyncClient:
     async with AsyncClient(
-        app=app, base_url="http://test"
+        app=app,
+        base_url="http://test",
     ) as client, LifespanManager(app):
         yield client
 
 
-@pytest.fixture(scope="session")
-async def db():
+@pytest.fixture(scope="function")
+async def engine():
     accessor = pg_accessor()
     await accessor.connect()
-    # conn = await accessor.engine.connect()
-    # ctx = accessor.engine.begin()
-    # conn = await ctx.start()
     yield accessor.engine
-    # await ctx.transaction.rollback()
-    await clear_db()
+    await clear_db(accessor)
 
 
-async def clear_db():
-    accessor = pg_accessor()
-    await accessor.connect()
-
+async def clear_db(accessor: PgAccessor):
     for table in accessor.meta.sorted_tables:
         async with accessor.engine.begin() as conn:
             await conn.execute(text(f"TRUNCATE {table.name} CASCADE"))
