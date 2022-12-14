@@ -19,7 +19,7 @@ class ShopAddressDTO(BaseModel):
     city: str = Field(title="Город")
     street: str = Field(title="Улица")
     house: str = Field(title="Дом")
-    floor: str | None = Field(title="Этаж")
+    floor: int | None = Field(title="Этаж")
 
 
 class ShopRespDTO(BaseModel):

@@ -39,10 +39,13 @@ class TestVerifyCode:
         )
 
         async with engine.begin() as conn:
-            user.id = await save_user(conn, user)
+            user_saved = await save_user(conn, user)
             await save_signup_session(conn, session)
 
-        await cli.post(self.URI, json={"email": self.EMAIL, "code": self.CODE})
+        response = await cli.post(
+            self.URI, json={"email": self.EMAIL, "code": self.CODE}
+        )
+        assert response.is_success
 
         session_table = SignupSessionModel.__table__
         stmt = select(session_table).where(session_table.c.email == self.EMAIL)

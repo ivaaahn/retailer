@@ -15,7 +15,7 @@ from retailer.app.models.orders import OrderReceiveKindEnum
 from retailer.app.services.carts import CartService
 from retailer.app.services.orders.service import OrdersService
 from retailer.tests.builders.db.order import DBOrderProductsBuilder
-from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.builders.db.product import DBShopProductBuilder
 from retailer.tests.mocks import CartsRepoMock, RMQInteractionRepoMock
 from retailer.tests.mocks.repo.products import ProductsRepoMock
 
@@ -121,7 +121,7 @@ class TestOrders:
         carts_repo_mock: CartsRepoMock,
         default_cart_built: DBCartInfoDTO,
         products_repo_mock: ProductsRepoMock,
-        default_product_to_build: DBProductBuilder,
+        default_product_to_build: DBShopProductBuilder,
     ) -> None:
         requester = default_active_user_api
         repo_cart: DBCartInfoDTO = default_cart_built

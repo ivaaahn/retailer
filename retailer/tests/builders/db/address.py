@@ -42,7 +42,7 @@ class AddressBuilder(BaseBuilder):
         self._floor = value
         return self
 
-    def with_flat(self, value: int) -> "AddressBuilder":
+    def with_flat(self, value: str) -> "AddressBuilder":
         self._flat = value
         return self
 

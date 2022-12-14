@@ -16,17 +16,18 @@ class TestUserSignup:
     async def test_signup(
         self, engine: AsyncEngine, cli: AsyncClient, rmq_store: RMQAccessor
     ) -> None:
-        raw_response = await cli.post(
+        response = await cli.post(
             self.URI,
             json={"email": self.EMAIL, "password": self.PASSWORD},
         )
+        assert response.is_success
 
         expected_messages_count = 1
         received_message_count = await rmq_store.get_messages_count()
         await rmq_store.delete_queue()
         assert received_message_count == expected_messages_count
 
-        response_data = raw_response.json()
+        response_data = response.json()
         expected_email = self.EMAIL
         received_email = response_data["email"]
         assert received_email == expected_email

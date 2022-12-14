@@ -66,7 +66,7 @@ class OrderModel(BaseModel):
             "status": self.status,
             "created_at": self.created_at,
             "user": None,
-            "shop": None,
+            "shops": None,
         }
 
     @property

@@ -5,7 +5,7 @@ from scripts.faker.rw import write
 
 ABC = "АБВ"
 COUNT = 500
-FILENAME_SHOPS = "data/shop.csv"
+FILENAME_SHOPS = "data/shops.csv"
 
 
 def _init_faker(seed: int) -> Faker:

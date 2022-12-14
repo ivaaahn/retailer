@@ -2,6 +2,7 @@ import pytest
 from pydantic import EmailStr
 
 from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.dto.db.user import DBUserDTO
 from retailer.app.services import AuthService
 from retailer.app.services.auth.config import AuthConfig
 from retailer.tests.builders.db.signup_session import DBSignupSessionBuilder
@@ -23,6 +24,13 @@ def default_active_user_to_build(
     default_user_to_build: DBUserBuilder,
 ) -> DBUserBuilder:
     return default_user_to_build.but().with_is_active(True)
+
+
+@pytest.fixture
+def default_active_user(
+    default_active_user_to_build: DBUserBuilder,
+) -> DBUserDTO:
+    return default_active_user_to_build.build()
 
 
 @pytest.fixture

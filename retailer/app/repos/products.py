@@ -43,6 +43,8 @@ class ProductsRepo(BasePgRepo):
             description=product.description,
             photo=product.photo,
             availability=product.shop_products_qty,
+            shop_id=product.shop_id,
+            product_id=product.product_id,
         )
 
     async def get_list(
@@ -87,6 +89,8 @@ class ProductsRepo(BasePgRepo):
                     price=product.price,
                     category=product.product_categories_name,
                     availability=product.shop_products_qty,
+                    shop_id=product.shop_id,
+                    product_id=product.product_id,
                 )
                 for product in cursor_product
             ],

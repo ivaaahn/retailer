@@ -1,5 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Any, Optional
+
+from retailer.app.misc import parse_product_key
 
 
 @dataclass
@@ -15,6 +17,8 @@ class DBProductBaseDTO:
 class DBShopProductDTO(DBProductBaseDTO):
     price: float
     availability: int
+    shop_id: int
+    product_id: int
 
     @classmethod
     def from_db(cls, db: Any | None) -> Optional["DBShopProductDTO"]:
@@ -23,6 +27,8 @@ class DBShopProductDTO(DBProductBaseDTO):
 
         return cls(
             id=db.id,
+            shop_id=db.shop_id,
+            product_id=db.product_id,
             photo=db.photo,
             name=db.name,
             description=db.description,
@@ -30,6 +36,12 @@ class DBShopProductDTO(DBProductBaseDTO):
             category=db.product_categories_name,
             availability=db.order_products_qty,
         )
+
+    def to_dict(self) -> dict:
+        pre_dict = asdict(self)
+        pre_dict.pop("product_id")
+        pre_dict.pop("shop_id")
+        return pre_dict
 
 
 @dataclass
@@ -41,6 +53,18 @@ class DBCartProductDTO:
 @dataclass
 class DBCartInfoDTO:
     products: list[DBCartProductDTO]
+
+    @classmethod
+    def from_redis(cls, products: dict) -> "DBCartInfoDTO":
+        return cls(
+            [
+                DBCartProductDTO(
+                    product_id=parse_product_key(p_key),
+                    qty=int(p_value),
+                )
+                for p_key, p_value in products.items()
+            ]
+        )
 
 
 @dataclass

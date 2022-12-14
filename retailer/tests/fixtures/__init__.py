@@ -4,5 +4,6 @@ from .orders import *
 from .products import *
 from .profile import *
 from .shops import *
+from .signup_session import *
 from .store import *
 from .users import *

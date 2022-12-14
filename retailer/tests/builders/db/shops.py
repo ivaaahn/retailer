@@ -1,7 +1,27 @@
 import copy
+from dataclasses import asdict
+
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncConnection
 
 from retailer.app.dto.db.shops import DBShopAddressDTO, DBShopDTO
+from retailer.app.models.shop_addresses import ShopAddressModel
+from retailer.app.models.shops import ShopModel
 from retailer.tests.builders.db.common import BaseBuilder
+
+
+async def save_shop(conn: AsyncConnection, shop: DBShopDTO) -> DBShopDTO:
+    address_map = asdict(shop.address)
+    address_stmt = insert(ShopAddressModel).values(**address_map)
+    address_cursor = await conn.execute(address_stmt)
+
+    shop_stmt = insert(ShopModel).values(
+        {"address_id": address_cursor.inserted_primary_key[0]}
+    )
+    shop_cursor = await conn.execute(shop_stmt)
+
+    shop.id = shop_cursor.inserted_primary_key[0]
+    return shop
 
 
 class DBShopBuilder(BaseBuilder):

@@ -10,7 +10,7 @@ from retailer.app.dto.api.products import (
 )
 from retailer.app.dto.db.products import DBShopProductListDTO
 from retailer.app.services import ProductsService
-from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.builders.db.product import DBShopProductBuilder
 from retailer.tests.mocks.repo.products import ProductsRepoMock
 
 
@@ -22,8 +22,8 @@ class TestProduct:
         mocker: MockerFixture,
         make_s3_url_mocked: MagicMock,
         products_repo_mock: ProductsRepoMock,
-        default_product_to_build: DBProductBuilder,
-        default_product_s3_patched_to_build: DBProductBuilder,
+        default_product_to_build: DBShopProductBuilder,
+        default_product_s3_patched_to_build: DBShopProductBuilder,
         products_service: ProductsService,
     ) -> None:
         repo_product = default_product_to_build.build()

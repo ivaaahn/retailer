@@ -9,7 +9,7 @@ from retailer.app.dto.db.products import DBCartInfoDTO, DBCartProductDTO
 from retailer.app.dto.db.user import DBUserDTO
 from retailer.app.services import ProductsService
 from retailer.app.services.carts import CartService
-from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.builders.db.product import DBShopProductBuilder
 from retailer.tests.builders.db.user import DBUserBuilder
 from retailer.tests.mocks import ProductsRepoMock
 from retailer.tests.mocks.repo.carts import CartsRepoMock
@@ -23,7 +23,7 @@ class TestCart:
         self,
         mocker: MockerFixture,
         products_repo_mock: ProductsRepoMock,
-        default_product_to_build: DBProductBuilder,
+        default_product_to_build: DBShopProductBuilder,
         carts_repo_mock: CartsRepoMock,
         default_user_to_build: DBUserBuilder,
         default_cart_built: DBCartInfoDTO,

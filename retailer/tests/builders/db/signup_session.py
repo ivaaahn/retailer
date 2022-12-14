@@ -12,7 +12,7 @@ from retailer.tests.constants import (
     DEFAULT_ATTEMPTS_LEFT,
     DEFAULT_CODE,
     DEFAULT_DATETIME,
-    DEFAULT_MAIL,
+    DEFAULT_EMAIL,
 )
 
 
@@ -29,7 +29,7 @@ async def save_signup_session(
 
 class DBSignupSessionBuilder(BaseBuilder):
     def __init__(self) -> None:
-        self._email = DEFAULT_MAIL
+        self._email = DEFAULT_EMAIL
         self._code = DEFAULT_CODE
         self._updated_at = DEFAULT_DATETIME
         self._attempts_left = DEFAULT_ATTEMPTS_LEFT

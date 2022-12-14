@@ -24,16 +24,7 @@ class CartsRepo(BaseRedisRepo):
         products_raw: dict = await self._redis.cli.hgetall(
             name=make_cart_key(email),
         )
-
-        products = [
-            DBCartProductDTO(
-                product_id=parse_product_key(p_key),
-                qty=int(p_value),
-            )
-            for p_key, p_value in products_raw.items()
-        ]
-
-        return DBCartInfoDTO(products=products)
+        return DBCartInfoDTO.from_redis(products_raw)
 
     async def clear_cart(self, email: str) -> int:
         return await self._redis.cli.delete(make_cart_key(email))

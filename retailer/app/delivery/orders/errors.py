@@ -13,7 +13,7 @@ class NoProductsInCartError(BadRequestError):
 
 
 class ProductTemporarilyUnavailable(BadRequestError):
-    description = "The product temporarily unavailable in the shop"
+    description = "The product temporarily unavailable in the shops"
 
     def __init__(self, product_id: int, shop_id: int):
         super().__init__(data=dict(product_id=product_id, shop_id=shop_id))

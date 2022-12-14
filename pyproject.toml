@@ -37,6 +37,7 @@ allure-pytest = "^2.11.1"
 requests = "^2.28.1"
 httpx = "^0.23.1"
 asgi-lifespan = "^2.0.0"
+pytz = "^2022.6"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -51,6 +52,7 @@ pythonpath = "retailer"
 filterwarnings = [
     "ignore::DeprecationWarning"
 ]
+
 
 
 

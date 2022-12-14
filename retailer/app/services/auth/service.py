@@ -27,6 +27,8 @@ from retailer.app.dto.api.signup import (
     TokenRespDTO,
 )
 from retailer.app.dto.api.user import UserRespDTO
+from retailer.app.dto.db.signup_session import DBSignupSessionDTO
+from retailer.app.dto.db.user import DBUserDTO
 from retailer.app.repos.rmq import RMQInteractRepo
 from retailer.app.repos.signup_session import SignupSessionRepo
 from retailer.app.repos.users import UsersRepo
@@ -36,8 +38,6 @@ from .interfaces import IRMQInteractRepo, ISignupSessionRepo, IUserRepo
 
 __all__ = ("AuthService",)
 
-from ...dto.db.signup_session import DBSignupSessionDTO
-from ...dto.db.user import DBUserDTO
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

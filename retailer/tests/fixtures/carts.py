@@ -9,6 +9,7 @@ from retailer.app.dto.db.products import (
 )
 from retailer.app.services import ProductsService
 from retailer.app.services.carts import CartService
+from retailer.tests.builders.db.cart_product import CartApiBuilder
 from retailer.tests.mocks import CartsRepoMock
 
 
@@ -59,3 +60,8 @@ def cart_service(
         carts_repo=carts_repo_mock,
         products_service=products_service,
     )
+
+
+@pytest.fixture
+def cart_api_builder() -> CartApiBuilder:
+    return CartApiBuilder()

@@ -3,22 +3,12 @@ import asyncio
 from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncEngine
 
-from retailer.store import pg_accessor
+from retailer.store import pg_accessor, redis_accessor
 
 from ..app.application import app
 from .fixtures import *  # noqa
 from .mocks import *
-
-
-@pytest.fixture(scope="session", autouse=True)
-def event_loop():
-    """Overrides pytest default function scoped event loop"""
-    policy = asyncio.get_event_loop_policy()
-    loop = policy.new_event_loop()
-    yield loop
-    loop.close()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -43,8 +33,18 @@ async def cli() -> AsyncClient:
 async def engine():
     accessor = pg_accessor()
     await accessor.connect()
+    await clear_db(accessor)
     yield accessor.engine
     await clear_db(accessor)
+
+
+@pytest.fixture(scope="function")
+async def redis_cli():
+    accessor = redis_accessor()
+    await accessor.connect()
+    await accessor.cli.flushdb()
+    yield accessor.cli
+    await accessor.cli.flushdb()
 
 
 async def clear_db(accessor: PgAccessor):

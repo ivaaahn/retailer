@@ -1,7 +1,7 @@
 import datetime
 
 DEFAULT_DATETIME = datetime.datetime(2022, 1, 1)
-DEFAULT_MAIL = "default@default.ru"
+DEFAULT_EMAIL = "default@default.ru"
 DEFAULT_PASSWORD = "default"
 DEFAULT_PASSWORD_HASH = "default_hash"
 DEFAULT_NAME = "default"

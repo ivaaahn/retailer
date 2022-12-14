@@ -10,7 +10,7 @@ from retailer.app.services.shop import ShopsService
 
 router = APIRouter(
     prefix="/shops",
-    tags=["shop"],
+    tags=["shops"],
 )
 
 

@@ -11,24 +11,25 @@ from retailer.app.dto.api.products import (
 )
 from retailer.app.dto.db.products import DBShopProductListDTO
 from retailer.app.services import ProductsService
-from retailer.tests.builders.db.product import DBProductBuilder
+from retailer.tests.builders.db.product import DBShopProductBuilder
+from retailer.tests.builders.db.shops import DBShopBuilder
 from retailer.tests.constants import DEFAULT_S3_URL
 from retailer.tests.mocks import ProductsCacheRepoMock, ProductsRepoMock
 
 
 @pytest.fixture
-def default_product_to_build() -> DBProductBuilder:
-    return DBProductBuilder()
+def default_product_to_build() -> DBShopProductBuilder:
+    return DBShopProductBuilder()
 
 
 @pytest.fixture
-def default_product_s3_patched_to_build() -> DBProductBuilder:
-    return DBProductBuilder().but().with_photo(DEFAULT_S3_URL)
+def default_product_s3_patched_to_build() -> DBShopProductBuilder:
+    return DBShopProductBuilder().but().with_photo(DEFAULT_S3_URL)
 
 
 @pytest.fixture
 def default_products_list_built(
-    default_product_to_build: DBProductBuilder,
+    default_product_to_build: DBShopProductBuilder,
 ) -> DBShopProductListDTO:
     qty = 2
     products = [

@@ -21,7 +21,6 @@ from retailer.store.pg.sa import metadata
 
 pg_config = get_config()
 
-print(pg_config.json())
 
 alembic_config = context.config
 
