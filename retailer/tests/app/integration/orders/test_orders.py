@@ -51,9 +51,6 @@ class TestOrders:
             headers=auth_headers_default,
         )
         assert response.is_success
-        expected_messages_count = 1
-        received_message_count = await rabbit_cli.get_messages_count()
-        assert received_message_count == expected_messages_count
 
         async with engine.begin() as conn:
             order_t = OrderModel.__table__
@@ -64,10 +61,9 @@ class TestOrders:
         received_response_api = response.json()
         received_response_db = dict(cursor.first())
         received_response_db.pop("created_at")
-        assert received_response_api["order_id"] == received_response_db["id"]
 
         expected_response_db = {
-            "id": 1,
+            "id": received_response_api["order_id"],
             "user_id": user.id,
             "shop_id": shop.id,
             "total_price": shop_product.price * qty_to_add,
@@ -76,3 +72,7 @@ class TestOrders:
             "address_id": None,
         }
         assert received_response_db == expected_response_db
+
+        expected_messages_count = 1
+        received_message_count = await rabbit_cli.get_messages_count()
+        assert received_message_count == expected_messages_count
