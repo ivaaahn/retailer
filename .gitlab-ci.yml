@@ -19,6 +19,7 @@ stages:
   - unit_tests
   - build
   - integration_tests
+  - e2e_tests
 
 linters:
   stage: lint
@@ -141,4 +142,50 @@ integration_tests:
     reports:
       junit: ./retailer/pytest-junit.xml
 
+
+
+e2e_tests:
+  stage: e2e_tests
+  tags:
+    - local
+    - docker
+  variables:
+    POSTGRES_DB: test
+    POSTGRES_USER: test
+    POSTGRES_PASSWORD: test
+    RABBITMQ_DEFAULT_USER: user
+    RABBITMQ_DEFAULT_PASS: user
+    CONFIG_PATH: etc/.env.tests_ci
+
+  cache:
+    - key: ${PIP_CACHE_KEY}
+      paths:
+        - ${PIP_CACHE_DIR}
+      policy: pull
+    - key:
+        files:
+          - poetry.lock
+      paths:
+        - .venv
+
+  services:
+    - name: postgres:alpine
+      alias: pg
+    - name: redis:alpine
+      alias: redis
+    - name: rabbitmq:3-alpine
+      alias: rabbit
+
+  before_script:
+    - pip install poetry==${POETRY_VERSION}
+    - poetry config virtualenvs.in-project true
+    - poetry install --without linters --without dev
+    - cd retailer
+    - poetry run alembic upgrade head
+  script:
+    - poetry run pytest -vv --color=yes --junitxml="pytest-junit.xml" ./tests/app/e2e
+  artifacts:
+    when: always
+    reports:
+      junit: ./retailer/pytest-junit.xml
 
