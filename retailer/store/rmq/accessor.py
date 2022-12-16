@@ -26,7 +26,10 @@ class RMQAccessor(BaseAccessor[RMQConfig]):
         return self._queue.declaration_result.message_count
 
     async def delete_queue(self) -> None:
-        await self._channel.queue_delete(self.conf.queue_name)
+        try:
+            await self._channel.queue_delete(self.conf.queue_name)
+        except:
+            pass
 
     async def _connect(self):
         if not self.conf.on:

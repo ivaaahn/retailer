@@ -9,7 +9,7 @@ from retailer.app.dto.api.products import (
     ShopProductDTO,
     ShopProductsListDTO,
 )
-from retailer.app.dto.db.products import DBShopProductListDTO
+from retailer.app.dto.db.products import DBShopProductDTO, DBShopProductListDTO
 from retailer.app.services import ProductsService
 from retailer.tests.builders.db.product import DBShopProductBuilder
 from retailer.tests.builders.db.shops import DBShopBuilder
@@ -20,6 +20,11 @@ from retailer.tests.mocks import ProductsCacheRepoMock, ProductsRepoMock
 @pytest.fixture
 def default_product_to_build() -> DBShopProductBuilder:
     return DBShopProductBuilder()
+
+
+@pytest.fixture
+def default_product_no_photo() -> DBShopProductDTO:
+    return DBShopProductBuilder().but().with_photo(None).build()
 
 
 @pytest.fixture

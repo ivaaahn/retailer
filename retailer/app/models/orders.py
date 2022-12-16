@@ -9,6 +9,7 @@ from retailer.app.base.models import BaseModel
 __all__ = (
     "OrderModel",
     "OrderReceiveKindEnum",
+    "OrderStatusEnum",
 )
 
 

@@ -14,7 +14,7 @@ class TestUserSignup:
     PASSWORD = "test"
 
     async def test_signup(
-        self, engine: AsyncEngine, cli: AsyncClient, rmq_store: RMQAccessor
+        self, engine: AsyncEngine, cli: AsyncClient, rabbit_cli: RMQAccessor
     ) -> None:
         response = await cli.post(
             self.URI,
@@ -23,8 +23,7 @@ class TestUserSignup:
         assert response.is_success
 
         expected_messages_count = 1
-        received_message_count = await rmq_store.get_messages_count()
-        await rmq_store.delete_queue()
+        received_message_count = await rabbit_cli.get_messages_count()
         assert received_message_count == expected_messages_count
 
         response_data = response.json()

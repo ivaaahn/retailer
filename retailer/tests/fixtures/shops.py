@@ -2,7 +2,7 @@ import pytest
 
 from retailer.app.base.deps import SortOrderEnum
 from retailer.app.dto.api.shop import ShopListPagingParams, ShopListSortByEnum
-from retailer.app.dto.db.shops import DBShopListDTO
+from retailer.app.dto.db.shops import DBShopDTO, DBShopListDTO
 from retailer.app.services.shop import ShopsService
 from retailer.tests.builders.db.shops import DBShopBuilder
 from retailer.tests.mocks import ShopsRepoMock
@@ -16,6 +16,11 @@ def shops_service(shops_repo_mock: ShopsRepoMock) -> ShopsService:
 @pytest.fixture
 def default_shop_to_build() -> DBShopBuilder:
     return DBShopBuilder()
+
+
+@pytest.fixture
+def default_shop() -> DBShopDTO:
+    return DBShopBuilder().build()
 
 
 @pytest.fixture

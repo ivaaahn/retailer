@@ -4,9 +4,10 @@ from asgi_lifespan import LifespanManager
 from httpx import AsyncClient
 from sqlalchemy import text
 
+from retailer.app.application import app
+from retailer.app.urls import setup_routes
 from retailer.store import pg_accessor, redis_accessor
 
-from ..app.application import app
 from .fixtures import *  # noqa
 from .mocks import *
 
@@ -20,13 +21,27 @@ def event_loop():
     loop.close()
 
 
+@pytest.fixture(scope="session", autouse=True)
+def setup_app_routes():
+    setup_routes(app)
+
+
 @pytest.fixture
 async def cli() -> AsyncClient:
     async with AsyncClient(
         app=app,
         base_url="http://test",
-    ) as client, LifespanManager(app):
+    ) as client:
         yield client
+
+
+@pytest.fixture(scope="function")
+async def rabbit_cli(rmq_store: RMQAccessor):
+    await rmq_store.delete_queue()
+    await rmq_store.connect()
+    yield rmq_store
+    await rmq_store.delete_queue()
+    await rmq_store.disconnect()
 
 
 @pytest.fixture(scope="function")
@@ -36,6 +51,7 @@ async def engine():
     await clear_db(accessor)
     yield accessor.engine
     await clear_db(accessor)
+    await accessor.disconnect()
 
 
 @pytest.fixture(scope="function")
@@ -45,6 +61,7 @@ async def redis_cli():
     await accessor.cli.flushdb()
     yield accessor.cli
     await accessor.cli.flushdb()
+    await accessor.disconnect()
 
 
 async def clear_db(accessor: PgAccessor):
